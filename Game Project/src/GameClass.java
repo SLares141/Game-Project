@@ -7,5 +7,6 @@ public class GameClass {
 
 	   LoadImageApp image = new LoadImageApp();
 	   image.createWindow();
+	   System.out.println("hello this is a test");
 	}
 }
