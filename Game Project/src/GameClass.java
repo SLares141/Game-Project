@@ -1,4 +1,10 @@
-
+/**
+ * 
+ * 
+ * This class may be deprecated
+ * @author Steven Lares
+ *
+ */
 
 public class GameClass {
 

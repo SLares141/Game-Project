@@ -10,6 +10,7 @@ import javax.swing.*;
 /**
  * This class demonstrates how to load an Image from an external file.
  * Will add to this class to see if pictures can coexist
+ * This class is more of a tech demo
  */
 public class Background extends JPanel {
           
