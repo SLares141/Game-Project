@@ -3,11 +3,9 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
-/* 
- * This might be a good place to start, since it seems like the simplest state.
- */
-public class MainMenuState extends JPanel implements State, KeyListener {
-	
+public class InventoryMenuState extends JPanel implements State, KeyListener
+{
+
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -17,6 +15,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	@Override
 	public void render() {
 		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -32,19 +31,19 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
