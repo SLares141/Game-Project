@@ -58,7 +58,7 @@ public class LoadImageApp extends JPanel implements KeyListener {
         f.getContentPane().add(new LoadImageApp());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        f.pack();
+        f.pack(); //NOT NEEDED
         f.setVisible(true);
     	
     };
