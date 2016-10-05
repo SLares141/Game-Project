@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.util.Stack;
 import java.util.HashMap;
 
@@ -7,6 +8,7 @@ import java.util.HashMap;
  */
 public class StateStack {
 	
+	public Graphics g;
 	//The HashMap gives us a way of accessing the states easily by using a certain key 
 	HashMap<String, State> stateMap;
 	
