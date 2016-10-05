@@ -21,9 +21,10 @@ import javax.swing.JTextField;
  */
 public class MainMenuState extends JPanel implements State, KeyListener {
 	
-	BufferedImage background = null;
-	int windowWidth = 960;
-	int windowHeight = 540;
+	BufferedImage background, _arrow;
+	int _windowWidth = 960;
+	int _windowHeight = 540;
+	int _cursor;
 	public static JFrame frame;
 	
 	public static void main(String[] args)
@@ -32,17 +33,24 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		MainMenuState mms = new MainMenuState();
 		Graphics g = frame.getGraphics();
 		mms.paintComponent(g);
+		
+		
+		
+		
 	}
 	
 	public MainMenuState()
 	{
 		System.out.println("in constructor");
+		_cursor = 0;
 		frame = new JFrame("Menu");
 		frame.setSize(new Dimension(960,540));
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addKeyListener(this);
+		this.setFocusable(true);
 	}
 
 
@@ -56,7 +64,8 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
+		Graphics g = frame.getGraphics();
+		paintComponent(g);
 		
 	}
 
@@ -99,6 +108,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		
 		try {
 			background = ImageIO.read(new File("images/menuback.png"));
+			_arrow = ImageIO.read(new File("images/arrow.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,6 +124,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		g.setFont(fnt0);
 		g.setColor(Color.RED);
 		g.drawString("RPG GAME", 350, 100);
+		g.drawImage(_arrow, _windowWidth/2 - 100, _windowHeight/2 + _cursor, null);
 		//frame.getContentPane().add(this);
        
     }
@@ -142,9 +153,39 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            System.out.println("Right key pressed");
+            
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            System.out.println("Left key pressed");
+           
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            System.out.println("Up key pressed");
+            _cursor-= 50;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            System.out.println("Down key pressed");
+            _cursor+= 50;
+        }
+        if	(e.getKeyCode() == KeyEvent.VK_ENTER){
+        	System.out.println("Enter key pressed");
+        }
+        
+		update();
+	}
+/**
+	private void advanceMenu() {
+		m.paintComponent1(g);
 		
 	}
+
+	private void paintComponent1(Graphics g) {
+		g.drawImage(background, 0,0, null);
+		
+	}
+	**/
 
 	@Override
 	public void keyReleased(KeyEvent e) {
