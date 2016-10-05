@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.util.Stack;
 import java.util.HashMap;
 
@@ -9,12 +10,13 @@ import java.util.HashMap;
 
 protected class StateStackSingleton {
 
+	public Graphics g;
 	 //The HashMap gives us a way of accessing the states easily by using a certain key 
-	private static  HashMap<String, State> stateMap;
+	public static  HashMap<String, State> stateMap;
 		
 	//Using a stack allows us to have previous states waiting around for later use.
 	//For example, we can push the battle state onto the stack. After the battle, we only have to pop it off to get back to the standard game map.
-	private Stack<State> mStack;
+	public Stack<State> mStack;
 	
    private static StateStackSingleton StateStackSingleton = new StateStackSingleton(stateMap);
 
@@ -47,7 +49,7 @@ protected class StateStackSingleton {
 
    protected void render() {
        State top = mStack.peek();
-       top.render();
+       top.render(g);
    }
 
    protected void push(String name) {
