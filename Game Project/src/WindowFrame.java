@@ -28,6 +28,7 @@ public class WindowFrame extends JFrame {
 	   frame.setSize((int) _windowWidth,(int) _windowHeight);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.setVisible(true);
    }
 
    

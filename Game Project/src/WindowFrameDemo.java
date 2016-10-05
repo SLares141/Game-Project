@@ -14,7 +14,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class WindowFrameTest extends JPanel implements KeyListener {
+public class WindowFrameDemo extends JPanel implements KeyListener {
 
 	private static Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private static double _windowWidth = _screenSize.getWidth();
@@ -24,7 +24,7 @@ public class WindowFrameTest extends JPanel implements KeyListener {
     private int _spriteY = 500; // Y coord of img2
     
     
-public WindowFrameTest() {
+public WindowFrameDemo() {
     	
     	try {
            _background = ImageIO.read(new File("images/SSuMlnY flipped horizontally.jpg"));
@@ -55,12 +55,12 @@ public WindowFrameTest() {
 	
    public static void main(String[] args) {
       WindowFrame tmp = WindowFrame.getInstance( );
-      WindowFrameTest wft = new WindowFrameTest();
+      WindowFrameDemo wft = new WindowFrameDemo();
       tmp.addState(wft); //adds it
      // tmp.removeState(wft); //removes it
    //   tmp.addState(wft); //then adds it again
       tmp.removeState(wft);
-      WindowFrameTest2 wft2 = new WindowFrameTest2();
+      WindowFrameDemo2 wft2 = new WindowFrameDemo2();
       
      
      
