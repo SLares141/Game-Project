@@ -30,13 +30,8 @@ public class Game extends JPanel {
 		
 		
 	}
-	/**
-	public void paintComponent(Graphics g) {
-        g.drawImage(_background, 0, 0, (int) _windowWidth, (int) _windowHeight, null); //draws background image, sets coordinates and width and height
-        g.drawImage(_sprite, _spriteX, _spriteY, 100, 150, null);
-       
-    }
-	*/
+	
+	
 	public static void main(String[] args) {
 		
         //loop while until game stops running
@@ -45,10 +40,11 @@ public class Game extends JPanel {
 		Game g = new Game();
       
        
-        
+        //put all states into statemap
 		HashMap<String, State> stateMap = new HashMap<String, State>();
 		stateMap.put("menu", new MainMenuState());
-		
+		stateMap.put("battle", new BattleState());
+		stateMap.put("inventory", new InventoryMenuState());
 		
 		
 		StateStack stateStack = new StateStack(stateMap);

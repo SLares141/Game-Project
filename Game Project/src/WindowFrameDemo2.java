@@ -16,7 +16,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class WindowFrameTest2 extends JPanel implements KeyListener {
+public class WindowFrameDemo2 extends JPanel implements KeyListener {
 
 	private static Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private static double _windowWidth = _screenSize.getWidth();
@@ -26,7 +26,7 @@ public class WindowFrameTest2 extends JPanel implements KeyListener {
     private int _spriteY = 500; // Y coord of img2
     
     
-public WindowFrameTest2() {
+public WindowFrameDemo2() {
     	
     	try {
            _background = ImageIO.read(new File("images/dirt.jpg"));
@@ -59,7 +59,7 @@ public WindowFrameTest2() {
 
    public void runWindowFrame2() {
 	   WindowFrame tmp = WindowFrame.getInstance( );
-	   WindowFrameTest2 wft2 = new WindowFrameTest2();
+	   WindowFrameDemo2 wft2 = new WindowFrameDemo2();
        tmp.addState(wft2); //adds it
    }
    
