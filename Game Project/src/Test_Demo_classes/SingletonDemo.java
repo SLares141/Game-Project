@@ -1,3 +1,6 @@
+package Test_Demo_classes;
+import WindowFrame;
+
 // File Name: SingletonDemo.java
 /**
  * THIS CLASS WILL BE DELETED. THIS IS ONLY FOR DEMONSTRATIONAL PURPOSES

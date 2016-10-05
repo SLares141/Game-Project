@@ -1,3 +1,4 @@
+package Test_Demo_classes;
 /**Test to see if singleton worked
  * Contains many of the same methods as LoadImageApp, but now calls windowFrame and adds and removes instances
  * 
@@ -15,6 +16,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import WindowFrame;
 
 public class WindowFrameTest2 extends JPanel implements KeyListener {
 

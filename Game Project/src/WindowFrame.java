@@ -25,9 +25,11 @@ public class WindowFrame extends JFrame {
     * Other methods protected by singleton-ness 
     */
    private WindowFrame() { 
+	   
 	   frame.setSize((int) _windowWidth,(int) _windowHeight);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.setVisible(true);
    }
 
    
