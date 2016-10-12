@@ -28,38 +28,37 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	int _windowWidth = 960;
 	int _windowHeight = 540;
 	int _cursor;
-	int _cursorOn;
-	public static JFrame frame;
+	static WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
 	
 	String _currentMenu;
 	
 
-	
+	/*
 	public static void main(String[] args)
 	{
 		System.out.println("in main");
 		MainMenuState mms = new MainMenuState();
-		Graphics g = frame.getGraphics();
+		Graphics g = _frame.getGraphics();
 		mms.paintComponent(g);
-		
-		
-		
-		
 	}
+	*/	
+		
 	
 	public MainMenuState()
 	{
 		System.out.println("in constructor");
 		_cursor = 0;
-		frame = new JFrame("Menu");
-		_cursorOn = 0;
 		_currentMenu = new String("Start");
-		frame.setSize(new Dimension(960,540));
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.addKeyListener(this);
+		Graphics g = _frame.getGraphics();
+		this.paintComponent(g);
+		/*
+		_frame.setSize(new Dimension(960,540));
+		_frame.setLocationRelativeTo(null);
+		_frame.setResizable(false);
+		_frame.setVisible(true);
+		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		_frame.addKeyListener(this);
+		*/
 		this.setFocusable(true);
 
 		try {
@@ -101,7 +100,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	}
 
 	public void render() {
-		Graphics g = frame.getGraphics();
+		Graphics g = _frame.getGraphics();
 		paintComponent(g);
 		
 	}
@@ -240,7 +239,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 				_currentMenu = "Settings";
 			}else if ((_cursor/50)== 2){
 				System.out.println("Quit Pressed");
-				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+				_frame.dispatchEvent(new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING));
 			}
 		}else if(_currentMenu.equals("Settings")){
 			/*
