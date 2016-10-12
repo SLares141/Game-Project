@@ -166,16 +166,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		}
        
     }
-	 public void createWindow(){
-	    	JFrame f = new JFrame();
-	        f.getContentPane().add(new LoadImageApp());
-	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        
-	        f.pack(); //NOT NEEDED
-	        f.setVisible(true);
-	    	
-	 };
-
+	
 
 	@Override
 	public void onEnter() {

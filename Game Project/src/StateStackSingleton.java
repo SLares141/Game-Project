@@ -45,7 +45,7 @@ public class StateStackSingleton {
 		State state = stateMap.get(name);
 		mStack.push(state);
 		
-		WindowFrame.addState(state);
+		
 	
 	}
 

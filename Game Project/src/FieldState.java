@@ -117,6 +117,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 		//frame.getContentPane().add(this);
        
     }
+	/**
 	 public void createWindow(){
 	    	JFrame f = new JFrame();
 	        f.getContentPane().add(new LoadImageApp());
@@ -127,7 +128,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 	    	
 	 };
 
-
+*/
 	@Override
 	public void onEnter() {
 		// TODO Auto-generated method stub
