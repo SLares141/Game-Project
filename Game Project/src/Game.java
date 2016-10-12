@@ -14,7 +14,7 @@ public class Game extends JPanel {
 	private Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private double _windowWidth = _screenSize.getWidth();
     private double _windowHeight = _screenSize.getHeight();
-    private WindowFrame windowFrame;
+    private static WindowFrame windowFrame;
     private Graphics g;
    
 
@@ -32,7 +32,7 @@ public class Game extends JPanel {
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
         //loop while until game stops running
 		
@@ -41,7 +41,7 @@ public class Game extends JPanel {
       
        
         //put all states into statemap
-		HashMap<String, State> stateMap = new HashMap<String, State>();
+		StateMapSingleton stateMap = StateMapSingleton.getInstance();
 		MainMenuState mainMenu = new MainMenuState();
 		
 		stateMap.put("menu", mainMenu);
@@ -49,9 +49,10 @@ public class Game extends JPanel {
 		stateMap.put("inventory", new InventoryMenuState());
 		
 		
-	//	StateStackSingleton stateStack = new StateStackSingleton(stateMap);
+		StateStackSingleton stateStack = StateStackSingleton.getInstance();
 		//the main menu is set as the initial state
 		stateStack.push("menu");
+		windowFrame.addState(mainMenu);
 		
 		
 		
