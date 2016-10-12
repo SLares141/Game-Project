@@ -50,15 +50,16 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		_cursor = 0;
 		_currentMenu = new String("Start");
 		Graphics g = _frame.getGraphics();
-		this.paintComponent(g);
+		//this.paintComponent(g);
 		/*
 		_frame.setSize(new Dimension(960,540));
 		_frame.setLocationRelativeTo(null);
 		_frame.setResizable(false);
 		_frame.setVisible(true);
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		_frame.addKeyListener(this);
 		*/
+		_frame.addKeyListener(this);
+		
 		this.setFocusable(true);
 
 		try {
@@ -166,16 +167,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		}
        
     }
-	 public void createWindow(){
-	    	JFrame f = new JFrame();
-	        f.getContentPane().add(new LoadImageApp());
-	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        
-	        f.pack(); //NOT NEEDED
-	        f.setVisible(true);
-	    	
-	 };
-
+	
 
 	@Override
 	public void onEnter() {
