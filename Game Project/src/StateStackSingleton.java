@@ -44,6 +44,9 @@ public class StateStackSingleton {
 	protected void push(String name) throws Exception {
 		State state = stateMap.get(name);
 		mStack.push(state);
+		
+		WindowFrame.addState(state);
+	
 	}
 
 	protected State pop() {
