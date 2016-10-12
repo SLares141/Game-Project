@@ -42,12 +42,14 @@ public class Game extends JPanel {
        
         //put all states into statemap
 		HashMap<String, State> stateMap = new HashMap<String, State>();
-		stateMap.put("menu", new MainMenuState());
+		MainMenuState mainMenu = new MainMenuState();
+		
+		stateMap.put("menu", mainMenu);
 		stateMap.put("battle", new BattleState());
 		stateMap.put("inventory", new InventoryMenuState());
 		
 		
-		StateStack stateStack = new StateStack(stateMap);
+	//	StateStackSingleton stateStack = new StateStackSingleton(stateMap);
 		//the main menu is set as the initial state
 		stateStack.push("menu");
 		
