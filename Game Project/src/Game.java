@@ -48,11 +48,16 @@ public class Game extends JPanel {
 		stateMap.put("battle", new BattleState());
 		stateMap.put("inventory", new InventoryMenuState());
 		
+	//	stateMap.put("battle", new BattleState());
+		//stateMap.put("inventory", new InventoryMenuState());
+		
 		
 		StateStackSingleton stateStack = StateStackSingleton.getInstance();
 		//the main menu is set as the initial state
 		stateStack.push("menu");
 		windowFrame.addState(mainMenu);
+		
+		
 		
 		
 		

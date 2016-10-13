@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -49,6 +50,12 @@ public class WindowFrame extends JFrame {
 	   frame.getContentPane().remove(jpanel);
 	   
    }
+   
+   protected static void quit(){
+	   frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+	   
+   }
+   
    
    
    
