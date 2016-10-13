@@ -28,7 +28,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	int _windowWidth = 960;
 	int _windowHeight = 540;
 	int _cursor;
-	static WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
+	 WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
 	
 	String _currentMenu;
 	
@@ -58,7 +58,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		_frame.setVisible(true);
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		*/
-		_frame.addKeyListener(this);
+		addKeyListener(this);
 		
 		this.setFocusable(true);
 
@@ -69,6 +69,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.addNotify();
 	}
 
 
@@ -101,8 +102,8 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	}
 
 	public void render() {
-		Graphics g = _frame.getGraphics();
-		paintComponent(g);
+		//Graphics g = _frame.getGraphics();
+		repaint();
 		
 	}
 	public void paintComponent(Graphics g) {
@@ -231,7 +232,9 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 				_currentMenu = "Settings";
 			}else if ((_cursor/50)== 2){
 				System.out.println("Quit Pressed");
-				_frame.dispatchEvent(new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING));
+				//_frame.dispatchEvent(new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING));
+				//_frame.dispose();
+				_frame.quit();
 			}
 		}else if(_currentMenu.equals("Settings")){
 			/*
@@ -242,16 +245,6 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 			 */
 		}
 	}
-/**
-	private void advanceMenu() {
-		m.paintComponent1(g);
-		
-	}
-	private void paintComponent1(Graphics g) {
-		g.drawImage(background, 0,0, null);
-		
-	}
-	**/
 
 	@Override
 	public void keyReleased(KeyEvent e) {
