@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 public class WindowFrame extends JFrame {
 
 	private static Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private static double _windowWidth = _screenSize.getWidth();
-    private static double _windowHeight = _screenSize.getHeight();
+    private static double _windowWidth = 1040;//1024
+    private static double _windowHeight = 614;//576
     private static JFrame frame = new JFrame("RPG");
 	
    private static WindowFrame windowFrame = new WindowFrame();

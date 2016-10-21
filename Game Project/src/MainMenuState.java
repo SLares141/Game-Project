@@ -25,8 +25,8 @@ import javax.swing.JTextField;
 public class MainMenuState extends JPanel implements State, KeyListener {
 	
 	BufferedImage background, _arrow;
-	int _windowWidth = 960;
-	int _windowHeight = 540;
+	int _windowWidth = 1024;
+	int _windowHeight = 576;
 	int _cursor;
 	 WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
 	
@@ -63,7 +63,7 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		this.setFocusable(true);
 
 		try {
-			background = ImageIO.read(new File("images/menuback.png"));
+			background = ImageIO.read(new File("images/menuback2.jpg"));
 			_arrow = ImageIO.read(new File("images/arrow.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -113,30 +113,51 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 		if (_currentMenu.equals("Start")){
 
 			g.drawImage(background, 0,0, null);
+			/*Rectangle test = new Rectangle(0,0,1024,576);
+			g2d.setColor(Color.BLACK);
+			g2d.fill(test);
+			*/
 			Font fnt0 = new Font("Comic sans MS", Font.BOLD, 50);
 			g.setFont(fnt0);
 			g.setColor(Color.BLACK);
-			g.drawString("SAMPLE TEXT:", 310, 100);
+			g.drawString("SAMPLE TEXT:", _windowWidth/2 - 190, 100);
 			Font fnt2 = new Font("comic sans MS", Font.PLAIN, 30);
 			g.setFont(fnt2);
-			g.drawString(" The Adventures of (INSERT NAME HERE)", 200, 150);
-			g.drawString("Press Enter", _windowWidth/2 - 60, 300);
+			g.drawString(" The Adventures of (INSERT NAME HERE)", _windowWidth/2-320, _windowHeight/2 -125);
+			g.drawString("Press Enter", _windowWidth/2 - 80, 300);
 			//g.drawImage(_arrow, _windowWidth/2 - 200, (_windowHeight/2 - 100)+ _cursor, null);
 			//frame.getContentPane().add(this);
+			
+			//PRINTS A GRID
+			/*
+			int i=0,j=0;
+			for(i = 0; i < 32; i++){
+				g.setColor(Color.gray);
+				if(i==16)
+					g.setColor(Color.red);
+				g.drawLine(i*32, 0, i*32, 576);
+			}
+			for(j = 0; j < 18; j++){
+				g.setColor(Color.gray);
+				if(i==9)
+					g.setColor(Color.red);
+				g.drawLine(0, j*32, 1024, j*32);
+			}*/
 		}else if (_currentMenu.equals("Main")){
+			
 			
 			g.drawImage(background, 0,0, null);
 			//g.fillRect(0, 0, _windowWidth, _windowHeight);
 			Font fnt0 = new Font("arial", Font.BOLD, 50);
 			g.setFont(fnt0);
 			g.setColor(Color.RED);
-			g.drawString("Menu", _windowWidth/2 - 50, 100);
+			g.drawString("Menu", _windowWidth/2 -64, 100);
 			
-			g.drawImage(_arrow, _windowWidth/2 - 200, (_windowHeight/2 - 100)+ _cursor, null);
+			g.drawImage(_arrow, _windowWidth/2 -160, (_windowHeight/2 - 116)+ _cursor, null);
 			
-			Rectangle playButton		= new Rectangle(_windowWidth/2 - 85, 175, 200, 40);
-			Rectangle settingsButton	= new Rectangle(_windowWidth/2 - 85, 225, 200, 40);
-			Rectangle quitButton		= new Rectangle(_windowWidth/2 - 85, 275, 200, 40);
+			Rectangle playButton		= new Rectangle(_windowWidth/2 -100, 175, 200, 40);
+			Rectangle settingsButton	= new Rectangle(_windowWidth/2 -100, 225, 200, 40);
+			Rectangle quitButton		= new Rectangle(_windowWidth/2 -100, 275, 200, 40);
 			
 			Font font1 = new Font("arial", Font.BOLD, 30);
 			g2d.setFont(font1);
@@ -148,6 +169,21 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 			g.drawString("Quit", quitButton.x + 70, quitButton.y + 30);
 			g2d.draw(quitButton);
 			//frame.getContentPane().add(this);
+			//GRID FOR FIXING PLACEMENT
+			/* 
+			int i=0,j=0;
+			for(i = 0; i < 32; i++){
+				g.setColor(Color.gray);
+				if(i==16)
+					g.setColor(Color.red);
+				g.drawLine(i*32, 0, i*32, 576);
+			}
+			for(j = 0; j < 18; j++){
+				g.setColor(Color.gray);
+				if(i==9)
+					g.setColor(Color.red);
+				g.drawLine(0, j*32, 1024, j*32);
+			}*/
 		}else if (_currentMenu.equals("Settings")){
 			g.setColor(Color.GRAY);
 			g.fillRect(0, 0, _windowWidth, _windowHeight);
