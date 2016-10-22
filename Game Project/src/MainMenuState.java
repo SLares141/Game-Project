@@ -22,13 +22,15 @@ import javax.swing.JTextField;
 /* 
  * This might be a good place to start, since it seems like the simplest state.
  */
-public class MainMenuState extends JPanel implements State, KeyListener {
+public class MainMenuState 
+	extends JPanel 
+		implements State, KeyListener {
 	
 	BufferedImage background, _arrow;
 	int _windowWidth = 960;
 	int _windowHeight = 540;
 	int _cursor;
-	 WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
+	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
 	
 	String _currentMenu;
 	
@@ -108,7 +110,6 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	}
 	public void paintComponent(Graphics g) {
 		
-
 		Graphics2D g2d = (Graphics2D) g;
 		if (_currentMenu.equals("Start")){
 
