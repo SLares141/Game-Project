@@ -185,27 +185,33 @@ public class MainMenuState
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT 
+				|| e.getKeyCode() == KeyEvent.VK_D) {
             System.out.println("Right key pressed");
             
         }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT
+				|| e.getKeyCode() == KeyEvent.VK_A) {
             System.out.println("Left key pressed");
            
         }
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
+        if (e.getKeyCode() == KeyEvent.VK_UP
+				|| e.getKeyCode() == KeyEvent.VK_W) {
             System.out.println("Up key pressed");
             _cursor-= 50;
         }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        if (e.getKeyCode() == KeyEvent.VK_DOWN
+				|| e.getKeyCode() == KeyEvent.VK_S) {
             System.out.println("Down key pressed");
             _cursor+= 50;
         }
-        if	(e.getKeyCode() == KeyEvent.VK_ENTER){
+        if	(e.getKeyCode() == KeyEvent.VK_ENTER
+				|| e.getKeyCode() == KeyEvent.VK_SPACE){
         	System.out.println("Enter key pressed");
         	transition();
         }
-        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+				|| e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
         	System.out.println("Backspace key pressed");
         	backtransition();
         }

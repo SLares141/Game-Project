@@ -42,8 +42,8 @@ public class WindowFrame extends JFrame {
 
    
   
-   protected static void addState(JPanel jpanel){
-	   frame.getContentPane().add(jpanel);
+   protected static void addState(State state){
+	   frame.getContentPane().add((JPanel)state);
 	   frame.setVisible(true);
    }
    
