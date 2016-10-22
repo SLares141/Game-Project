@@ -27,8 +27,6 @@ public class Game extends JPanel {
 	//we will be able to simplify the setup in the main method.
 	private void createWindow() {
 		windowFrame = WindowFrame.getInstance();
-		
-		
 	}
 	
 	
@@ -63,7 +61,6 @@ public class Game extends JPanel {
 		//so only the top element (the current state) should be updated and rendered.
 		/*
 		 while(true) {
-			float elapsedTime = System.nanoTime();
 			stateStack.update();
 			stateStack.render();
 		}
