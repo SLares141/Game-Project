@@ -34,8 +34,15 @@ public class FieldState extends JPanel implements State, KeyListener {
 	int _windowHeight = 576;
 
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
+	StateMapSingleton stateMap = StateMapSingleton.getInstance();
+	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	
 	
+	// this is the name of the state that the field state will transition to.
+	//onExit function will look at this, and push the string to the state stack
+	//this will allow the proper state to be put on the stack, and to transition accordingly.
+	// in the case of field state, this will be either main menu, inventory, or battle states.
+	String _stateDestination; 
 	
 
 		
@@ -94,13 +101,27 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void onExit() {
-		// TODO Auto-generated method stub
+		_frame.removeState(this); //neccessary when exiting a state.
 		
+		if(_stateDestination.equals("menu"))
+			stateStack.pop(); //remove this from the stack
+		else
+			stateStack.push(_stateDestination); //in this case, we are adding a state that belongs "after" field state
+		
+		_frame.addState(stateStack.peek()); // add the new state to the frame.
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		  if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		 if (e.getKeyCode() == KeyEvent.VK_ESCAPE ) { //press escape to go to menu. WILL BE CHANGED!
+	            System.out.println("Back to main menu!");
+	            _stateDestination = "menu";
+	            onExit();
+	        }      
+		 else //indicates the player is moving, not escaping to menu
+		 {
+		
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 	            System.out.println("Right key pressed");
 	            _spriteX += 10;
 	        }
@@ -116,7 +137,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 	            System.out.println("Down key pressed");
 	            _spriteY += 10;
 	        }
+	        
+	       
+	        
 		repaint();
+		
+		 }
 	}
 
 
@@ -138,106 +164,4 @@ public class FieldState extends JPanel implements State, KeyListener {
 }
 
 	
-	/**
-	
-	
-	import java.awt.*;
-	import java.awt.event.*;
-	import java.awt.image.*;
-	import java.io.*;
-	import javax.imageio.*;
-	import javax.swing.*;
 
-	
-	public class LoadImageApp extends JPanel implements KeyListener {
-	          
-	    private BufferedImage _background, _sprite;
-	    private int _spriteX = 1000; // X coord of img2
-	    private int _spriteY = 500; // Y coord of img2
-	    
-	    
-	    private Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    private double _windowWidth = _screenSize.getWidth();
-	    private double _windowHeight = _screenSize.getHeight();
-	    
-	    
-
-	 
-
-	    public LoadImageApp() {
-	    	
-	    	try {
-	           _background = ImageIO.read(new File("images/SSuMlnY flipped horizontally.jpg"));
-	           _sprite = ImageIO.read(new File("images/Mario thumbs up.png"));
-	       } catch (IOException e) {
-	       }
-	    	this.setPreferredSize(new Dimension((int)_windowWidth, (int)_windowHeight));
-	        addKeyListener(this);
-	        
-
-	    }
-	    
-	    public void paintComponent(Graphics g) {
-	        g.drawImage(_background, 0, 0, (int) _windowWidth, (int) _windowHeight, null); //draws background image, sets coordinates and width and height
-	        g.drawImage(_sprite, _spriteX, _spriteY, 100, 150, null);
-	       
-	    }
-	    
-	 
-
-	    public void addNotify() {
-	        super.addNotify();
-	        requestFocus();
-	    }
-	    
-	    
-	    
-	    public void createWindow(){
-	    	JFrame f = new JFrame();
-	        f.getContentPane().add(new LoadImageApp());
-	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        
-	        f.pack();
-	        f.setVisible(true);
-	    	
-	    };
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			  if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		            System.out.println("Right key pressed");
-		            _spriteX += 10;
-		        }
-		        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-		            System.out.println("Left key pressed");
-		            _spriteX -= 10;
-		        }
-		        if (e.getKeyCode() == KeyEvent.VK_UP) {
-		            System.out.println("Up key pressed");
-		            _spriteY -= 10;
-		        }
-		        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-		            System.out.println("Down key pressed");
-		            _spriteY += 10;
-		        }
-			repaint();
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-	    
-		
-
-
-		
-	}
-*/
