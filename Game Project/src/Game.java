@@ -30,7 +30,7 @@ public class Game extends JPanel {
 	}
 	
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		
         //loop while until game stops running
 		

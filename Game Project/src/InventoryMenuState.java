@@ -17,6 +17,8 @@ public class InventoryMenuState extends JPanel implements State {
 	int windowHeight = 540;
 	int cursor;
 	WindowFrame _frame = WindowFrame.getInstance();
+	StateMapSingleton stateMap = StateMapSingleton.getInstance();
+	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	
 	String currentMenu;
 
@@ -145,7 +147,7 @@ public class InventoryMenuState extends JPanel implements State {
 	
 	private void back() {
 		if(currentMenu.equals("Main")) {
-			//some code
+			stateStack.push("field");
 		}
 		else if(currentMenu.equals("Items")) {
 			//some code
