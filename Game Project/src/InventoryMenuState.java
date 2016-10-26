@@ -33,11 +33,11 @@ public class InventoryMenuState extends JPanel implements State {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == (KeyEvent.VK_RIGHT)) {
 		            System.out.println("Right key pressed");
-		            
+		            //cursor -= someAmount;
 		        }
 		        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 		            System.out.println("Left key pressed");
-		           
+		            //cursor -= someAmount;
 		        }
 		        if (e.getKeyCode() == KeyEvent.VK_UP) {
 		            System.out.println("Up key pressed");
