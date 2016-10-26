@@ -102,8 +102,11 @@ public class InventoryMenuState extends JPanel implements State {
 			g.drawRect(5, 5, 997, 65); 		//location
 			g.drawRect(5, 380, 290, 152);	//money and game time
 			g.drawRect(300, 75, 702, 457);	//party members
-			Font fnt0 = new Font("Comic sans MS", Font.PLAIN, 20);
+			Font fnt0 = new Font("Comic sans MS", Font.PLAIN, 30);
 			g.setFont(fnt0);
+			g.drawString("Current Location", 400, 50);
+			Font fnt1 = new Font("Comic sans MS", Font.PLAIN, 20);
+			g.setFont(fnt1);
 			g.drawString("Items", 74 , 110);
 			g.drawString("Magic", 74 , 170);
 			g.drawString("Equip", 74 , 230);
