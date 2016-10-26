@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
@@ -13,10 +15,10 @@ public class InventoryMenuState extends JPanel implements State {
 	Inventory inv;
 	
 	//BufferedImage cursor;
-	int windowWidth = 960;
-	int windowHeight = 540;
+	int windowWidth = 1024;
+	int windowHeight = 576;
 	int cursor;
-	WindowFrame _frame = WindowFrame.getInstance();
+	WindowFrame frame = WindowFrame.getInstance();
 	StateMapSingleton stateMap = StateMapSingleton.getInstance();
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	
@@ -27,7 +29,7 @@ public class InventoryMenuState extends JPanel implements State {
 		System.out.println("in constructor");
 		cursor = 0;
 		currentMenu = new String("Main");
-		Graphics g = _frame.getGraphics();
+		Graphics g = frame.getGraphics();
 		
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -93,7 +95,21 @@ public class InventoryMenuState extends JPanel implements State {
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		if(currentMenu.equals("Main")) {
-			//some code
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, 1024, 576);	//background
+			g.setColor(Color.WHITE);
+			g.drawRect(5, 75, 290, 300);	//menu selection
+			g.drawRect(5, 5, 997, 65); 		//location
+			g.drawRect(5, 380, 290, 152);	//money and game time
+			g.drawRect(300, 75, 702, 457);	//party members
+			Font fnt0 = new Font("Comic sans MS", Font.PLAIN, 20);
+			g.setFont(fnt0);
+			g.drawString("Items", 74 , 110);
+			g.drawString("Magic", 74 , 170);
+			g.drawString("Equip", 74 , 230);
+			g.drawString("Save", 74 , 290);
+			g.drawString("Settings", 74 , 350);
+			
 		}
 		else if(currentMenu.equals("Items")) {
 			//some code
