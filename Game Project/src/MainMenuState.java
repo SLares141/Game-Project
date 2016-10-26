@@ -34,6 +34,11 @@ public class MainMenuState
 	
 	String _currentMenu;
 	
+	//load the singleton classes
+	StateMapSingleton stateMap = StateMapSingleton.getInstance();
+	StateStackSingleton stateStack = StateStackSingleton.getInstance();
+	
+	
 
 	/*
 	public static void main(String[] args)
@@ -209,13 +214,14 @@ public class MainMenuState
 
 	@Override
 	public void onEnter() {
-		// TODO Auto-generated method stub
+		// CAN SET CURSOR TO TOP POSITION OF LIST
 		
 	}
 
 	@Override
-	public void onExit() {
-		// TODO Auto-generated method stub
+	public void onExit() { //CALLED WHEN PLAY IS PRESSED
+		stateStack.push("field");
+		_frame.addState(stateStack.peek());
 		
 	}
 
@@ -269,14 +275,15 @@ public class MainMenuState
 		}else if(_currentMenu.equals("Main")){
 			if ((_cursor/50) == 0){
 				System.out.println("Play Pressed");
-				//close menu, go to game
+				onExit(); //exits this state, goes to field state.
+				
+				
 			}else if((_cursor/50)== 1){
 				System.out.println("Settings Pressed");
 				_currentMenu = "Settings";
 			}else if ((_cursor/50)== 2){
 				System.out.println("Quit Pressed");
-				//_frame.dispatchEvent(new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING));
-				//_frame.dispose();
+				
 				_frame.quit();
 			}
 		}else if(_currentMenu.equals("Settings")){

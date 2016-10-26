@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 public class WindowFrame extends JFrame {
 
-	private static Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private static double _windowWidth = 1040;//1024
-    private static double _windowHeight = 614;//576
+	//private static Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private static double _windowWidth = 1040;//1024 These are the dimensions we want?.
+    private static double _windowHeight = 614;//576.
     private static JFrame frame = new JFrame("RPG");
 	
    private static WindowFrame windowFrame = new WindowFrame();
@@ -29,7 +29,7 @@ public class WindowFrame extends JFrame {
 	   frame.setSize((int) _windowWidth,(int) _windowHeight);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setSize(960,540);
+	//	frame.setSize(960,540);   This is commented out since dimensions dont match 
 		frame.setVisible(true);
    }
 
