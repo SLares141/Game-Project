@@ -27,12 +27,10 @@ public class Game extends JPanel {
 	//we will be able to simplify the setup in the main method.
 	private void createWindow() {
 		windowFrame = WindowFrame.getInstance();
-		
-		
 	}
 	
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		
         //loop while until game stops running
 		
@@ -42,9 +40,8 @@ public class Game extends JPanel {
        
         //put all states into statemap
 		StateMapSingleton stateMap = StateMapSingleton.getInstance();
-		MainMenuState mainMenu = new MainMenuState();
 		
-		stateMap.put("menu", mainMenu);
+		stateMap.put("menu", new MainMenuState());
 		stateMap.put("battle", new BattleState());
 		stateMap.put("inventory", new InventoryMenuState());
 		
@@ -55,9 +52,7 @@ public class Game extends JPanel {
 		StateStackSingleton stateStack = StateStackSingleton.getInstance();
 		//the main menu is set as the initial state
 		stateStack.push("menu");
-		windowFrame.addState(mainMenu);
-		
-		
+		windowFrame.addState(stateStack.peek());
 		
 		
 		
@@ -66,7 +61,6 @@ public class Game extends JPanel {
 		//so only the top element (the current state) should be updated and rendered.
 		/*
 		 while(true) {
-			float elapsedTime = System.nanoTime();
 			stateStack.update();
 			stateStack.render();
 		}

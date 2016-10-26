@@ -22,13 +22,15 @@ import javax.swing.JTextField;
 /* 
  * This might be a good place to start, since it seems like the simplest state.
  */
-public class MainMenuState extends JPanel implements State, KeyListener {
+public class MainMenuState 
+	extends JPanel 
+		implements State, KeyListener {
 	
 	BufferedImage background, _arrow;
 	int _windowWidth = 1024;
 	int _windowHeight = 576;
 	int _cursor;
-	 WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
+	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
 	
 	String _currentMenu;
 	
@@ -108,7 +110,6 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 	}
 	public void paintComponent(Graphics g) {
 		
-
 		Graphics2D g2d = (Graphics2D) g;
 		if (_currentMenu.equals("Start")){
 
@@ -220,27 +221,33 @@ public class MainMenuState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT 
+				|| e.getKeyCode() == KeyEvent.VK_D) {
             System.out.println("Right key pressed");
             
         }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT
+				|| e.getKeyCode() == KeyEvent.VK_A) {
             System.out.println("Left key pressed");
            
         }
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
+        if (e.getKeyCode() == KeyEvent.VK_UP
+				|| e.getKeyCode() == KeyEvent.VK_W) {
             System.out.println("Up key pressed");
             _cursor-= 50;
         }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        if (e.getKeyCode() == KeyEvent.VK_DOWN
+				|| e.getKeyCode() == KeyEvent.VK_S) {
             System.out.println("Down key pressed");
             _cursor+= 50;
         }
-        if	(e.getKeyCode() == KeyEvent.VK_ENTER){
+        if	(e.getKeyCode() == KeyEvent.VK_ENTER
+				|| e.getKeyCode() == KeyEvent.VK_SPACE){
         	System.out.println("Enter key pressed");
         	transition();
         }
-        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+				|| e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
         	System.out.println("Backspace key pressed");
         	backtransition();
         }

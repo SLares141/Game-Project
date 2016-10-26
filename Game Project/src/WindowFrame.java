@@ -29,6 +29,7 @@ public class WindowFrame extends JFrame {
 	   frame.setSize((int) _windowWidth,(int) _windowHeight);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.setSize(960,540);
 		frame.setVisible(true);
    }
 
@@ -41,8 +42,8 @@ public class WindowFrame extends JFrame {
 
    
   
-   protected static void addState(JPanel jpanel){
-	   frame.getContentPane().add(jpanel);
+   protected static void addState(State state){
+	   frame.getContentPane().add((JPanel)state);
 	   frame.setVisible(true);
    }
    

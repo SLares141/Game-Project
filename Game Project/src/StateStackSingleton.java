@@ -41,12 +41,8 @@ public class StateStackSingleton {
 		top.render();
 	}
 
-	protected void push(String name) throws Exception {
-		State state = stateMap.get(name);
-		mStack.push(state);
-		
-		
-	
+	protected void push(String name) {
+		mStack.push(stateMap.get(name));
 	}
 
 	protected State pop() {
