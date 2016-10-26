@@ -214,14 +214,15 @@ public class MainMenuState
 
 	@Override
 	public void onEnter() {
-		// CAN SET CURSOR TO TOP POSITION OF LIST
+		// CAN SET CURSOR TO TOP POSITION OF LIST, or back to press enter
 		
 	}
 
 	@Override
 	public void onExit() { //CALLED WHEN PLAY IS PRESSED
-		stateStack.push("field");
-		_frame.addState(stateStack.peek());
+		_frame.removeState(this); //neccessary when exiting a state.
+		stateStack.push("field"); //push new state to top of stack
+		_frame.addState(stateStack.peek()); // add the new state to the frame.
 		
 	}
 
