@@ -47,11 +47,11 @@ public class InventoryMenuState extends JPanel implements State {
 		        }
 		        if	(e.getKeyCode() == KeyEvent.VK_SPACE){
 		        	System.out.println("Space key pressed");
-		        	//select method called
+		        	select();
 		        }
 		        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
 		        	System.out.println("Backspace key pressed");
-		        	//back method called
+		        	back();
 		        }
 				update();
 				render();
@@ -63,9 +63,24 @@ public class InventoryMenuState extends JPanel implements State {
 
 	@Override
 	public void update() {
-
-
-
+		if(currentMenu.equals("Main")) {
+			//some code
+		}
+		else if(currentMenu.equals("Items")) {
+			//some code
+		}
+		else if(currentMenu.equals("Magic")) {
+			//some code
+		}
+		else if(currentMenu.equals("Equip")) {
+			//some code
+		}
+		else if(currentMenu.equals("Save")) {
+			//some code
+		}
+		else if(currentMenu.equals("Settings")) {
+			//some code
+		}
 	}
 
 	@Override
@@ -75,7 +90,24 @@ public class InventoryMenuState extends JPanel implements State {
 	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		
+		if(currentMenu.equals("Main")) {
+			//some code
+		}
+		else if(currentMenu.equals("Items")) {
+			//some code
+		}
+		else if(currentMenu.equals("Magic")) {
+			//some code
+		}
+		else if(currentMenu.equals("Equip")) {
+			//some code
+		}
+		else if(currentMenu.equals("Save")) {
+			//some code
+		}
+		else if(currentMenu.equals("Settings")) {
+			//some code
+		}
 	}
 
 	@Override
@@ -88,5 +120,47 @@ public class InventoryMenuState extends JPanel implements State {
 	public void onExit() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private void select() {
+		if(currentMenu.equals("Main")) {
+			//some code
+		}
+		else if(currentMenu.equals("Items")) {
+			//some code
+		}
+		else if(currentMenu.equals("Magic")) {
+			//some code
+		}
+		else if(currentMenu.equals("Equip")) {
+			//some code
+		}
+		else if(currentMenu.equals("Save")) {
+			//some code
+		}
+		else if(currentMenu.equals("Settings")) {
+			//some code
+		}
+	}
+	
+	private void back() {
+		if(currentMenu.equals("Main")) {
+			//some code
+		}
+		else if(currentMenu.equals("Items")) {
+			//some code
+		}
+		else if(currentMenu.equals("Magic")) {
+			//some code
+		}
+		else if(currentMenu.equals("Equip")) {
+			//some code
+		}
+		else if(currentMenu.equals("Save")) {
+			//some code
+		}
+		else if(currentMenu.equals("Settings")) {
+			//some code
+		}
 	}
 }
