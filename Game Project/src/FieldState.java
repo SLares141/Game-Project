@@ -10,6 +10,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -25,10 +27,13 @@ import javax.swing.JTextField;
  */
 public class FieldState extends JPanel implements State, KeyListener {
 	
-    private BufferedImage _background, _sprite;
+    private BufferedImage _sprite;
+    private  BufferedImage dirt = null;
+	private BufferedImage background = null;
+    
     private int _spriteX = 1000; // X coord of img2
     private int _spriteY = 500; // Y coord of img2
-    
+    TileSet ts = new TileSet();
     
 	int _windowWidth = 1024;
 	int _windowHeight = 576;
@@ -57,9 +62,10 @@ public class FieldState extends JPanel implements State, KeyListener {
 		this.setFocusable(true);
 
 		try {
-	           _background = ImageIO.read(new File("images/menuback.png"));
+	         
 	           _sprite = ImageIO.read(new File("images/strawberry.png"));
-	       } catch (IOException e) {
+	           dirt = ImageIO.read(new File("tiles/dirt0.png"));
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -86,9 +92,51 @@ public class FieldState extends JPanel implements State, KeyListener {
 		
 	}
 	public void paintComponent(Graphics g) {
-		    g.drawImage(_background, 0, 0, (int) _windowWidth, (int) _windowHeight, null); //draws background image, sets coordinates and width and height
-		    g.drawImage(_sprite, _spriteX, _spriteY, 100, 150, null);
+		  
+		    
 		   
+		    
+		    int[][] ia = new int[][]{//			10 				  16		  20	
+				{ 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0},
+				{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		};
+		int[][] ia1 = new int[18][32];
+		
+		int x = 0, y;
+		
+		Map<Coordinate, Tile> map = new HashMap<Coordinate, Tile>();
+		for(x = 0; x < 32; x++){
+			for(y = 0; y < 18; y++){
+				//g.drawImage(ts.getTile(ia[col][row]), col*32, row*32, null);
+				//g.drawImage(ts.getTile(ia1[y][x]), x*32, y*32, null);
+				//g.drawImage(dirt, x*32, y*32, null);
+				map.put(new Coordinate(x*32, y*32), new Tile(x*32, y*32, ia[y][x]));
+			}
+		}
+
+		for(Map.Entry<Coordinate, Tile> entry: map.entrySet()){
+			Coordinate c = entry.getKey();
+			Tile t = entry.getValue();
+			g.drawImage(t.im, c.x, c.y, null);
+		}
+		g.drawImage(_sprite, _spriteX, _spriteY, 100, 150, null); 
+		    
 		}
     
 	
@@ -124,23 +172,27 @@ public class FieldState extends JPanel implements State, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 	            System.out.println("Right key pressed");
 	            _spriteX += 10;
+	            repaint();
 	        }
 	        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 	            System.out.println("Left key pressed");
 	            _spriteX -= 10;
+	            repaint();
 	        }
 	        if (e.getKeyCode() == KeyEvent.VK_UP) {
 	            System.out.println("Up key pressed");
 	            _spriteY -= 10;
+	            repaint();
 	        }
 	        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 	            System.out.println("Down key pressed");
 	            _spriteY += 10;
+	            repaint();
 	        }
 	        
 	       
 	        
-		repaint();
+		
 		
 		 }
 	}
