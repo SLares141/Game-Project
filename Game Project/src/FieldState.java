@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 public class FieldState extends JPanel implements State, KeyListener {
 	
     private BufferedImage _background, _sprite;
-    private int _spriteX = 1000; // X coord of img2
+    private int _spriteX = 500; // X coord of img2
     private int _spriteY = 500; // Y coord of img2
     
     
@@ -95,8 +95,8 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void onEnter() {
-		// TODO Auto-generated method stub
-		
+		//this.requestFocusInWindow();
+		this.addNotify();
 	}
 
 	@Override
@@ -109,41 +109,54 @@ public class FieldState extends JPanel implements State, KeyListener {
 			stateStack.push(_stateDestination); //in this case, we are adding a state that belongs "after" field state
 		
 		_frame.addState(stateStack.peek()); // add the new state to the frame.
+		stateStack.peek().onEnter();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		 if (e.getKeyCode() == KeyEvent.VK_ESCAPE ) { //press escape to go to menu. WILL BE CHANGED!
-	            System.out.println("Back to main menu!");
-	            _stateDestination = "menu";
-	            onExit();
-	        }      
-		 else //indicates the player is moving, not escaping to menu
-		 {
-		
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-	            System.out.println("Right key pressed");
-	            _spriteX += 10;
+
+	        if (e.getKeyCode() != KeyEvent.VK_ESCAPE )
+	        {
+	        	if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		            System.out.println("Right key pressed");
+		            _spriteX += 10;
+		            update();
+		            render();
+		        }
+	        	else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		            System.out.println("Left key pressed");
+		            _spriteX -= 10;
+		            update();
+		            render();
+		        }
+	        	else if (e.getKeyCode() == KeyEvent.VK_UP) {
+		            System.out.println("Up key pressed");
+		            _spriteY -= 10;
+		            update();
+		            render();
+		        }
+	        	else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		            System.out.println("Down key pressed");
+		            _spriteY += 10;
+		            update();
+		            render();
+		        }
+	        	
+	        	
+	        	
 	        }
-	        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-	            System.out.println("Left key pressed");
-	            _spriteX -= 10;
-	        }
-	        if (e.getKeyCode() == KeyEvent.VK_UP) {
-	            System.out.println("Up key pressed");
-	            _spriteY -= 10;
-	        }
-	        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-	            System.out.println("Down key pressed");
-	            _spriteY += 10;
+	        else //user pressed escape to go back to main menu. This may be changed.
+	        {
+	        	  System.out.println("Back to main menu!");
+		            _stateDestination = "menu";
+		            onExit();
 	        }
 	        
-	       
 	        
-		repaint();
+	
 		
 		 }
-	}
+	
 
 
 		
