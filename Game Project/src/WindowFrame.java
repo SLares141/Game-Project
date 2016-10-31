@@ -57,8 +57,13 @@ public class WindowFrame extends JFrame {
 	   
    }
    
-   
-   
+   public int getWidth() {
+	   return (int)_windowWidth;
+   }
+  
+   public int getHeight() {
+	   return (int)_windowHeight;
+   }
    
    
    
