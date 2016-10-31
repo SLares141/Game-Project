@@ -10,16 +10,12 @@ public class Tile {
 	
 	final int x, y;
 	public BufferedImage im;
+	public TileSet ts;
 	public Tile(int a, int b, int num){
+		ts = new TileSet();
 		x = a;
 		y = b;
-		try{
-			if(num == 0){im = ImageIO.read(new File("tiles/dirt0.png"));}
-			else if(num == 1){im = ImageIO.read(new File("tiles/grass0.png"));}
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		im = ts.getTile(num);
 	}
 
 }
