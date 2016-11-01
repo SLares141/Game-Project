@@ -27,7 +27,9 @@ import javax.swing.JTextField;
  */
 public class FieldState extends JPanel implements State, KeyListener {
 	
+
     private BufferedImage _sprite;
+
     
     private int _spriteX = 0; // X coord of img2
     private int _spriteY = 0; // Y coord of img2
@@ -124,8 +126,10 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void onEnter() {
-		// TODO Auto-generated method stub
 		loadall = true;
+		//this.requestFocusInWindow(); may be called later, DO NOT DELETE
+		//this.addNotify(); may be called later, DO NOT DELETE
+
 	}
 
 	@Override
@@ -138,10 +142,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 			stateStack.push(_stateDestination); //in this case, we are adding a state that belongs "after" field state
 		
 		_frame.addState(stateStack.peek()); // add the new state to the frame.
+		stateStack.peek().onEnter();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+
 		loadall = false;
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE ) { //press escape to go to menu. WILL BE CHANGED!
 	            System.out.println("Back to main menu!");
