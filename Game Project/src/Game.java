@@ -50,7 +50,7 @@ public class Game extends JPanel {
 		StateStackSingleton stateStack = StateStackSingleton.getInstance();
 		//the main menu is set as the initial state
 		stateStack.push("menu");
-		_frame.addState(stateStack.peek());
+	
 		
 		
 		

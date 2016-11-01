@@ -219,11 +219,12 @@ public class MainMenuState
 	}
 
 	@Override
-	public void onExit() { //CALLED WHEN PLAY IS PRESSED
-		_frame.removeState(this); //neccessary when exiting a state.
-		stateStack.push("field"); //push field state to top of stack
-		_frame.addState(stateStack.peek()); // add the new state to the frame.
-		stateStack.peek().onEnter();
+	public void onExit() { 
+		/**
+		 * left blank, may not need to fill since this is the first state in the program.
+		 * 
+		 * 
+		 */
 	}
 
 	@Override
@@ -276,7 +277,7 @@ public class MainMenuState
 		}else if(_currentMenu.equals("Main")){
 			if ((_cursor/50) == 0){
 				System.out.println("Play Pressed");
-				onExit(); //exits this state, goes to field state.
+				stateStack.push("field"); //exits this state, goes to field state.
 				
 				
 			}else if((_cursor/50)== 1){

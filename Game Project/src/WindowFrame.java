@@ -45,10 +45,12 @@ public class WindowFrame extends JFrame {
    protected static void addState(State state){
 	   frame.getContentPane().add((JPanel)state);
 	   frame.setVisible(true);
+	
    }
    
-   protected static void removeState(JPanel jpanel){
-	   frame.getContentPane().remove(jpanel);
+   protected static void removeState(State state){
+	   frame.getContentPane().remove((JPanel) state);
+	
 	   
    }
    
