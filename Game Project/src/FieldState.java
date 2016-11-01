@@ -127,6 +127,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 	@Override
 	public void onEnter() {
 		loadall = true;
+		repaint();
 		//this.requestFocusInWindow(); may be called later, DO NOT DELETE
 		this.addNotify(); //may be called later, DO NOT DELETE
 
