@@ -128,21 +128,16 @@ public class FieldState extends JPanel implements State, KeyListener {
 	public void onEnter() {
 		loadall = true;
 		//this.requestFocusInWindow(); may be called later, DO NOT DELETE
-		//this.addNotify(); may be called later, DO NOT DELETE
+		this.addNotify(); //may be called later, DO NOT DELETE
 
 	}
 
 	@Override
 	public void onExit() {
-		_frame.removeState(this); //neccessary when exiting a state.
-		
-		if(_stateDestination.equals("menu"))
-			stateStack.pop(); //remove this from the stack
-		else
-			stateStack.push(_stateDestination); //in this case, we are adding a state that belongs "after" field state
-		
-		_frame.addState(stateStack.peek()); // add the new state to the frame.
-		stateStack.peek().onEnter();
+	/**
+	 * Can be used to end music, or pause the game or something.
+	 * 
+	 */
 	}
 
 	@Override
@@ -153,7 +148,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 	            System.out.println("Back to main menu!");
 	            loadall = true;
 	            _stateDestination = "menu";
-	            onExit();
+	            stateStack.pop(); //exit out and return to menu
 		}      
 		else //indicates the player is moving, not escaping to menu
 		{
