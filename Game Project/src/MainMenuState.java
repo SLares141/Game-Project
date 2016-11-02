@@ -215,6 +215,7 @@ public class MainMenuState
 	@Override
 	public void onEnter() {
 		//this.requestFocusInWindow();
+		repaint();
 		this.addNotify();
 	}
 
