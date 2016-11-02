@@ -24,7 +24,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 	public InventoryMenuState() {
 		
-		System.out.println("in constructor");
+		System.out.println("Inventory: in constructor");
 		cursor = 0;
 		currentMenu = new String("Main");
 		Graphics g = _frame.getGraphics();

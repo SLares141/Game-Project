@@ -92,7 +92,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 	}
 
 	public void render() {
-		repaint();
+		//repaint();
 		
 	}
 	public void paintComponent(Graphics g) {
@@ -228,7 +228,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 		};
-		
+		//System.out.println("IN Makemap0"); debug message
 		int x, y;
 		Map<Coordinate, Tile> map = new HashMap<Coordinate, Tile>();
 		
