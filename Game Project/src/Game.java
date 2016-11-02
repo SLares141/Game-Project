@@ -37,13 +37,15 @@ public class Game extends JPanel {
 		Game g = new Game();
       
        
+		Player player = new Player();
+		Inventory inv = new Inventory();
         //put all states into statemap
 		StateMapSingleton stateMap = StateMapSingleton.getInstance();
 		
 		stateMap.put("menu", new MainMenuState());
 		stateMap.put("field", new FieldState());
 		stateMap.put("battle", new BattleState());
-		stateMap.put("inventory", new InventoryMenuState());
+		stateMap.put("inventory", new InventoryMenuState(player, inv));
 		
 
 		

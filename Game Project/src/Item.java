@@ -6,7 +6,7 @@ public class Item {
 	protected Image sprite;
 	protected String description;
 	
-	public Item() {
-		
+	public Item(String name) {
+		this.name = name;
 	}
 }
