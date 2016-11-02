@@ -65,18 +65,12 @@ public class MainMenuState extends JPanel implements State {
 				if (e.getKeyCode() == KeyEvent.VK_UP
 						|| e.getKeyCode() == KeyEvent.VK_W) {
 					System.out.println("Up key pressed");
-					if(_cursor == 0)
-						_cursor = 100;
-					else 
-						_cursor -= 50;
+					upPressed();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN
 						|| e.getKeyCode() == KeyEvent.VK_S) {
 					System.out.println("Down key pressed");
-					if(_cursor == 100)
-						_cursor = 0;
-					else
-						_cursor += 50;
+					downPressed();
 				}
 				if	(e.getKeyCode() == KeyEvent.VK_ENTER
 						|| e.getKeyCode() == KeyEvent.VK_SPACE){
@@ -242,5 +236,17 @@ public class MainMenuState extends JPanel implements State {
 			 */
 		}
 		update();
+	}
+	private void upPressed() {
+		if(_cursor == 0)
+			_cursor = 100;
+		else 
+			_cursor -= 50;
+	}
+	private void downPressed() {
+		if(_cursor == 100)
+			_cursor = 0;
+		else
+			_cursor += 50;
 	}
 }
