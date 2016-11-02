@@ -89,13 +89,7 @@ public class MainMenuState
 			_cursor = 0;
 		}
 		if(_currentMenu.equals("Main")){
-			if (_cursor < 0){
-				System.out.println(" cursor < 0");
-				_cursor += 50;
-			}else if (_cursor > 100){				
-				System.out.println(" cursor > 150");
-				_cursor -=50;
-			}
+			_cursor = 0;
 		}
 		if(_currentMenu.equals("Settings")){
 			
@@ -198,12 +192,18 @@ public class MainMenuState
         if (e.getKeyCode() == KeyEvent.VK_UP
 				|| e.getKeyCode() == KeyEvent.VK_W) {
             System.out.println("Up key pressed");
-            _cursor-= 50;
+            if(_cursor == 0)
+        		_cursor = 100;
+        	else 
+        		_cursor -= 50;
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN
 				|| e.getKeyCode() == KeyEvent.VK_S) {
             System.out.println("Down key pressed");
-            _cursor+= 50;
+            if(_cursor == 100)
+        		_cursor = 0;
+        	else
+        		_cursor += 50;
         }
         if	(e.getKeyCode() == KeyEvent.VK_ENTER
 				|| e.getKeyCode() == KeyEvent.VK_SPACE){
@@ -215,7 +215,6 @@ public class MainMenuState
         	System.out.println("Backspace key pressed");
         	backtransition();
         }
-        update();
 		render();
 	}
 	private void backtransition() {
@@ -224,6 +223,7 @@ public class MainMenuState
 		}else if(_currentMenu.equals("Settings")){
 			_currentMenu = "Main";
 		}
+		update();
 		
 	}
 
@@ -251,6 +251,7 @@ public class MainMenuState
 			 * 
 			 */
 		}
+		update();
 	}
 
 	@Override

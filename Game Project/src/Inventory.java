@@ -27,6 +27,7 @@ public class Inventory {
 	
 	ItemNode[] inv = new ItemNode[SIZE];
 	
+	/*
 	public void add(Item i) {
 		for(int j = 0; j < SIZE-1; j++) {
 			if(inv[j] == null)
@@ -35,17 +36,19 @@ public class Inventory {
 				inv[j].increment();
 		}
 	}
+	
 	public Item use(int index) {
+		c.use(inv[index].getItem());
 		if(inv[index].getAmount() == 1) {
-			inv[index].getItem().use();
 			Item temp = inv[index].getItem();
 			inv[index] = null;
 			return temp;
 		}
-		inv[index].getItem().use();
 		inv[index].decrement();
 		return inv[index].getItem();	
 	}
+	*/
+	
 	public Item getItem(int index) {
 		return inv[index].getItem();
 	}
