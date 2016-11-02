@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 public class WindowFrame extends JFrame {
 
-	private static Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private static double _windowWidth = _screenSize.getWidth();
-    private static double _windowHeight = _screenSize.getHeight();
+	//private static Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    //private static double _windowWidth = 1040;//1024 These are the dimensions we want?.
+    //private static double _windowHeight = 614;//576.
     private static JFrame frame = new JFrame("RPG");
 	
    private static WindowFrame windowFrame = new WindowFrame();
@@ -26,10 +26,14 @@ public class WindowFrame extends JFrame {
     * Other methods protected by singleton-ness 
     */
    private WindowFrame() { 
-	   frame.setSize((int) _windowWidth,(int) _windowHeight);
+	 //  frame.setSize((int) _windowWidth,(int) _windowHeight);
+		frame.setSize(1024,576);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setSize(1024,576);
+
+		
+		
+
 		frame.setVisible(true);
    }
 
@@ -45,10 +49,12 @@ public class WindowFrame extends JFrame {
    protected static void addState(State state){
 	   frame.getContentPane().add((JPanel)state);
 	   frame.setVisible(true);
+	
    }
    
-   protected static void removeState(JPanel jpanel){
-	   frame.getContentPane().remove(jpanel);
+   protected static void removeState(State state){
+	   frame.getContentPane().remove((JPanel) state);
+	
 	   
    }
    

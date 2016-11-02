@@ -35,13 +35,15 @@ public class InventoryMenuState extends JPanel implements State {
 	String currentMenu;
 	String[] menus = {"Main", "Items", "Magic", "Equip", "Save", "Settings"};
 
+
 	public InventoryMenuState(Character c, Inventory i) {
 		System.out.println("in constructor");
 		
 		player = c;
 		inv = i;
 		
-		onEnter();
+		
+
 		
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -194,6 +196,7 @@ public class InventoryMenuState extends JPanel implements State {
 	public void onEnter() { 
 		currentMenu = new String("Main");
 		update();
+		render();
 	}
 
 	@Override

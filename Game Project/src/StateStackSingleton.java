@@ -12,6 +12,7 @@ public class StateStackSingleton {
 
 	public static StateMapSingleton stateMap;
 	public Stack<State> mStack;
+	 private static WindowFrame _frame = WindowFrame.getInstance(); //used to streamline _frame adding and removing states
 
 	private static StateStackSingleton StateStackSingleton = new StateStackSingleton();
 
@@ -42,11 +43,37 @@ public class StateStackSingleton {
 	}
 
 	protected void push(String name) {
-		mStack.push(stateMap.get(name));
+		
+		if(!mStack.isEmpty()) //means that the old state can be removed from the windowFrame.	 
+		{
+			State oldState = peek();
+			_frame.removeState(oldState); //gets old state and removes it from windowFrame
+			oldState.onExit();
+		}
+			
+		
+		State newState = stateMap.get(name); //state the user wants to enter here.
+		_frame.addState(newState); // in with the new
+		newState.onEnter(); //do entrance code
+		
+		mStack.push(newState); //actually pushes it to the stack
+		
 	}
 
 	protected State pop() {
-		return mStack.pop();
+		State currentState = mStack.pop(); //pops the value out
+		_frame.removeState(currentState); //removes it from the frame
+		currentState.onExit(); //exit code
+		
+		if(!mStack.isEmpty())
+		{
+			State newState = peek();
+			_frame.addState(newState); //new state is added to windowFrame
+			newState.onEnter(); //calls entrance code
+		}
+			
+		
+		return currentState; //still returns expected value
 	}
 
 	protected State peek() {

@@ -2,11 +2,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -16,33 +21,59 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 /* 
  * This might be a good place to start, since it seems like the simplest state.
  */
 public class FieldState extends JPanel implements State, KeyListener {
 	
-	BufferedImage background = null;
-	int windowWidth = 960;
-	int windowHeight = 540;
-	public static JFrame frame;
+
+    private BufferedImage _sprite;
+
+    
+    private int _spriteX = 0; // X coord of img2
+    private int _spriteY = 0; // Y coord of img2
+    private Coordinate _sp;
+    private Coordinate _oldsp;
+    private boolean loadall = true;
+    TileSet ts = new TileSet();
+    
+    Map<Coordinate, Tile> map0 = makeMap0();
+    
+	int _windowWidth = 1024;
+	int _windowHeight = 576;
+
+	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
+	StateMapSingleton stateMap = StateMapSingleton.getInstance();
+	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	
-	public static void main(String[] args)
-	{
-		System.out.println("in main");
-		FieldState fs = new FieldState();
-		Graphics g = frame.getGraphics();
-		fs.paintComponent(g);
-	}
+	
+	// this is the name of the state that the field state will transition to.
+	//onExit function will look at this, and push the string to the state stack
+	//this will allow the proper state to be put on the stack, and to transition accordingly.
+	// in the case of field state, this will be either main menu, inventory, or battle states.
+	String _stateDestination; 
+	
+
+		
+		
 	
 	public FieldState()
 	{
 		System.out.println("in constructor");
-		frame = new JFrame("Field");
-		frame.setSize(new Dimension(960,540));
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Graphics g = _frame.getGraphics();
+		addKeyListener(this);
+		this.setFocusable(true);
+		_sp = new Coordinate(_spriteX, _spriteY);
+		_oldsp = new Coordinate(_spriteX, _spriteY);
+		try {
+	           _sprite = ImageIO.read(new File("images/strawberry.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.addNotify();
 	}
 
 
@@ -55,97 +86,113 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
+        
 		
 		
 	}
 
 	public void render() {
-		
-
-		
-		
+		//repaint();
 		
 	}
 	public void paintComponent(Graphics g) {
-
-
 		
-		System.out.println("in paintcomp");
-		
-		/**
-		 * real fullscreen below, replace setsize method if you want to use this.
-		 * Note: X button doesn't exist
-		*/
-		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		//frame.setUndecorated(true);
-		
-		//this.setBackground(Color.BLUE);
-		//frame.getContentPane().add(this);
+		//grid of tile values
 		
 		
-		//JButton button = new JButton("this is a button");
-		//panel.add(button);
+		int x = 0, y;
+		//loads map to be the map where a given coordinate is the key, and the value is a tile given by above grid
 		
-		//JTextField textfield = new JTextField();
-		//textfield.setPreferredSize(new Dimension(200,15));
-		//panel.add(textfield);
-		
-		//JButton button2 = new JButton("this is another button2");
-		//panel.add(button2);
-		
-		
-		
-		
-		try {
-			background = ImageIO.read(new File("images/dirt.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		//checks if it needs to load the whole grid
+		if (loadall){
+			
+			//prints the entire grid
+			System.out.println("PRINTING ENTIRE GRID");
+			for(Map.Entry<Coordinate, Tile> entry: map0.entrySet()){
+				Coordinate c = entry.getKey();
+				Tile t = entry.getValue();
+				g.drawImage(t.im, c.x, c.y, null);
+			}
+		}else{
+			//prints the tile that the sprite moved from
+			System.out.println("covering old char sprite");
+			g.drawImage(map0.get(_oldsp).im, _oldsp.x, _oldsp.y, null);
 		}
+		g.drawImage(_sprite, _sp.x, _sp.y, 32, 32, null); 
 		
+	}
+    
+	
 
-		//JLabel back = new JLabel(new ImageIcon(background));
-		//this.add(back);
-		
-
-		g.drawImage(background, 0,0, null);
-		Font fnt0 = new Font("arial", Font.BOLD, 50);
-		g.setFont(fnt0);
-		g.setColor(Color.GREEN);
-		g.drawString("the field", 350, 100);
-		//frame.getContentPane().add(this);
-       
-    }
-	/**
-	 public void createWindow(){
-	    	JFrame f = new JFrame();
-	        f.getContentPane().add(new LoadImageApp());
-	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        
-	        f.pack(); //NOT NEEDED
-	        f.setVisible(true);
-	    	
-	 };
-
-*/
 	@Override
 	public void onEnter() {
-		// TODO Auto-generated method stub
-		
+		loadall = true;
+		repaint();
+		//this.requestFocusInWindow(); may be called later, DO NOT DELETE
+		this.addNotify(); //may be called later, DO NOT DELETE
+
 	}
 
 	@Override
 	public void onExit() {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * Can be used to end music, or pause the game or something.
+	 * 
+	 */
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+
+		loadall = false;
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE ) { //press escape to go to menu. WILL BE CHANGED!
+	            System.out.println("Back to main menu!");
+	            loadall = true;
+	            _stateDestination = "menu";
+	            stateStack.pop(); //exit out and return to menu
+		}      
+		else //indicates the player is moving, not escaping to menu
+		{
+			_oldsp.setX(_sp.x);
+			_oldsp.setY(_sp.y);
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				System.out.println("Right key pressed");
+				_sp.setX(_sp.x += 32);          
+		        
+			}
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				System.out.println("Left key pressed");
+			    _sp.setX(_sp.x -= 32);
+			    
+			}
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				System.out.println("Up key pressed");
+				_sp.setY(_sp.y -= 32);
+			    
+			}
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				System.out.println("Down key pressed");
+				_sp.setY(_sp.y += 32);
+			    
+			}
+			
+			//Checks boundaries of the character sprite
+			if(_sp.x > 992){
+				_sp.x = 992;
+			}else if(_sp.y > 544){
+				_sp.y = 544;
+			}else if(_sp.x < 0){
+				_sp.x = 0;
+			}else if(_sp.y < 0){
+				_sp.y = 0;
+			}
+			repaint();
+		}
+}
+
+
 		
-	}
+	
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -158,5 +205,42 @@ public class FieldState extends JPanel implements State, KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//CONSTRUCTING MAP0
+	public Map<Coordinate, Tile> makeMap0(){
+		int[][] ia = new int[][]{//			10 				  16		  20	
+				{ 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0},
+				{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		};
+		//System.out.println("IN Makemap0"); debug message
+		int x, y;
+		Map<Coordinate, Tile> map = new HashMap<Coordinate, Tile>();
+		
+		for(x = 0; x < 32; x++){
+			for(y = 0; y < 18; y++){
+				map.put(new Coordinate(x*32, y*32), new Tile(x*32, y*32, ia[y][x]));
+			}
+		}
+		return map;
+	}
 
 }
+
+	
+
