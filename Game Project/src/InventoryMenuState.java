@@ -42,9 +42,6 @@ public class InventoryMenuState extends JPanel implements State {
 		player = c;
 		inv = i;
 		
-		
-
-		
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT 
@@ -52,8 +49,8 @@ public class InventoryMenuState extends JPanel implements State {
 		            System.out.println("Right key pressed");
 		            rightPressed();
 		        }
-		        if ((e.getKeyCode() == KeyEvent.VK_LEFT
-						|| e.getKeyCode() == KeyEvent.VK_A)) {
+		        if (e.getKeyCode() == KeyEvent.VK_LEFT
+						|| e.getKeyCode() == KeyEvent.VK_A) {
 		            System.out.println("Left key pressed");
 		            leftPressed();
 		        }
