@@ -5,10 +5,8 @@ public class Item {
 	protected String name;
 	protected Image sprite;
 	protected String description;
-	protected int restoreAmt;
 	
-	public Item(String name, int restoreAmt) {
+	public Item(String name) {
 		this.name = name;
-		this.restoreAmt = restoreAmt;
 	}
 }
