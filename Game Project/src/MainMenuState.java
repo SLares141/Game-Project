@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -22,9 +23,7 @@ import javax.swing.JTextField;
 /* 
  * This might be a good place to start, since it seems like the simplest state.
  */
-public class MainMenuState 
-	extends JPanel 
-		implements State, KeyListener {
+public class MainMenuState extends JPanel implements State {
 	
 	BufferedImage background, _arrow;
 	int _windowWidth = 960;
@@ -49,19 +48,50 @@ public class MainMenuState
 	public MainMenuState()
 	{
 		System.out.println("in constructor");
-		_cursor = 0;
-		_currentMenu = new String("Start");
 		Graphics g = _frame.getGraphics();
-		//this.paintComponent(g);
-		/*
-		_frame.setSize(new Dimension(960,540));
-		_frame.setLocationRelativeTo(null);
-		_frame.setResizable(false);
-		_frame.setVisible(true);
-		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		*/
-		addKeyListener(this);
-		
+		onEnter();
+		addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_RIGHT 
+						|| e.getKeyCode() == KeyEvent.VK_D) {
+					System.out.println("Right key pressed");
+
+				}
+				if (e.getKeyCode() == KeyEvent.VK_LEFT
+						|| e.getKeyCode() == KeyEvent.VK_A) {
+					System.out.println("Left key pressed");
+
+				}
+				if (e.getKeyCode() == KeyEvent.VK_UP
+						|| e.getKeyCode() == KeyEvent.VK_W) {
+					System.out.println("Up key pressed");
+					if(_cursor == 0)
+						_cursor = 100;
+					else 
+						_cursor -= 50;
+				}
+				if (e.getKeyCode() == KeyEvent.VK_DOWN
+						|| e.getKeyCode() == KeyEvent.VK_S) {
+					System.out.println("Down key pressed");
+					if(_cursor == 100)
+						_cursor = 0;
+					else
+						_cursor += 50;
+				}
+				if	(e.getKeyCode() == KeyEvent.VK_ENTER
+						|| e.getKeyCode() == KeyEvent.VK_SPACE){
+					System.out.println("Enter key pressed");
+					transition();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+						|| e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
+					System.out.println("Backspace key pressed");
+					backtransition();
+				}
+				render();
+			}
+		});
+
 		this.setFocusable(true);
 
 		try {
@@ -167,8 +197,8 @@ public class MainMenuState
 
 	@Override
 	public void onEnter() {
-		// TODO Auto-generated method stub
-		
+		_currentMenu = new String("Start");
+		update();
 	}
 
 	@Override
@@ -177,46 +207,6 @@ public class MainMenuState
 		
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT 
-				|| e.getKeyCode() == KeyEvent.VK_D) {
-            System.out.println("Right key pressed");
-            
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT
-				|| e.getKeyCode() == KeyEvent.VK_A) {
-            System.out.println("Left key pressed");
-           
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP
-				|| e.getKeyCode() == KeyEvent.VK_W) {
-            System.out.println("Up key pressed");
-            if(_cursor == 0)
-        		_cursor = 100;
-        	else 
-        		_cursor -= 50;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN
-				|| e.getKeyCode() == KeyEvent.VK_S) {
-            System.out.println("Down key pressed");
-            if(_cursor == 100)
-        		_cursor = 0;
-        	else
-        		_cursor += 50;
-        }
-        if	(e.getKeyCode() == KeyEvent.VK_ENTER
-				|| e.getKeyCode() == KeyEvent.VK_SPACE){
-        	System.out.println("Enter key pressed");
-        	transition();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
-				|| e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
-        	System.out.println("Backspace key pressed");
-        	backtransition();
-        }
-		render();
-	}
 	private void backtransition() {
 		if(_currentMenu.equals("Main")){
 			_currentMenu = "Start";
@@ -253,17 +243,4 @@ public class MainMenuState
 		}
 		update();
 	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
