@@ -1,3 +1,9 @@
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 /**
  * This class is currently meant to get a model of the stats the main character has.
  * This may be extended to fit the roles of "enemies" and other characters besides
@@ -13,6 +19,7 @@ public class Character {
 	private int _levelStat, _expStat;
 	private boolean _isDead;
 	private Weapon _weapon;
+	private BufferedImage _sprite;
 	
 	public Character(){
 		_strStat = 			1;
