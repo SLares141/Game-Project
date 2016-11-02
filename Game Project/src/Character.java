@@ -37,9 +37,16 @@ public class Character {
 	public int getMagic() 		{ return _currentMagic; }
 	
 	// setters
+	public void setStr(int i){ _strStat = i;}
+	public void setDef(int i) {_defStat = i;}
+	public void setStrMag(int i){_strMagic = i;}
+	public void setdefMag(int i){_defMagic = i;}
 	public void setHealth (int i) { _currentHealth = i; }
 	public void setMagic (int i ) { _currentMagic = i; } 
+	public void setLevel(int i){ _levelStat = i;}
 	public void setExp (int i) { _expStat = i; }
+	public void setIsDead(boolean b){_isDead = b;}
+	public void setWeapon(Weapon w){_weapon = w;}
 	
 	// this can serve as a loop condition during battle to determine a game over or victory
 	public boolean isDead() {
