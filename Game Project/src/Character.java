@@ -17,7 +17,7 @@ public class Character {
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
 	private int _levelStat, _expStat;
-	private boolean _isDead;
+	private boolean _isDead, _usedDefend;
 	private Weapon _weapon;
 	private BufferedImage _sprite;
 	
@@ -33,6 +33,7 @@ public class Character {
 		_levelStat = 		1;
 		_expStat = 			0;
 		_isDead = 			false;
+		_usedDefend =		false;
 		_weapon = 			null;
 	}
 	
@@ -42,6 +43,8 @@ public class Character {
 	public int getMagicDef()	{ return _defMagic; }
 	public int getHealth() 		{ return _currentHealth; }
 	public int getMagic() 		{ return _currentMagic; }
+	public int getTotalHealth() { return _totalHealth; }
+	public int getTotalMagic()  { return _totalMagic; }
 	
 	// setters
 	public void setHealth (int i) { _currentHealth = i; }
@@ -55,9 +58,18 @@ public class Character {
 		return false;
 	}
 	
+	// this indicates if "defend" was used on the previous turn, to note if _defStat should be restored
+	public boolean usedDefend() { return _usedDefend; }
+	
 	int tempHealth;
 	public void attack(Character c) {
 		tempHealth = c.getHealth() - _strStat + c.getDef();
+		c.setHealth(tempHealth);
+	}
+	
+	// special attack does double damage
+	public void specialAttack(Character c) {
+		tempHealth = c.getHealth() - (_strStat * 2) + c.getDef();
 		c.setHealth(tempHealth);
 	}
 	
@@ -66,6 +78,16 @@ public class Character {
 		tempHealth = c.getHealth() - _strMagic + c.getMagicDef();
 		c.setHealth(tempHealth);
 		_currentMagic -= 2;
+	}
+	
+	public void defend() { 
+		_defStat++;
+		_usedDefend = true;
+		}
+	
+	public void restoreDef() {
+		_defStat--;
+		_usedDefend = false;
 	}
 
 }

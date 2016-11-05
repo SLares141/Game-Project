@@ -26,14 +26,14 @@ public class BattleState extends JPanel implements State, KeyListener {
 	private BufferedImage background, _player, _enemy, _cursor;
 	private PlayerCharacter _charPlayer;
 	private EnemyCharacter _charEnemy;
-	private int _windowWidth = 960;
-	private int _windowHeight = 540;
 	private int _cursorX, _cursorY, _cursorIndexX, _cursorIndexY;
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
-	private Rectangle topLeftButton			= new Rectangle(_windowWidth - 500, 400, 200, 40);
-	private Rectangle topRightButton		= new Rectangle(_windowWidth - 250, 400, 200, 40);
-	private Rectangle bottomLeftButton		= new Rectangle(_windowWidth - 500, 450, 200, 40);
-	private Rectangle bottomRightButton		= new Rectangle(_windowWidth - 250, 450, 200, 40);
+	private Rectangle topLeftButton			= new Rectangle(460, 400, 200, 40);
+	private Rectangle topRightButton		= new Rectangle(710, 400, 200, 40);
+	private Rectangle bottomLeftButton		= new Rectangle(460, 450, 200, 40);
+	private Rectangle bottomRightButton		= new Rectangle(710, 450, 200, 40);
+	private Rectangle playerInfoBox			= new Rectangle(460, 300, 450, 75);
+	private Rectangle enemyInfoBox			= new Rectangle(40, 75, 450, 75);
 	//private EnemyCharacter[] enemies; // array of enemies that can be loaded to select which enemy is being fought
 	
 	String _currentScreen;
@@ -42,7 +42,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 	
 	public BattleState()
 	{
-		_cursorX = _windowWidth - 550; // x coord of cursor
+		_cursorX = 410; // x coord of cursor
 		_cursorY = 400; // y coord of cursor
 		_cursorIndexX = 0;
 		_cursorIndexY = 0;
@@ -63,6 +63,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 		this.addNotify();
 	}
 	
+	// setter methods to give the BattleState a player and an enemy
 	public void setPlayer(PlayerCharacter p){ _charPlayer = p; }
 	public void setEnemy(EnemyCharacter e){ _charEnemy = e; }
 
@@ -76,51 +77,52 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void update() {
-        
 		if (_currentScreen.equals("PlayerTurn")){
-			
-			
 		}
 		if (_currentScreen.equals("PlayerTurnFight")){
-			
-			
 		}
 		if (_currentScreen.equals("PlayerTurnItem")){
-			
-			
 		}
 		if (_currentScreen.equals("EnemyTurn")){
-			
-			
 		}
 		if (_currentScreen.equals("Victory")){
-			
-			
 		}
 		if (_currentScreen.equals("GameOver")){
-			
-			
 		}
-		
 	}
 
-	public void render() { repaint(); }
+	public void render() { repaint(); } // do we need "render" if it just repaints?
 	
+	Font font0 = new Font("Comic sans MS", Font.BOLD, 50);
+	Font font1 = new Font("Comic sans MS", Font.PLAIN, 25);
+	Font font2 = new Font("arial", Font.BOLD, 30);
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		if (_currentScreen.equals("PlayerTurn")){
-
+			if (_charPlayer.usedDefend()) 
+				_charPlayer.restoreDef(); // restore player's defense if player used defend last turn
+			
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 200, 300, null);
 			g.drawImage(_enemy, 700, 100, null);
 			g.drawImage(_cursor, _cursorX, _cursorY, null);
-			Font fnt0 = new Font("Comic sans MS", Font.BOLD, 50);
-			g.setFont(fnt0);
+			
+			g.setFont(font0);
 			g.setColor(Color.BLACK);
+			g2d.draw(playerInfoBox);
+			g.drawString(_charPlayer.getName(), playerInfoBox.x, playerInfoBox.y - 10);
+			g2d.draw(enemyInfoBox);
+			g.drawString(_charEnemy.getName(), enemyInfoBox.x, enemyInfoBox.y - 10);
 			
+			g.setFont(font1);
+			g.setColor(Color.BLACK);
+			g.drawString("HP:   " + _charPlayer.getHealth() + " / " + _charPlayer.getTotalHealth()
+				  + "     MP:   " + _charPlayer.getMagic()  + " / " + _charPlayer.getTotalMagic(), 
+				  playerInfoBox.x + 10, playerInfoBox.y + 45);
+			g.drawString("HP:   " + _charEnemy.getHealth() + " / " + _charEnemy.getTotalHealth(), 
+				  enemyInfoBox.x + 10, enemyInfoBox.y + 45);
 			
-			Font font1 = new Font("arial", Font.BOLD, 30);
-			g2d.setFont(font1);
+			g2d.setFont(font2);
 			g2d.setColor(Color.BLACK);
 			g.drawString("FIGHT", topLeftButton.x + 70, topLeftButton.y + 30);
 			g2d.draw(topLeftButton);
@@ -131,14 +133,28 @@ public class BattleState extends JPanel implements State, KeyListener {
 			g.drawString("RUN", bottomRightButton.x + 70, bottomRightButton.y + 30);
 			g2d.draw(bottomRightButton);
 			
-		}else if (_currentScreen.equals("PlayerTurnFight")){	
-			
+		} else if (_currentScreen.equals("PlayerTurnFight")){	
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 200, 300, null);
 			g.drawImage(_enemy, 700, 100, null);
 			g.drawImage(_cursor, _cursorX, _cursorY, null);
-			Font font1 = new Font("arial", Font.BOLD, 30);
-			g2d.setFont(font1);
+			
+			g.setFont(font0);
+			g.setColor(Color.BLACK);
+			g2d.draw(playerInfoBox);
+			g.drawString(_charPlayer.getName(), playerInfoBox.x, playerInfoBox.y - 10);
+			g2d.draw(enemyInfoBox);
+			g.drawString(_charEnemy.getName(), enemyInfoBox.x, enemyInfoBox.y - 10);
+			
+			g.setFont(font1);
+			g.setColor(Color.BLACK);
+			g.drawString("HP:   " + _charPlayer.getHealth() + " / " + _charPlayer.getTotalHealth()
+				  + "     MP:   " + _charPlayer.getMagic()  + " / " + _charPlayer.getTotalMagic(), 
+				  playerInfoBox.x + 10, playerInfoBox.y + 45);
+			g.drawString("HP:   " + _charEnemy.getHealth() + " / " + _charEnemy.getTotalHealth(), 
+				  enemyInfoBox.x + 10, enemyInfoBox.y + 45);
+			
+			g2d.setFont(font2);
 			g2d.setColor(Color.BLACK);
 			g.drawString("MELEE", topLeftButton.x + 70, topLeftButton.y + 30);
 			g2d.draw(topLeftButton);
@@ -152,31 +168,87 @@ public class BattleState extends JPanel implements State, KeyListener {
 			
 			
 			
-		}else if (_currentScreen.equals("PlayerTurnItem")){
+		} else if (_currentScreen.equals("PlayerTurnItem")){
+			g.drawImage(background, 0,0, null);
+			g.drawImage(_player, 200, 300, null);
+			g.drawImage(_enemy, 700, 100, null);
+			g.drawImage(_cursor, _cursorX, _cursorY, null);
+			
+			g.setFont(font0);
+			g.setColor(Color.BLACK);
+			g2d.draw(playerInfoBox);
+			g.drawString(_charPlayer.getName(), playerInfoBox.x, playerInfoBox.y - 10);
+			g2d.draw(enemyInfoBox);
+			g.drawString(_charEnemy.getName(), enemyInfoBox.x, enemyInfoBox.y - 10);
+			
+			g.setFont(font1);
+			g.setColor(Color.BLACK);
+			g.drawString("HP:   " + _charPlayer.getHealth() + " / " + _charPlayer.getTotalHealth()
+				  + "     MP:   " + _charPlayer.getMagic()  + " / " + _charPlayer.getTotalMagic(), 
+				  playerInfoBox.x + 10, playerInfoBox.y + 45);
+			g.drawString("HP:   " + _charEnemy.getHealth() + " / " + _charEnemy.getTotalHealth(), 
+				  enemyInfoBox.x + 10, enemyInfoBox.y + 45);
+			
+			g2d.setFont(font2);
+			g2d.setColor(Color.BLACK);
+			g.drawString("POTION", topLeftButton.x + 70, topLeftButton.y + 30);
+			g2d.draw(topLeftButton);
+			g.drawString("MGK POTION", topRightButton.x + 70, topRightButton.y + 30);
+			g2d.draw(topRightButton);
+			g.drawString("ATK ITEM", bottomLeftButton.x + 70, bottomLeftButton.y + 30);
+			g2d.draw(bottomLeftButton);
+			g.drawString("BACK", bottomRightButton.x + 70, bottomRightButton.y + 30);
+			g2d.draw(bottomRightButton);
 			
 			
 			
-			
-			
-		}else if (_currentScreen.equals("EnemyTurn")){
+		} else if (_currentScreen.equals("EnemyTurn")){
+			if (_charEnemy.usedDefend())
+				_charEnemy.restoreDef(); // restore enemy's defense if enemy used defend last turn
 			
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 200, 300, null);
 			g.drawImage(_enemy, 700, 100, null);
-			Font font1 = new Font("arial", Font.BOLD, 30);
-			g2d.setFont(font1);
-			g2d.setColor(Color.BLACK);
 			
+			g.setFont(font0);
+			g.setColor(Color.BLACK);
+			g2d.draw(playerInfoBox);
+			g.drawString(_charPlayer.getName(), playerInfoBox.x, playerInfoBox.y - 10);
+			g2d.draw(enemyInfoBox);
+			g.drawString(_charEnemy.getName(), enemyInfoBox.x, enemyInfoBox.y - 10);
 			
+			g.setFont(font1);
+			g.setColor(Color.BLACK);
+			g.drawString("HP:   " + _charPlayer.getHealth() + " / " + _charPlayer.getTotalHealth()
+				  + "     MP:   " + _charPlayer.getMagic()  + " / " + _charPlayer.getTotalMagic(), 
+				  playerInfoBox.x + 10, playerInfoBox.y + 45);
+			g.drawString("HP:   " + _charEnemy.getHealth() + " / " + _charEnemy.getTotalHealth(), 
+				  enemyInfoBox.x + 10, enemyInfoBox.y + 45);
 			
-		}else if (_currentScreen.equals("Victory")){
+			//g2d.setFont(font2);
+			//g2d.setColor(Color.BLACK);
 			
+			_charEnemy.enemyAttack(_charPlayer); // ENEMY TAKES TURN HERE
+			// NEED TO DISPLAY THE ENEMY'S ACTIONS
+			if (_charPlayer.isDead()){
+				// if player dies, end fight
+				_currentScreen = "GameOver";
+			} else {
+				// if the player isn't dead, transition to player turn
+				_currentScreen = "PlayerTurn";
+			}
 			
+		} else if (_currentScreen.equals("Victory")){
+			g.setFont(font0);
+			g.setColor(Color.BLACK);
+			g.drawImage(background, 0,0, null);
+			g.drawString("VICTORY", 200, 200);
 			
-		}else if (_currentScreen.equals("GameOver")){
-			
-			
-			
+		} else if (_currentScreen.equals("GameOver")){
+			g.setFont(font0);
+			g.setColor(Color.BLACK);
+			g.drawImage(background, 0,0, null);
+			g.drawString("GAME OVER", 200, 200);
 		}
        
     }
@@ -185,13 +257,11 @@ public class BattleState extends JPanel implements State, KeyListener {
 	@Override
 	public void onEnter() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onExit() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -235,26 +305,20 @@ public class BattleState extends JPanel implements State, KeyListener {
         }
         if	(e.getKeyCode() == KeyEvent.VK_ENTER){
         	if (_currentScreen.equals("PlayerTurn")){
-        		
-        		if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left button selected
-        			System.out.println("topLeftButton");
+        		if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left (fight) button selected
         			_currentScreen = "PlayerTurnFight";
-        		
-        		} else if ((_cursorIndexX == 0) && (_cursorIndexY == 1)){ // bottom left button selected
-        			System.out.println("bottomLeftButton");
+        		} else if ((_cursorIndexX == 0) && (_cursorIndexY == 1)){ // bottom left (item) button selected
         			_currentScreen = "PlayerTurnItem";
-        			
-        		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)){ // top right button selected
-        			System.out.println("topRightButton");
-        			
-        		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)){ // bottom right button selected
-        			System.out.println("bottomRightButton");
+        		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)){ // top right (defend) button selected
+        			// DEFEND
+        			_charPlayer.defend();
+        		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)){ // bottom right (run) button selected
         			if (_charEnemy.isBoss()){
         				// DISPLAY "YOU COULD NOT RUN"
         				_currentScreen = "EnemyTurn";
         			} else {
         				Random r = new Random();
-        				if (r.nextInt(10) >= 4){
+        				if (r.nextInt(100) >= 40){ // successful run 60% of the time
         					System.out.println("RunSuccess");
         					// RUN SUCCESS, TRANSITION TO EXIT
         				} else {
@@ -267,71 +331,84 @@ public class BattleState extends JPanel implements State, KeyListener {
         		}	
         	} else if (_currentScreen.equals("PlayerTurnFight")){
 
-        		if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left button selected
-        			System.out.println("topLeftButton");
+        		if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left (melee) button selected
         			// MELEE ATTACK HAPPENS HERE
         			_charPlayer.attack(_charEnemy);
         			if (_charEnemy.isDead()){
         				// if enemy dies, end fight
-        				_currentScreen = "GameOver";
+        				_currentScreen = "Victory";
         			} else {
-        				// if the enemy isnt dead, transition to enemy turn
+        				// if the enemy isn't dead, transition to enemy turn
+        				_currentScreen = "EnemyTurn";
         			}
         			// NEED TO VISUALLY SHOW ATTACK
         		
-        		} else if ((_cursorIndexX == 0) && (_cursorIndexY == 1)){ // bottom left button selected
-        			System.out.println("bottomLeftButton");
+        		} else if ((_cursorIndexX == 0) && (_cursorIndexY == 1)) { // bottom left (special) button selected
         			// SPECIAL ATTACK HAPPENS HERE
+        			Random r = new Random();
+    				if (r.nextInt(100) >= 66){ // successfully special attack 33% of the time
+    					System.out.println("Special Attack Success");
+    					_charPlayer.specialAttack(_charEnemy);
+    					if (_charEnemy.isDead()){
+    	    				// if enemy dies, end fight
+    	    				_currentScreen = "Victory";
+    	    			} else {
+    	    				// if the enemy isn't dead, transition to enemy turn
+    	    				_currentScreen = "EnemyTurn";
+    	    			}
+    					// NEED TO VISUALLY SHOW ATTACK
+    				} else {
+    					System.out.println("Special Attack Failed");
+    					_currentScreen = "EnemyTurn";
+    				}
         			
-        		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)){ // top right button selected
-        			System.out.println("topRightButton");
+        		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)) { // top right (magic) button selected
         			// MAGIC ATTACK HAPPENS HERE
+        			if (_charPlayer.getMagic() - 2 >= 0) {
+        				System.out.println("Magic Attack Success");
+        				_charPlayer.magicAttack(_charEnemy);
+        				if (_charEnemy.isDead()){
+    	    				// if enemy dies, end fight
+    	    				_currentScreen = "Victory";
+    	    			} else {
+    	    				// if the enemy isn't dead, transition to enemy turn
+    	    				_currentScreen = "EnemyTurn";
+    	    			}
+        				// NEED TO VISUALLY SHOW ATTACK
+        			} else {
+        				System.out.println("NOT ENOUGH MP");
+        				// DISPLAY NOT ENOUGHT MP
+        			}
         			
-        		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)){ // bottom right button selected
-        			System.out.println("bottomRightButton");
+        		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)) { // bottom right (back) button selected
         			// this button transitions back to "PlayerTurn"
-        			_currentScreen = "PlayerTurn";
-        			
-        		}	
+        			_currentScreen = "PlayerTurn";	
+        		}
         	}
         	
         	
         	//transition();
         }
         if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-        	//backtransition();
+        	backtransition();
         }
         update();
 		render();
 	}
-	/*
+	
 	private void backtransition() {
-		if(_currentScreen.equals("Main")){
-			_currentMenu = "Start";
-		}else if(_currentMenu.equals("Settings")){
-			_currentMenu = "Main";
-		}
-		
+		if(_currentScreen.equals("PlayerTurnFight"))
+			_currentScreen = "PlayerTurn";
+		else if(_currentScreen.equals("PlayerTurnItem"))
+			_currentScreen = "PlayerTurn";
 	}
-	*/
+	
 
 	private void transition() {
 		if(_currentScreen.equals("PlayerTurn")){
-			
-			
 		}else if(_currentScreen.equals("EnemyTurn")){
-			
-			
-			
-			
 		}else if(_currentScreen.equals("Victory")){
-			
-			
-			
 		}else if(_currentScreen.equals("GameOver")){
-			
-			
-			
 		}
 	}
 
