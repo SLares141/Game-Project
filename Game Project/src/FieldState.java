@@ -52,10 +52,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 	//onExit function will look at this, and push the string to the state stack
 	//this will allow the proper state to be put on the stack, and to transition accordingly.
 	// in the case of field state, this will be either main menu, inventory, or battle states.
-	String _stateDestination; 
-	
-
-		
+	String _stateDestination; 	
 		
 	
 	public FieldState()
@@ -178,6 +175,9 @@ public class FieldState extends JPanel implements State, KeyListener {
 				System.out.println("Down key pressed");
 				_sp.setY(_sp.y += 32);
 			    
+			}
+			if (e.getKeyCode() == KeyEvent.VK_M) {
+				stateStack.push("inventory");
 			}
 			
 			//Checks boundaries of the character sprite

@@ -1,10 +1,13 @@
 import java.awt.List;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class Player extends Character {
 	
@@ -12,6 +15,8 @@ public class Player extends Character {
 	private Armor equippedA;
 	
 	public Player() throws IOException{
+		_sprite = ImageIO.read(new File("images/strawberry.png"));
+		_menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
 		FileReader inFile = new FileReader("Char Files/Char0.txt");
 		BufferedReader buffReader = new BufferedReader(inFile);
 		ArrayList<String> temp = new ArrayList<String>();
