@@ -31,7 +31,7 @@ public class Game extends JPanel {
 	}
 	
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 	
 		Game g = new Game();  
        
