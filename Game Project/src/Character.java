@@ -23,7 +23,12 @@ public class Character {
 	private int _levelStat, _expStat;
 	private boolean _isDead, _usedDefend;
 	private Weapon _weapon;
-	private BufferedImage _sprite;
+
+	private String _weap;
+
+	private Coordinate _loc;
+	private String _currentMap;
+
 	
 	public Character(){
 		_strStat = 			1;
@@ -44,12 +49,27 @@ public class Character {
 	// getters
 	public int getStr()			{ return _strStat; }
 	public int getDef()			{ return _defStat; }
-	public int getStrMag() 		{ return _strMagic; }
+
+	public int getMagicStr()	{ return _strMagic; }
+
 	public int getMagicDef()	{ return _defMagic; }
 	public int getTotalHealth() { return _totalHealth; }
 	public int getHealth() 		{ return _currentHealth; }
 	public int getTotalMagic()  { return _totalMagic; } 
 	public int getMagic() 		{ return _currentMagic; }
+
+	
+	
+	
+	
+
+	public Coordinate getLocation(){
+		return _loc;
+	}
+	public String getMap(){
+		return _currentMap;
+	}
+
 
 	
 	public int getLevel()		{ return _levelStat; }
@@ -59,6 +79,7 @@ public class Character {
 	
 	public BufferedImage getSprite() 	{ return _sprite; }
 	public BufferedImage getMenuSprite() { return _menuSprite; }
+
 
 	
 	// setters
@@ -71,7 +92,13 @@ public class Character {
 	public void setLevel(int i){ _levelStat = i;}
 	public void setExp (int i) { _expStat = i; }
 	public void setIsDead(boolean b){_isDead = b;}
-	public void setWeapon(Weapon w){_weapon = w;}
+	public void setWeapon(String w){_weap = w;}
+	public void setLocation(Coordinate c){
+		_loc = c;
+	}
+	public void setMap(String s){
+		_currentMap = s;
+	}
 	
 	// this can serve as a loop condition during battle to determine a game over or victory
 	public boolean isDead() {
@@ -101,6 +128,9 @@ public class Character {
 		c.setHealth(tempHealth);
 		_currentMagic -= 2;
 	}
+	
+	
+	
 
 	
 	public void defend() { 

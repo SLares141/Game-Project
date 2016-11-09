@@ -66,7 +66,7 @@ public class Game extends JPanel {
 		StateMapSingleton stateMap = StateMapSingleton.getInstance();
 		
 		stateMap.put("menu", new MainMenuState());
-		stateMap.put("field", new FieldState());
+		stateMap.put("field", new FieldState(player));
 		stateMap.put("battle", new BattleState());
 		
 		stateMap.put("inventory", new InventoryMenuState(player, pm1, pm2, pm3, inv));

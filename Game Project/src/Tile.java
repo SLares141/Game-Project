@@ -8,14 +8,24 @@ import javax.imageio.ImageIO;
 
 public class Tile {
 	
-	final int x, y;
 	public BufferedImage im;
 	public TileSet ts;
-	public Tile(int a, int b, int num){
+	private boolean isPortal;
+	private String destination;
+	public Tile(int num, boolean b){
+		isPortal = b;
 		ts = new TileSet();
-		x = a;
-		y = b;
 		im = ts.getTile(num);
 	}
+	public boolean isPortal(){
+		return isPortal;
+	}
+	public void setDestination(String s){
+		destination = s;
+	}
+	public String getDestination(){
+		return destination;
+	}
+	
 
 }
