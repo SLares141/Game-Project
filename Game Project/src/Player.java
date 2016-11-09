@@ -53,7 +53,7 @@ public class Player extends Character {
 				spaddress = temp.get(10);
 				int x = Integer.valueOf(temp.get(11));
 				int y = Integer.valueOf(temp.get(12));
-				this.setLocation(new Coordinate(x*32,y*32));
+				this.setLocation(new Coordinate(x,y));
 				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -88,6 +88,10 @@ public class Player extends Character {
 			wr.println(String.valueOf(this.getExp()));
 			wr.println(String.valueOf(this.getDead()));
 			wr.println(this.getWeapon());
+			wr.println(this.spaddress);
+			wr.println(String.valueOf(this.getLocation().x));
+			wr.println(String.valueOf(this.getLocation().y));
+			wr.close();
 		} catch (IOException e){
 			
 		}

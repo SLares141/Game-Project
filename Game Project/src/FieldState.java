@@ -139,10 +139,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void onExit() {
-	/**
-	 * Can be used to end music, or pause the game or something.
-	 * 
-	 */
+		player.savePlayer();
 	}
 
 	@Override
@@ -240,7 +237,18 @@ public class FieldState extends JPanel implements State, KeyListener {
 		
 		for(x = 0; x < 32; x++){
 			for(y = 0; y < 18; y++){
-				map.put(new Coordinate(x*32, y*32), new Tile(x*32, y*32, ia[y][x]));
+				Coordinate t = new Coordinate(x*32, y*32);
+				
+				map.put(t, new Tile(ia[y][x], false));
+				if(x==0){
+					map.get(t).setDestination("map1");
+				}else if(x==31){
+					map.get(t).setDestination("map2");
+				}else if(y==0){
+					map.get(t).setDestination("map3");
+				}else if(y==17){
+					map.get(t).setDestination("map4");
+				}
 			}
 		}
 		return map;
@@ -272,7 +280,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 		
 		for(x = 0; x < 32; x++){
 			for(y = 0; y < 18; y++){
-				map.put(new Coordinate(x*32, y*32), new Tile(x*32, y*32, ia[y][x]));
+				Coordinate t = new Coordinate(x*32, y*32);
+				
+				map.put(t, new Tile(ia[y][x], false));
+				if(x==31){
+					map.get(t).setDestination("map0");
+				}
 			}
 		}
 		return map;
