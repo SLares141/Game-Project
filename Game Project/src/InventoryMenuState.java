@@ -16,7 +16,7 @@ public class InventoryMenuState extends JPanel implements State {
 	PartyMember pm1, pm2, pm3;
 	Inventory inv;
 	int invIndex = 0;
-	
+
 	BufferedImage arrow, biggerArrow;
 	int cursorX;
 	int cursorY;
@@ -30,55 +30,55 @@ public class InventoryMenuState extends JPanel implements State {
 	String currentMenu;
 	int previousMenu = 0;
 	String[] menus = {"Items", "Magic", "Equip", "Status", "Save", "Settings"};
-	
+
 
 	public InventoryMenuState(Player p, PartyMember pm1, PartyMember pm2, PartyMember pm3, Inventory i) {
 		System.out.println("in constructor");
-		
+
 		player = p;
 		this.pm1 = pm1;
 		this.pm2 = pm2;
 		this.pm3 = pm3;
 		inv = i;
-		
+
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT 
 						|| e.getKeyCode() == KeyEvent.VK_D) {
-		            System.out.println("Right key pressed");
-		            rightPressed();
-		        }
-		        if (e.getKeyCode() == KeyEvent.VK_LEFT
+					System.out.println("Right key pressed");
+					rightPressed();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_LEFT
 						|| e.getKeyCode() == KeyEvent.VK_A) {
-		            System.out.println("Left key pressed");
-		            leftPressed();
-		        }
-		        if (e.getKeyCode() == KeyEvent.VK_UP
+					System.out.println("Left key pressed");
+					leftPressed();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_UP
 						|| e.getKeyCode() == KeyEvent.VK_W) {
-		            System.out.println("Up key pressed");
-		            upPressed();
-		        }
-		        if (e.getKeyCode() == KeyEvent.VK_DOWN
+					System.out.println("Up key pressed");
+					upPressed();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_DOWN
 						|| e.getKeyCode() == KeyEvent.VK_S) {
-		            System.out.println("Down key pressed");
-		            downPressed();
-		        }
-		        if	(e.getKeyCode() == KeyEvent.VK_ENTER
+					System.out.println("Down key pressed");
+					downPressed();
+				}
+				if	(e.getKeyCode() == KeyEvent.VK_ENTER
 						|| e.getKeyCode() == KeyEvent.VK_SPACE){
-		        	System.out.println("Enter key pressed");
-		        	select();
-		        }
-		        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+					System.out.println("Enter key pressed");
+					select();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
 						|| e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
-		        	System.out.println("Backspace key pressed");
-		        	back();
-		        }
+					System.out.println("Backspace key pressed");
+					back();
+				}
 				render();
 			}
 		});
 
 		this.setFocusable(true);
-		
+
 		try {
 			arrow = ImageIO.read(new File("images/small-arrow.png"));
 			biggerArrow = ImageIO.read(new File("images/arrow.png"));
@@ -89,9 +89,9 @@ public class InventoryMenuState extends JPanel implements State {
 	}
 
 	public void addNotify() {
-        super.addNotify();
-        requestFocus();
-    }
+		super.addNotify();
+		requestFocus();
+	}
 
 	@Override
 	public void update() {
@@ -101,7 +101,7 @@ public class InventoryMenuState extends JPanel implements State {
 				cursorY = 0;
 			else 
 				cursorY = (50*previousMenu) ;
-			
+
 		}
 		else if(currentMenu.equals("Items")) {
 			if(!itemSelected) {
@@ -137,9 +137,13 @@ public class InventoryMenuState extends JPanel implements State {
 	public void render() {
 		repaint();
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
+
+		Font large = new Font("Comic sans MS", Font.PLAIN, 32);
+		Font small = new Font("Comic sans MS", Font.PLAIN, 20);
+
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, windowWidth, windowHeight);	//background
 		g.setColor(Color.WHITE);
@@ -147,37 +151,35 @@ public class InventoryMenuState extends JPanel implements State {
 		g.drawRect(5, 5, 1013, 65); 					//location
 		g.drawRect(5, 423, 250, 147);					//money and game time
 		g.drawRect(260, 75, 758, 495);					//party members or items
-		
+
 		//draws current location
-		Font fnt0 = new Font("Comic sans MS", Font.PLAIN, 30);
-		g.setFont(fnt0);
+		g.setFont(large);
 		g.drawString("Current Location", 385, 50);
-		
+
 		//draws submenu selections
-		Font fnt1 = new Font("Comic sans MS", Font.PLAIN, 20);
-		g.setFont(fnt1);
+		g.setFont(small);
 		g.drawString("Items", 74, 125);
 		g.drawString("Magic", 74, 175);
 		g.drawString("Equip", 74, 225);
 		g.drawString("Status", 74, 275);
 		g.drawString("Save", 74, 325);
 		g.drawString("Settings", 74, 375);
-		
+
 		//draws money and in-game time
 		g.drawString("Money: ", 30, 475);
 		g.drawString("$" + inv.getMoney(), 100, 475);
 		g.drawString("Time: ", 30, 525);
-		
+
 		//draws party
-		g.drawImage(player.getMenuSprite(), 330, 95, null);
-		g.drawRect(330, 95, 100, 100);
-		g.drawImage(pm1.getMenuSprite(), 330, 215, null);
-		g.drawRect(330, 215, 100, 100);
-		g.drawImage(pm2.getMenuSprite(), 330, 335, null);
-		g.drawRect(330, 335, 100, 100);
-		g.drawImage(pm3.getMenuSprite(), 330, 455, null);
-		g.drawRect(330, 455, 100, 100);
-		
+		g.drawImage(player.getMenuSprite(), 360, 95, null);
+		g.drawRect(360, 95, 100, 100);
+		g.drawImage(pm1.getMenuSprite(), 360, 215, null);
+		g.drawRect(360, 215, 100, 100);
+		g.drawImage(pm2.getMenuSprite(), 360, 335, null);
+		g.drawRect(360, 335, 100, 100);
+		g.drawImage(pm3.getMenuSprite(), 360, 455, null);
+		g.drawRect(360, 455, 100, 100);
+
 		if(currentMenu.equals("Main")) {
 			g.drawImage(arrow, 25, (103 + cursorY), null);
 		}
@@ -186,7 +188,7 @@ public class InventoryMenuState extends JPanel implements State {
 			g.fillRect(260, 75, 758, 495);
 			g.setColor(Color.WHITE);
 			g.drawRect(260, 75, 758, 495);
-			
+
 			int x = 330;
 			int y = 125;
 			for(int j = 0; j < inv.getNumItems(); j++) {
@@ -202,51 +204,59 @@ public class InventoryMenuState extends JPanel implements State {
 				y += 50;
 			}
 			g.drawImage(arrow, 25, 103, null);	
-			
+
 			if(itemSelected) {
 				g.setColor(Color.BLACK);
-				g.fillRect(415, 195, 450, 250);
+				g.fillRect(260, 75, 758, 495);
 				g.setColor(Color.WHITE);
-				g.drawRect(415, 195, 450, 250);
+				g.drawRect(260, 75, 758, 495);
+				g.drawImage(player.getMenuSprite(), 360, 95, null);
+				g.drawRect(360, 95, 100, 100);
+				g.drawImage(pm1.getMenuSprite(), 360, 215, null);
+				g.drawRect(360, 215, 100, 100);
+				g.drawImage(pm2.getMenuSprite(), 360, 335, null);
+				g.drawRect(360, 335, 100, 100);
+				g.drawImage(pm3.getMenuSprite(), 360, 455, null);
+				g.drawRect(360, 455, 100, 100);
+				g.drawImage(biggerArrow, (280 + cursorX), (120 + cursorY), null);
 			}
 			else 
 				g.drawImage(arrow, (280 + cursorX), (103 + cursorY), null);
-			
+
 		}
 		else if(currentMenu.equals("Magic")) {
 			g.drawImage(arrow, 25, 153, null);
-			g.drawImage(arrow, (280 + cursorX), (103 + cursorY), null);
+			g.drawImage(biggerArrow, (280 + cursorX), (120 + cursorY), null);
 		}
 		else if(currentMenu.equals("Equip")) {
 			g.drawImage(arrow, 25, 203, null);
-			g.drawImage(arrow, (280 + cursorX), (103 + cursorY), null);
+			g.drawImage(biggerArrow, (280 + cursorX), (120 + cursorY), null);
 			/*
 			 *	also add stuff to the party member section
 			 */
-			
+
 			//and then the equip screen
 		}
 		else if(currentMenu.equals("Status")) {
 			g.drawImage(arrow, 25, 253, null);
-			g.drawImage(arrow, (280 + cursorX), (103 + cursorY), null);
+			g.drawImage(biggerArrow, (280 + cursorX), (120 + cursorY), null);
 			/*
 			 *	also add stuff to the party member section
 			 */
-			
+
 			//and then the status screen
 		}
 		else if(currentMenu.equals("Save")) {
 			g.setColor(Color.BLACK);
-			g.fillRect(415, 195, 450, 250);
+			g.fillRect(415, 200, 450, 250);
 			g.setColor(Color.WHITE);
-			g.drawRect(415, 195, 450, 250);
-			
-			Font fnt3 = new Font("Comic sans MS", Font.PLAIN, 32);
-			g.setFont(fnt3);
+			g.drawRect(415, 200, 450, 250);
+
+			g.setFont(large);
 			g.drawString("Would You Like To Save?", 450, 255);
 			g.drawString("Yes", 550, 330);
 			g.drawString("No", 550, 395);
-			
+
 			g.drawImage(arrow, 25, 303, null);
 			g.drawImage(biggerArrow, 450, (295 + cursorY), null);
 		}
@@ -255,9 +265,9 @@ public class InventoryMenuState extends JPanel implements State {
 			g.fillRect(260, 75, 758, 495);
 			g.setColor(Color.WHITE);
 			g.drawRect(260, 75, 758, 495);
-			
+
 			g.drawImage(arrow, 25, 353, null);
-			g.drawImage(arrow, (280 + cursorX), (103 + cursorY), null);
+			g.drawImage(arrow, (280 + cursorX), (110 + cursorY), null);
 		}
 	}
 
@@ -272,7 +282,7 @@ public class InventoryMenuState extends JPanel implements State {
 	public void onExit() {
 		stateStack.pop();
 	}
-	
+
 	private void select() {
 		if(currentMenu.equals("Main")) {
 			currentMenu = menus[cursorY/50];
@@ -301,7 +311,7 @@ public class InventoryMenuState extends JPanel implements State {
 			//some code
 		}
 	}
-	
+
 	private void back() {
 		if(currentMenu.equals("Main")) {
 			onExit();
@@ -342,89 +352,124 @@ public class InventoryMenuState extends JPanel implements State {
 			update();
 		}
 	}
-	
+
 	private void upPressed() {
 		if(currentMenu.equals("Main")) {
-        	if(cursorY == 0)
-        		cursorY = 250;
-        	else 
-        		cursorY -= 50;
-        }
-        else if(currentMenu.equals("Items")) {
-        	if(cursorY == 0) {
-        		cursorY = 400;
-        		invIndex = invIndex + (16 -1);
-        	}
-        	else {
-        		cursorY -= 50;
-        		invIndex = invIndex - 2;
-        	}
+			if(cursorY == 0)
+				cursorY = 250;
+			else 
+				cursorY -= 50;
+		}
+		else if(currentMenu.equals("Items")) {
+			if(itemSelected) {
+				
+				if(cursorY == 0)
+					cursorY = 360;
+				else 
+					cursorY -= 120;
+			}
+			else {
+				if(cursorY == 0) {
+					cursorY = 400;
+					invIndex = invIndex + (16 -1);
+				}
+				else {
+					cursorY -= 50;
+					invIndex = invIndex - 2;
+				}
+			}
 		}
 		else if(currentMenu.equals("Magic")) {
-			//some code
+			if(cursorY == 0)
+				cursorY = 360;
+			else 
+				cursorY -= 120;
 		}
 		else if(currentMenu.equals("Equip")) {
-			//some code
+			if(cursorY == 0)
+				cursorY = 360;
+			else 
+				cursorY -= 120;
 		}
 		else if(currentMenu.equals("Status")) {
-			//some code
+			if(cursorY == 0)
+				cursorY = 360;
+			else 
+				cursorY -= 120;
 		}
 		else if(currentMenu.equals("Save")) {
 			if(cursorY == 0) {
 				cursorY = 65;
 				savePrompt = false;
 			}	
-        	else {
-        		cursorY -= 65;
-        		savePrompt = true;
-        	}
+			else {
+				cursorY -= 65;
+				savePrompt = true;
+			}
 		}
 		else if(currentMenu.equals("Settings")) {
 			//some code
 		}
 	}
-	
+
 	private void downPressed() {
 		if(currentMenu.equals("Main")) {
-        	if(cursorY == 250)
-        		cursorY = 0;
-        	else
-        		cursorY += 50;
-        }
-        else if(currentMenu.equals("Items")) {
-        	if(cursorY == 400) {
-        		cursorY = 0;
-        		invIndex = invIndex - (16 - 1);
-        	}
-        	else {
-        		cursorY += 50;
-            	invIndex = invIndex + 2;
-        	}
+			if(cursorY == 250)
+				cursorY = 0;
+			else
+				cursorY += 50;
+		}
+		else if(currentMenu.equals("Items")) {
+			if(itemSelected) {
+				if(cursorY == 360)
+					cursorY = 0;
+				else
+					cursorY += 120;
+			}
+			else {
+				if(cursorY == 400) {
+					cursorY = 0;
+					invIndex = invIndex - (16 - 1);
+				}
+				else {
+					cursorY += 50;
+					invIndex = invIndex + 2;
+				}
+			}
 		}
 		else if(currentMenu.equals("Magic")) {
-			//some code
+			if(cursorY == 360)
+				cursorY = 0;
+			else
+				cursorY += 120;
 		}
 		else if(currentMenu.equals("Equip")) {
-			//some code
+			if(cursorY == 360)
+				cursorY = 0;
+			else
+				cursorY += 120;
 		}
 		else if(currentMenu.equals("Status")) {
-			//some code
+			if(cursorY == 360)
+				cursorY = 0;
+			else
+				cursorY += 120;
 		}
 		else if(currentMenu.equals("Save")) {
 			if(cursorY == 65) {
 				cursorY = 0;
 				savePrompt = true;
 			}
-        	else {
-        		cursorY += 65;
+			else {
+				cursorY += 65;
 				savePrompt = false;
-        	}
+			}
 		}
 		else if(currentMenu.equals("Settings")) {
 			//some code
 		}
 	}
-	
+
 	private void rightPressed() {
 		if(currentMenu.equals("Main")) {}
 		else if(currentMenu.equals("Items")) {
@@ -453,7 +498,7 @@ public class InventoryMenuState extends JPanel implements State {
 			//some code
 		}
 	}
-	
+
 	private void leftPressed() {
 		if(currentMenu.equals("Main")) {}
 		else if(currentMenu.equals("Items")) {
