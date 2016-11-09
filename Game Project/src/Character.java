@@ -1,5 +1,11 @@
 import java.awt.image.BufferedImage;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+
 /**
  * This class is currently meant to get a model of the stats the main character has.
  * This may be extended to fit the roles of "enemies" and other characters besides
@@ -15,8 +21,9 @@ public class Character {
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
 	private int _levelStat, _expStat;
-	private boolean _isDead;
+	private boolean _isDead, _usedDefend;
 	private Weapon _weapon;
+	private BufferedImage _sprite;
 	
 	public Character(){
 		_strStat = 			1;
@@ -30,6 +37,7 @@ public class Character {
 		_levelStat = 		1;
 		_expStat = 			0;
 		_isDead = 			false;
+		_usedDefend =		false;
 		_weapon = 			null;
 	}
 	
@@ -42,6 +50,8 @@ public class Character {
 	public int getHealth() 		{ return _currentHealth; }
 	public int getTotalMagic()  { return _totalMagic; } 
 	public int getMagic() 		{ return _currentMagic; }
+
+	
 	public int getLevel()		{ return _levelStat; }
 	public int getExp() 		{ return _expStat; }
 	public boolean getIsDead()	{ return _isDead; }
@@ -49,6 +59,7 @@ public class Character {
 	
 	public BufferedImage getSprite() 	{ return _sprite; }
 	public BufferedImage getMenuSprite() { return _menuSprite; }
+
 	
 	// setters
 	public void setStr(int i){ _strStat = i;}
@@ -69,9 +80,18 @@ public class Character {
 		return false;
 	}
 	
+	// this indicates if "defend" was used on the previous turn, to note if _defStat should be restored
+	public boolean usedDefend() { return _usedDefend; }
+	
 	int tempHealth;
 	public void attack(Character c) {
 		tempHealth = c.getHealth() - _strStat + c.getDef();
+		c.setHealth(tempHealth);
+	}
+	
+	// special attack does double damage
+	public void specialAttack(Character c) {
+		tempHealth = c.getHealth() - (_strStat * 2) + c.getDef();
 		c.setHealth(tempHealth);
 	}
 	
@@ -81,4 +101,17 @@ public class Character {
 		c.setHealth(tempHealth);
 		_currentMagic -= 2;
 	}
+
+	
+	public void defend() { 
+		_defStat++;
+		_usedDefend = true;
+		}
+	
+	public void restoreDef() {
+		_defStat--;
+		_usedDefend = false;
+	}
+
+
 }
