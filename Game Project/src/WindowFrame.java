@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 public class WindowFrame extends JFrame {
 
-	private static Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private static double _windowWidth = _screenSize.getWidth();
-    private static double _windowHeight = _screenSize.getHeight();
+	
+    private static double _windowWidth = 1040;
+    private static double _windowHeight = 614;
     private static JFrame frame = new JFrame("RPG");
 	
    private static WindowFrame windowFrame = new WindowFrame();
@@ -26,9 +26,14 @@ public class WindowFrame extends JFrame {
     * Other methods protected by singleton-ness 
     */
    private WindowFrame() { 
-	   frame.setSize((int) _windowWidth,(int) _windowHeight);
+	 
+		frame.setSize((int)_windowWidth,(int)_windowHeight);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		
+		
+
 		frame.setVisible(true);
    }
 
@@ -41,13 +46,15 @@ public class WindowFrame extends JFrame {
 
    
   
-   protected static void addState(JPanel jpanel){
-	   frame.getContentPane().add(jpanel);
+   protected static void addState(State state){
+	   frame.getContentPane().add((JPanel)state);
 	   frame.setVisible(true);
+	
    }
    
-   protected static void removeState(JPanel jpanel){
-	   frame.getContentPane().remove(jpanel);
+   protected static void removeState(State state){
+	   frame.getContentPane().remove((JPanel) state);
+	
 	   
    }
    
@@ -56,8 +63,13 @@ public class WindowFrame extends JFrame {
 	   
    }
    
-   
-   
+   public int getWidth() {
+	   return (int)_windowWidth;
+   }
+  
+   public int getHeight() {
+	   return (int)_windowHeight;
+   }
    
    
    

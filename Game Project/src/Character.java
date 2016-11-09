@@ -1,8 +1,10 @@
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
 
 /**
  * This class is currently meant to get a model of the stats the main character has.
@@ -14,6 +16,8 @@ import javax.imageio.ImageIO;
  */
 public class Character {
 	
+	protected BufferedImage _sprite;
+	protected BufferedImage _menuSprite;
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
 	private int _levelStat, _expStat;
@@ -40,16 +44,34 @@ public class Character {
 	// getters
 	public int getStr()			{ return _strStat; }
 	public int getDef()			{ return _defStat; }
+	public int getStrMag() 		{ return _strMagic; }
 	public int getMagicDef()	{ return _defMagic; }
-	public int getHealth() 		{ return _currentHealth; }
-	public int getMagic() 		{ return _currentMagic; }
 	public int getTotalHealth() { return _totalHealth; }
-	public int getTotalMagic()  { return _totalMagic; }
+	public int getHealth() 		{ return _currentHealth; }
+	public int getTotalMagic()  { return _totalMagic; } 
+	public int getMagic() 		{ return _currentMagic; }
+
+	
+	public int getLevel()		{ return _levelStat; }
+	public int getExp() 		{ return _expStat; }
+	public boolean getIsDead()	{ return _isDead; }
+	public Weapon getWeapon()	{ return _weapon; }
+	
+	public BufferedImage getSprite() 	{ return _sprite; }
+	public BufferedImage getMenuSprite() { return _menuSprite; }
+
 	
 	// setters
+	public void setStr(int i){ _strStat = i;}
+	public void setDef(int i) {_defStat = i;}
+	public void setStrMag(int i){_strMagic = i;}
+	public void setdefMag(int i){_defMagic = i;}
 	public void setHealth (int i) { _currentHealth = i; }
 	public void setMagic (int i ) { _currentMagic = i; } 
+	public void setLevel(int i){ _levelStat = i;}
 	public void setExp (int i) { _expStat = i; }
+	public void setIsDead(boolean b){_isDead = b;}
+	public void setWeapon(Weapon w){_weapon = w;}
 	
 	// this can serve as a loop condition during battle to determine a game over or victory
 	public boolean isDead() {
@@ -79,6 +101,7 @@ public class Character {
 		c.setHealth(tempHealth);
 		_currentMagic -= 2;
 	}
+
 	
 	public void defend() { 
 		_defStat++;
@@ -89,5 +112,6 @@ public class Character {
 		_defStat--;
 		_usedDefend = false;
 	}
+
 
 }

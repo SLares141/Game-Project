@@ -33,14 +33,11 @@ public class StateMapSingleton {
 		map.add(n);
 	}
 
-	public State get(String name) throws Exception {
-		int i = -1;
-		for(int j = 0; j < map.size(); j++) {
-			if(name.equals(map.get(j).getName()))
-				i = j;
+	public State get(String name) {
+		for(Node n: map) {
+			if(name.equals(n.getName()))
+				return n.getState();
 		}
-		if(i < 0)
-			throw new Exception("State name is invalid.");
-		return map.get(i).getState();
+		return null;
 	}
 }

@@ -1,13 +1,14 @@
 
 
 // each particular armor item may need to extend this
-public class Armor {
+public class Armor extends Item {
 	
 	private int _defStat, _defMagic;
 	
-	public Armor() {
-		_defStat = 0;
-		_defMagic = 0;
+	public Armor(String name, int defStat, int defMagic) {
+		super(name);
+		_defStat = defStat;
+		_defMagic = defMagic;
 	}
 
 }
