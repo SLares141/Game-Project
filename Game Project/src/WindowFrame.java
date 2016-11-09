@@ -11,8 +11,10 @@ import javax.swing.JPanel;
 public class WindowFrame extends JFrame {
 
 	
-    private static double _windowWidth = 1040;//1024
-    private static double _windowHeight = 614;//576
+
+    private static double _windowWidth = 1040;
+    private static double _windowHeight = 614;
+
     private static JFrame frame = new JFrame("RPG");
 	
    private static WindowFrame windowFrame = new WindowFrame();

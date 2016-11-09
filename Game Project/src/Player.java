@@ -1,8 +1,12 @@
 import java.awt.List;
 import java.io.BufferedReader;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+
+import java.io.File;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,17 +20,21 @@ public class Player extends Character {
 	
 	private Weapon equippedW;
 	private Armor equippedA;
-	
+	private String _name;
+
 	public boolean loadplayer0 = true;
 	BufferedImage sprite = null;
 	private String spaddress;
 	private String weaponeq;
 	
 	public Player() {
+		_name = "Player";
 		if(loadplayer0){
 			// LOAD PLAYER STATS FROM SAVE FILE
 			FileReader inFile;
 			try {
+				_sprite = ImageIO.read(new File("images/strawberry.png"));
+			_menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
 				inFile = new FileReader("PlayerFiles/Player0");
 				
 				BufferedReader buffReader = new BufferedReader(inFile);
@@ -75,6 +83,13 @@ public class Player extends Character {
 		return sprite;
 	}
 	
+	public void setName(String s) { 
+	_name = s; 
+	}
+	public String getName() { 
+	return _name;
+	}
+	
 	public void savePlayer(){
 		try{
 			PrintWriter wr = new PrintWriter("PlayerFiles/Player0", "UTF-8");
@@ -94,6 +109,7 @@ public class Player extends Character {
 			wr.close();
 		} catch (IOException e){
 			
+
 		}
 	}
 	public void move() {

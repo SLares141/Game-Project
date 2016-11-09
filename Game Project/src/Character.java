@@ -1,3 +1,11 @@
+import java.awt.image.BufferedImage;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+
 /**
  * This class is currently meant to get a model of the stats the main character has.
  * This may be extended to fit the roles of "enemies" and other characters besides
@@ -8,15 +16,19 @@
  */
 public class Character {
 	
+	protected BufferedImage _sprite;
+	protected BufferedImage _menuSprite;
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
 	private int _levelStat, _expStat;
-	private boolean _isDead;
+	private boolean _isDead, _usedDefend;
 	private Weapon _weapon;
+
 	private String _weap;
 
 	private Coordinate _loc;
 	private String _currentMap;
+
 	
 	public Character(){
 		_strStat = 			1;
@@ -30,26 +42,45 @@ public class Character {
 		_levelStat = 		1;
 		_expStat = 			0;
 		_isDead = 			false;
+		_usedDefend =		false;
 		_weapon = 			null;
 	}
 	
 	// getters
 	public int getStr()			{ return _strStat; }
 	public int getDef()			{ return _defStat; }
+
 	public int getMagicStr()	{ return _strMagic; }
+
 	public int getMagicDef()	{ return _defMagic; }
+	public int getTotalHealth() { return _totalHealth; }
 	public int getHealth() 		{ return _currentHealth; }
+	public int getTotalMagic()  { return _totalMagic; } 
 	public int getMagic() 		{ return _currentMagic; }
-	public int getLevel()		{ return _levelStat; }
-	public int getExp()			{ return _expStat; }
-	public String getWeapon()	{ return _weap; }
-	public boolean getDead()	{ return _isDead; }
+
+	
+	
+	
+	
+
 	public Coordinate getLocation(){
 		return _loc;
 	}
 	public String getMap(){
 		return _currentMap;
 	}
+
+
+	
+	public int getLevel()		{ return _levelStat; }
+	public int getExp() 		{ return _expStat; }
+	public boolean getIsDead()	{ return _isDead; }
+	public Weapon getWeapon()	{ return _weapon; }
+	
+	public BufferedImage getSprite() 	{ return _sprite; }
+	public BufferedImage getMenuSprite() { return _menuSprite; }
+
+
 	
 	// setters
 	public void setStr(int i){ _strStat = i;}
@@ -76,9 +107,18 @@ public class Character {
 		return false;
 	}
 	
+	// this indicates if "defend" was used on the previous turn, to note if _defStat should be restored
+	public boolean usedDefend() { return _usedDefend; }
+	
 	int tempHealth;
 	public void attack(Character c) {
 		tempHealth = c.getHealth() - _strStat + c.getDef();
+		c.setHealth(tempHealth);
+	}
+	
+	// special attack does double damage
+	public void specialAttack(Character c) {
+		tempHealth = c.getHealth() - (_strStat * 2) + c.getDef();
 		c.setHealth(tempHealth);
 	}
 	
@@ -91,5 +131,17 @@ public class Character {
 	
 	
 	
+
+	
+	public void defend() { 
+		_defStat++;
+		_usedDefend = true;
+		}
+	
+	public void restoreDef() {
+		_defStat--;
+		_usedDefend = false;
+	}
+
 
 }

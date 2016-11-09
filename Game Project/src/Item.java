@@ -9,4 +9,13 @@ public class Item {
 	public Item(String name) {
 		this.name = name;
 	}
+	
+	public String getName() {
+		return name;
+	}
+	public boolean equals(Item i) {
+		if(name == i.getName())
+			return true;
+		return false;
+	}
 }
