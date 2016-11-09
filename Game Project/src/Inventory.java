@@ -33,6 +33,11 @@ public class Inventory  {
 	
 	public void add(Item i) {
 		for(int j = 0; j < SIZE; j++) {
+			if(numItems == SIZE) {
+				//indicate that inventory is full
+				break;
+			}
+			
 			if(inv[j] == null) {
 				inv[j] = new ItemNode(i, 1);
 				numItems++;
@@ -50,7 +55,7 @@ public class Inventory  {
 	}
 	public void add(Item i, int x) {
 		int count = 1;
-		while(count <= x) {
+		while(count <= x && numItems < SIZE) {
 			for(int j = 0; j < SIZE; j++) {
 				if(inv[j] == null) {
 					inv[j] = new ItemNode(i, 1);
@@ -70,15 +75,19 @@ public class Inventory  {
 	}
 	
 	public Item use(int index, Character c) {
-		inv[index].getItem().use(c);
-		if(inv[index].getAmount() == 1) {
-			Item temp = inv[index].getItem();
-			inv[index] = null;
-			numItems--;
-			return temp;
+		Item i = inv[index].getItem();
+		if(i instanceof Consumable) {
+			Consumable cons = (Consumable)i;
+			cons.use(c);
+			if(inv[index].getAmount() == 1) {
+				inv[index] = null;
+				numItems--;
+				return i;
+			}
+			inv[index].decrement();
+			return i;	
 		}
-		inv[index].decrement();
-		return inv[index].getItem();	
+		return null;
 	}
 	
 	public int getItemAmount(int index) {

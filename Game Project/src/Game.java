@@ -54,11 +54,12 @@ public class Game extends JPanel {
 		inv.add(new Consumable("lemonade", 30));
 		inv.add(new Consumable("key item", 30), 100);
 		inv.add(new Consumable("item3", 30));
-		inv.add(new Consumable("i have", 30));
-		inv.add(new Consumable("2 fill", 30));
-		inv.add(new Consumable("inventory", 30));
+		inv.add(new Consumable("soda", 30));
+		inv.add(new Weapon("sword", 10));
+		inv.add(new Armor("armour", 30, 35));
 		inv.add(new Consumable("random items", 30));
 		inv.add(new Consumable("...", 30));
+		inv.add(new Consumable("booty", 30));
 		inv.add(new Consumable("booty", 30));
 		
         //put all states into statemap

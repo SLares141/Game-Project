@@ -7,7 +7,6 @@ public class Consumable extends Item {
 		this.restoreAmt = restoreAmt;
 	}
 
-	@Override
 	public void use(Character c) {
 		c.setHealth(c.getHealth() + restoreAmt);
 	}	

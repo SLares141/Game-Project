@@ -1,6 +1,6 @@
 import java.awt.Image;
 
-public abstract class Item {
+public class Item {
 	
 	protected String name;
 	protected Image sprite;
@@ -9,8 +9,6 @@ public abstract class Item {
 	public Item(String name) {
 		this.name = name;
 	}
-	
-	public abstract void use(Character c);
 	
 	public String getName() {
 		return name;
