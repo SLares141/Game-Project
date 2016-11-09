@@ -1,3 +1,5 @@
+import java.awt.image.BufferedImage;
+
 /**
  * This class is currently meant to get a model of the stats the main character has.
  * This may be extended to fit the roles of "enemies" and other characters besides
@@ -8,6 +10,8 @@
  */
 public class Character {
 	
+	protected BufferedImage _sprite;
+	protected BufferedImage _menuSprite;
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
 	private int _levelStat, _expStat;
@@ -32,9 +36,19 @@ public class Character {
 	// getters
 	public int getStr()			{ return _strStat; }
 	public int getDef()			{ return _defStat; }
+	public int getStrMag() 		{ return _strMagic; }
 	public int getMagicDef()	{ return _defMagic; }
+	public int getTotalHealth() { return _totalHealth; }
 	public int getHealth() 		{ return _currentHealth; }
+	public int getTotalMagic()  { return _totalMagic; } 
 	public int getMagic() 		{ return _currentMagic; }
+	public int getLevel()		{ return _levelStat; }
+	public int getExp() 		{ return _expStat; }
+	public boolean getIsDead()	{ return _isDead; }
+	public Weapon getWeapon()	{ return _weapon; }
+	
+	public BufferedImage getSprite() 	{ return _sprite; }
+	public BufferedImage getMenuSprite() { return _menuSprite; }
 	
 	// setters
 	public void setStr(int i){ _strStat = i;}
@@ -67,5 +81,4 @@ public class Character {
 		c.setHealth(tempHealth);
 		_currentMagic -= 2;
 	}
-
 }

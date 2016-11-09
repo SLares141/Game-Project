@@ -52,10 +52,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 	//onExit function will look at this, and push the string to the state stack
 	//this will allow the proper state to be put on the stack, and to transition accordingly.
 	// in the case of field state, this will be either main menu, inventory, or battle states.
-	String _stateDestination; 
-	
-
-		
+	String _stateDestination; 	
 		
 	
 	public FieldState()
@@ -155,25 +152,32 @@ public class FieldState extends JPanel implements State, KeyListener {
 		{
 			_oldsp.setX(_sp.x);
 			_oldsp.setY(_sp.y);
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT 
+					|| e.getKeyCode() == KeyEvent.VK_D) {
 				System.out.println("Right key pressed");
 				_sp.setX(_sp.x += 32);          
 		        
 			}
-			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			if (e.getKeyCode() == KeyEvent.VK_LEFT
+					|| e.getKeyCode() == KeyEvent.VK_A) {
 				System.out.println("Left key pressed");
 			    _sp.setX(_sp.x -= 32);
 			    
 			}
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (e.getKeyCode() == KeyEvent.VK_UP
+					|| e.getKeyCode() == KeyEvent.VK_W) {
 				System.out.println("Up key pressed");
 				_sp.setY(_sp.y -= 32);
 			    
 			}
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (e.getKeyCode() == KeyEvent.VK_DOWN
+					|| e.getKeyCode() == KeyEvent.VK_S) {
 				System.out.println("Down key pressed");
 				_sp.setY(_sp.y += 32);
 			    
+			}
+			if (e.getKeyCode() == KeyEvent.VK_M) {
+				stateStack.push("inventory");
 			}
 			
 			//Checks boundaries of the character sprite
