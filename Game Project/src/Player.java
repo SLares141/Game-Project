@@ -33,8 +33,14 @@ public class Player extends Character {
 			// LOAD PLAYER STATS FROM SAVE FILE
 			FileReader inFile;
 			try {
-				_sprite = ImageIO.read(new File("images/strawberry.png"));
-			_menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
+				try {
+					_sprite = ImageIO.read(new File("images/strawberry.png"));
+					_menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
 				inFile = new FileReader("PlayerFiles/Player0");
 				
 				BufferedReader buffReader = new BufferedReader(inFile);
@@ -101,7 +107,7 @@ public class Player extends Character {
 			wr.println(String.valueOf(this.getMagic()));
 			wr.println(String.valueOf(this.getLevel()));
 			wr.println(String.valueOf(this.getExp()));
-			wr.println(String.valueOf(this.getDead()));
+			wr.println(String.valueOf(this.getIsDead()));
 			wr.println(this.getWeapon());
 			wr.println(this.spaddress);
 			wr.println(String.valueOf(this.getLocation().x));
