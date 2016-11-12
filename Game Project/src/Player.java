@@ -68,6 +68,7 @@ public class Player extends Character {
 				int x = Integer.valueOf(temp.get(11));
 				int y = Integer.valueOf(temp.get(12));
 				this.setLocation(new Coordinate(x,y));
+				this.setMap(Integer.valueOf(temp.get(13)));
 				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -112,6 +113,7 @@ public class Player extends Character {
 			wr.println(this.spaddress);
 			wr.println(String.valueOf(this.getLocation().x));
 			wr.println(String.valueOf(this.getLocation().y));
+			wr.println(String.valueOf(this.getMap()));
 			wr.close();
 		} catch (IOException e){
 			

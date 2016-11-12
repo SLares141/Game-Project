@@ -41,6 +41,7 @@ public class Game extends JPanel {
 		PartyMember pm3 = new PartyMember();
 		Inventory inv = new Inventory();
 		
+		
 		inv.add(new Consumable("Strawberry Juice", 10));
 		inv.add(new Consumable("Strawberry Jam", 20));
 		inv.add(new Consumable("Strawberry Jelly", 30));
@@ -74,6 +75,6 @@ public class Game extends JPanel {
 		StateStackSingleton stateStack = StateStackSingleton.getInstance();
 		//the main menu is set as the initial state
 		
-		stateStack.push("inventory");
+		stateStack.push("menu");
 	}
 }
