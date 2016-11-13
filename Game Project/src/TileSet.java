@@ -16,13 +16,15 @@ public class TileSet {
 			 *  1=grass0
 			 *  2=water0
 			 *  3=wood0
-			 * 
-			 * 
+			 *  4=greybrick0
+			 *  5=door0
 			 */
 			ts.add(ImageIO.read(new File("tiles/dirt0.png")));
 			ts.add(ImageIO.read(new File("tiles/grass0.png")));
 			ts.add(ImageIO.read(new File("tiles/water0.png")));
 			ts.add(ImageIO.read(new File("tiles/wood0.png")));
+			ts.add(ImageIO.read(new File("tiles/greybrick0.png")));
+			ts.add(ImageIO.read(new File("tiles/door0.png")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -27,6 +27,7 @@ public class InventoryMenuState extends JPanel implements State {
 	int windowHeight = frame.getHeight();
 	StateMapSingleton stateMap = StateMapSingleton.getInstance();
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
+	String _stateDestination = "field";
 	String currentMenu;
 	int previousMenu = 0;
 	String[] menus = {"Items", "Magic", "Equip", "Status", "Save", "Settings"};
@@ -281,6 +282,7 @@ public class InventoryMenuState extends JPanel implements State {
 	@Override
 	public void onExit() {
 		stateStack.pop();
+		
 	}
 
 	private void select() {

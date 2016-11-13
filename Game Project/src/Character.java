@@ -27,7 +27,7 @@ public class Character {
 	private String _weap;
 
 	private Coordinate _loc;
-	private String _currentMap;
+	private int _currentMap;
 
 	
 	public Character(){
@@ -49,34 +49,23 @@ public class Character {
 	// getters
 	public int getStr()			{ return _strStat; }
 	public int getDef()			{ return _defStat; }
-
 	public int getMagicStr()	{ return _strMagic; }
-
 	public int getMagicDef()	{ return _defMagic; }
 	public int getTotalHealth() { return _totalHealth; }
 	public int getHealth() 		{ return _currentHealth; }
 	public int getTotalMagic()  { return _totalMagic; } 
 	public int getMagic() 		{ return _currentMagic; }
 
-	
-	
-	
-	
-
 	public Coordinate getLocation(){
 		return _loc;
 	}
-	public String getMap(){
+	public int getMap(){
 		return _currentMap;
 	}
-
-
-	
 	public int getLevel()		{ return _levelStat; }
 	public int getExp() 		{ return _expStat; }
 	public boolean getIsDead()	{ return _isDead; }
 	public Weapon getWeapon()	{ return _weapon; }
-	
 	public BufferedImage getSprite() 	{ return _sprite; }
 	public BufferedImage getMenuSprite() { return _menuSprite; }
 
@@ -96,7 +85,7 @@ public class Character {
 	public void setLocation(Coordinate c){
 		_loc = c;
 	}
-	public void setMap(String s){
+	public void setMap(int s){
 		_currentMap = s;
 	}
 	

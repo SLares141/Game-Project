@@ -135,7 +135,7 @@ public class MainMenuState
 			//frame.getContentPane().add(this);
 			
 			//PRINTS A GRID
-			
+			/*
 			int i=0,j=0;
 			for(i = 0; i < 32; i++){
 				g.setColor(Color.gray);
@@ -149,6 +149,7 @@ public class MainMenuState
 					g.setColor(Color.red);
 				g.drawLine(0, j*32, 1024, j*32);
 			}
+			*/
 		}else if (_currentMenu.equals("Main")){
 			
 			
@@ -176,7 +177,7 @@ public class MainMenuState
 			g2d.draw(quitButton);
 			//frame.getContentPane().add(this);
 			//GRID FOR FIXING PLACEMENT
-			/* 
+			/*
 			int i=0,j=0;
 			for(i = 0; i < 32; i++){
 				g.setColor(Color.gray);
