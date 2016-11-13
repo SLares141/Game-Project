@@ -246,11 +246,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 		Tile nextTile = mapList.get(currentMapNum).get(check);
 		
 		if((oldTile.isPortal())&&(oldTile.isBorder())){
+			System.out.println("here");
 			currentMapNum = oldTile.getDestination();
 			loadall = true;
 			player.setMap(currentMapNum);
 			if(_sp.x == 992){ _sp.x = 0;}
-			else if(_sp.x == 32){ _sp.x = 992;}
+			else if(_sp.x == 0){ _sp.x = 992;}
 			else if(_sp.y == 0){ _sp.y = 544;}
 			else if(_sp.y == 544){_sp.y = 0;}
 			player.setLocation(_sp);
@@ -328,11 +329,11 @@ public class FieldState extends JPanel implements State, KeyListener {
 				if(x==0){
 					map.put(t, new Tile(ia[y][x], true));
 					map.get(t).setisBorder(true);
-					//map.get(t).setDestination(3);
+					map.get(t).setDestination(0);
 				}else if(x==31){
 					map.put(t, new Tile(ia[y][x], true));
 					map.get(t).setisBorder(true);
-					//map.get(t).setDestination(2);
+					map.get(t).setDestination(0);
 				}else if(y==0){
 					map.put(t, new Tile(ia[y][x], true));
 					map.get(t).setisBorder(true);
@@ -340,7 +341,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 				}else if(y==17){
 					map.put(t, new Tile(ia[y][x], true));
 					map.get(t).setisBorder(true);
-					//map.get(t).setDestination(4);
+					map.get(t).setDestination(0);
 				}else{
 					map.put(t, new Tile(ia[y][x], false));
 				}
@@ -383,11 +384,11 @@ public class FieldState extends JPanel implements State, KeyListener {
 				if(x==0){
 					map.put(t, new Tile(ia[y][x], true));
 					map.get(t).setisBorder(true);
-					map.get(t).setDestination(3);
+					map.get(t).setDestination(1);
 				}else if(x==31){
 					map.put(t, new Tile(ia[y][x], true));
 					map.get(t).setisBorder(true);
-					map.get(t).setDestination(2);
+					map.get(t).setDestination(1);
 				}else if(y==0){
 					map.put(t, new Tile(ia[y][x], true));
 					map.get(t).setisBorder(true);
