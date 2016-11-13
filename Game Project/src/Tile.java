@@ -14,8 +14,11 @@ public class Tile {
 	private boolean canMoveTo;
 	private boolean isBuilding;
 	private boolean isBorder;
+	private boolean hasEnemy;
+	private EnemyCharacter enemy;
 	private int destination;
 	private Coordinate returnCord;
+
 	
 	public Tile(int num, boolean b){
 		isPortal = b;
@@ -44,6 +47,12 @@ public class Tile {
 	public boolean isBorder(){
 		return isBorder;
 	}
+	public boolean hasEnemy(){
+		return hasEnemy;
+	}
+	public EnemyCharacter getEnemy(){
+		return enemy;
+	}
 	public int getDestination(){
 		return destination;
 	}
@@ -63,6 +72,8 @@ public class Tile {
 	public void setReturnCord(Coordinate c){
 		returnCord = c;
 	}
-	
+	public void setEnemy(EnemyCharacter e){
+		enemy = e;
+	}
 
 }
