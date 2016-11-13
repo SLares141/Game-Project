@@ -281,7 +281,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 	@Override
 	public void onExit() {
-		stateStack.pop();
+	
 		
 	}
 
@@ -316,7 +316,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 	private void back() {
 		if(currentMenu.equals("Main")) {
-			onExit();
+			stateStack.pop(); //stateStack class handles calls to OnExit. The previous issue was that two calls to pop were made.
 		}
 		else if(currentMenu.equals("Items")) {
 			if(itemSelected) {
