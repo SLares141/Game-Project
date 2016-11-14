@@ -36,6 +36,7 @@ public class Player extends Character {
 				try {
 					_sprite = ImageIO.read(new File("images/strawberry.png"));
 					_menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
+					_smallMenuSprite = ImageIO.read(new File("images/smallMenuStrawberry.png"));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

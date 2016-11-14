@@ -16,8 +16,7 @@ import javax.imageio.ImageIO;
  */
 public class Character {
 	
-	protected BufferedImage _sprite;
-	protected BufferedImage _menuSprite;
+	protected BufferedImage _sprite, _menuSprite, _smallMenuSprite;
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
 	private int _levelStat, _expStat;
@@ -68,6 +67,7 @@ public class Character {
 	public Weapon getWeapon()	{ return _weapon; }
 	public BufferedImage getSprite() 	{ return _sprite; }
 	public BufferedImage getMenuSprite() { return _menuSprite; }
+	public BufferedImage getSmallMenuSprite() { return _smallMenuSprite; }
 
 
 	

@@ -50,9 +50,9 @@ public class Inventory  {
 			else if(inv[j].getItem().equals(i) && inv[j].getAmount() == 99) {
 				break;
 			}
-			
 		}
 	}
+	
 	public void add(Item i, int x) {
 		int count = 1;
 		while(count <= x && numItems < SIZE) {
@@ -75,26 +75,28 @@ public class Inventory  {
 	}
 	
 	public Item use(int index, Character c) {
-		Item i = inv[index].getItem();
-		if(i instanceof Consumable) {
-			Consumable cons = (Consumable)i;
-			cons.use(c);
-			if(inv[index].getAmount() == 1) {
-				inv[index] = null;
-				numItems--;
-				return i;
+		Consumable cons = (Consumable)inv[index].getItem();
+		cons.use(c);
+		if(inv[index].getAmount() == 1) {
+			inv[index] = null;
+			for(int j = index; j < numItems; j++) {
+				inv[j] = inv[j + 1];
+				inv[j + 1] = null;
 			}
-			inv[index].decrement();
-			return i;	
+			numItems--;
+			return cons;
 		}
-		return null;
+		inv[index].decrement();
+		return cons;	
 	}
-	
+
 	public int getItemAmount(int index) {
 		return inv[index].getAmount();
 	}
 	public Item getItem(int index) {
-		return inv[index].getItem();
+		if(inv[index] != null) 
+			return inv[index].getItem();
+		return null;
 	}
 	
 	public int getMoney() {
