@@ -8,7 +8,8 @@ public class Consumable extends Item {
 	}
 
 	public void use(Character c) {
-		c.setHealth(c.getHealth() + restoreAmt);
+		if(c != null)
+			c.setHealth(c.getHealth() + restoreAmt);
 	}	
 	
 }
