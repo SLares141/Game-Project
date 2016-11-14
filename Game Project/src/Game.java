@@ -60,12 +60,9 @@ public class Game extends JPanel {
 		inv.add(new Armor("armour", 30, 35));
 		inv.add(new Consumable("random items", 30));
 		inv.add(new Consumable("...", 30));
-		inv.add(new Consumable("booty", 30));
-		inv.add(new Consumable("booty", 30));
 		
         //put all states into statemap
 		StateMapSingleton stateMap = StateMapSingleton.getInstance();
-		
 		stateMap.put("menu", new MainMenuState());
 		stateMap.put("field", new FieldState(player));
 		stateMap.put("battle", new BattleState());
