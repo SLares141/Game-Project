@@ -296,6 +296,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 	@Override
 	public void onExit() {
+		
 	}
 
 	private void select() {
