@@ -14,9 +14,11 @@ public class InventoryMenuState extends JPanel implements State {
 
 	Player player;
 	PartyMember pm1, pm2, pm3;
+	Character[] party = {player, pm1, pm2, pm3,};
+	int characterIndex = 0;
 	Inventory inv;
 	int invIndex = 0;
-
+	
 	BufferedImage arrow, biggerArrow;
 	int cursorX;
 	int cursorY;
@@ -27,15 +29,12 @@ public class InventoryMenuState extends JPanel implements State {
 	int windowHeight = frame.getHeight();
 	StateMapSingleton stateMap = StateMapSingleton.getInstance();
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
-	String _stateDestination = "field";
 	String currentMenu;
 	int previousMenu = 0;
 	String[] menus = {"Items", "Magic", "Equip", "Status", "Save", "Settings"};
 
 
 	public InventoryMenuState(Player p, PartyMember pm1, PartyMember pm2, PartyMember pm3, Inventory i) {
-		System.out.println("in constructor");
-
 		player = p;
 		this.pm1 = pm1;
 		this.pm2 = pm2;
@@ -48,31 +47,43 @@ public class InventoryMenuState extends JPanel implements State {
 						|| e.getKeyCode() == KeyEvent.VK_D) {
 					System.out.println("Right key pressed");
 					rightPressed();
+					System.out.println("char: " + characterIndex);
+					System.out.println("inv: " + invIndex);
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT
 						|| e.getKeyCode() == KeyEvent.VK_A) {
 					System.out.println("Left key pressed");
 					leftPressed();
+					System.out.println("char: " + characterIndex);
+					System.out.println("inv: " + invIndex);
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP
 						|| e.getKeyCode() == KeyEvent.VK_W) {
 					System.out.println("Up key pressed");
 					upPressed();
+					System.out.println("char: " + characterIndex);
+					System.out.println("inv: " + invIndex);
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN
 						|| e.getKeyCode() == KeyEvent.VK_S) {
 					System.out.println("Down key pressed");
 					downPressed();
+					System.out.println("char: " + characterIndex);
+					System.out.println("inv: " + invIndex);
 				}
 				if	(e.getKeyCode() == KeyEvent.VK_ENTER
 						|| e.getKeyCode() == KeyEvent.VK_SPACE){
 					System.out.println("Enter key pressed");
 					select();
+					System.out.println("char: " + characterIndex);
+					System.out.println("inv: " + invIndex);
 				}
 				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
 						|| e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
 					System.out.println("Backspace key pressed");
 					back();
+					System.out.println("char: " + characterIndex);
+					System.out.println("inv: " + invIndex);
 				}
 				render();
 			}
@@ -105,7 +116,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 		}
 		else if(currentMenu.equals("Items")) {
-			if(!itemSelected) {
+			if(itemSelected) {
 				cursorX = 0;
 				cursorY = 0;
 			}
@@ -211,15 +222,19 @@ public class InventoryMenuState extends JPanel implements State {
 				g.fillRect(260, 75, 758, 495);
 				g.setColor(Color.WHITE);
 				g.drawRect(260, 75, 758, 495);
-				g.drawImage(player.getMenuSprite(), 360, 95, null);
-				g.drawRect(360, 95, 100, 100);
-				g.drawImage(pm1.getMenuSprite(), 360, 215, null);
-				g.drawRect(360, 215, 100, 100);
-				g.drawImage(pm2.getMenuSprite(), 360, 335, null);
-				g.drawRect(360, 335, 100, 100);
-				g.drawImage(pm3.getMenuSprite(), 360, 455, null);
-				g.drawRect(360, 455, 100, 100);
-				g.drawImage(biggerArrow, (280 + cursorX), (120 + cursorY), null);
+
+				g.setFont(large);
+				g.drawString("Give to...", 300, 135);
+
+				g.drawImage(player.getSmallMenuSprite(), 360, 170, null);
+				g.drawRect(360, 170, 80, 80);
+				g.drawImage(pm1.getSmallMenuSprite(), 360, 270, null);
+				g.drawRect(360, 270, 80, 80);
+				g.drawImage(pm2.getSmallMenuSprite(), 360, 370, null);
+				g.drawRect(360, 370, 80, 80);
+				g.drawImage(pm3.getSmallMenuSprite(), 360, 470, null);
+				g.drawRect(360, 470, 80, 80);
+				g.drawImage(biggerArrow, (280 + cursorX), (187 + cursorY), null);
 			}
 			else 
 				g.drawImage(arrow, (280 + cursorX), (103 + cursorY), null);
@@ -281,17 +296,32 @@ public class InventoryMenuState extends JPanel implements State {
 
 	@Override
 	public void onExit() {
-	
-		
 	}
 
 	private void select() {
 		if(currentMenu.equals("Main")) {
 			currentMenu = menus[cursorY/50];
+			characterIndex = 0;
+			invIndex = 0;
 			update();
 		}
 		else if(currentMenu.equals("Items")) {
-			itemSelected = true;
+			if(itemSelected) {
+				System.out.println("Player HP is " + player.getHealth());
+				inv.use(invIndex, party[characterIndex]);
+				System.out.println("Player HP is now " + player.getHealth());
+				
+				cursorX = 0;
+				cursorY = 0;
+				invIndex = 0;
+				characterIndex = 0;
+				itemSelected = false;
+			}
+			else if(inv.getItem(invIndex) != null && inv.getItem(invIndex) instanceof Consumable) {
+				itemSelected = true;
+				cursorX = 0;
+				cursorY = 0;
+			}
 		}
 		else if(currentMenu.equals("Magic")) {
 			//some code
@@ -316,15 +346,19 @@ public class InventoryMenuState extends JPanel implements State {
 
 	private void back() {
 		if(currentMenu.equals("Main")) {
-			stateStack.pop(); //stateStack class handles calls to OnExit. The previous issue was that two calls to pop were made.
+			stateStack.pop();
 		}
 		else if(currentMenu.equals("Items")) {
 			if(itemSelected) {
+				characterIndex = 0;
+				invIndex = 0;
 				update();
 			}
 			else {
 				currentMenu = "Main";
 				previousMenu = 0;
+				characterIndex = 0;
+				invIndex = 0;
 				update();
 			}
 		}
@@ -357,23 +391,26 @@ public class InventoryMenuState extends JPanel implements State {
 
 	private void upPressed() {
 		if(currentMenu.equals("Main")) {
-			if(cursorY == 0)
+			if(cursorY == 0) 
 				cursorY = 250;
 			else 
 				cursorY -= 50;
 		}
 		else if(currentMenu.equals("Items")) {
 			if(itemSelected) {
-				
-				if(cursorY == 0)
-					cursorY = 360;
-				else 
-					cursorY -= 120;
+				if(cursorY == 0) {
+					cursorY = 300;
+					characterIndex = 3;
+				}
+				else {
+					cursorY -= 100;
+					characterIndex--;
+				}
 			}
 			else {
 				if(cursorY == 0) {
 					cursorY = 400;
-					invIndex = invIndex + (16 -1);
+					invIndex = invIndex + 16;
 				}
 				else {
 					cursorY -= 50;
@@ -416,22 +453,26 @@ public class InventoryMenuState extends JPanel implements State {
 
 	private void downPressed() {
 		if(currentMenu.equals("Main")) {
-			if(cursorY == 250)
+			if(cursorY == 250) 
 				cursorY = 0;
-			else
+			else 
 				cursorY += 50;
 		}
 		else if(currentMenu.equals("Items")) {
 			if(itemSelected) {
-				if(cursorY == 360)
+				if(cursorY == 300) {
 					cursorY = 0;
-				else
-					cursorY += 120;
+					characterIndex = 0;
+				}
+				else {
+					cursorY += 100;
+					characterIndex++;
+				}
 			}
 			else {
 				if(cursorY == 400) {
 					cursorY = 0;
-					invIndex = invIndex - (16 - 1);
+					invIndex = invIndex - 16;
 				}
 				else {
 					cursorY += 50;
@@ -475,13 +516,15 @@ public class InventoryMenuState extends JPanel implements State {
 	private void rightPressed() {
 		if(currentMenu.equals("Main")) {}
 		else if(currentMenu.equals("Items")) {
-			if(cursorX == 0) {
-				cursorX += 380;
-				invIndex++;
-			}
-			else {
-				cursorX -= 380;
-				invIndex--;
+			if(!itemSelected) {
+				if(cursorX == 0) {
+					cursorX += 380;
+					invIndex++;
+				}
+				else {
+					cursorX -= 380;
+					invIndex--;
+				}
 			}
 		}
 		else if(currentMenu.equals("Magic")) {
@@ -504,13 +547,15 @@ public class InventoryMenuState extends JPanel implements State {
 	private void leftPressed() {
 		if(currentMenu.equals("Main")) {}
 		else if(currentMenu.equals("Items")) {
-			if(cursorX == 380) {
-				cursorX -= 380;
-				invIndex--;
-			}
-			else {
-				cursorX += 380;
-				invIndex++;
+			if(!itemSelected) {
+				if(cursorX == 380) {
+					cursorX -= 380;
+					invIndex--;
+				}
+				else {
+					cursorX += 380;
+					invIndex++;
+				}
 			}
 		}
 		else if(currentMenu.equals("Magic")) {
