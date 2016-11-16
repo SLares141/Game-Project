@@ -26,6 +26,7 @@ public class Player extends Character {
 	BufferedImage sprite = null;
 	private String spaddress;
 	private String weaponeq;
+	private boolean lostlastbattle;
 	
 	public Player() {
 		_name = "Player";

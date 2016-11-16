@@ -12,7 +12,9 @@ public class PartyMember extends Character {
 	private Armor equippedA;
 
 	public PartyMember() {
+		/*
 		try {
+			
 			_sprite = ImageIO.read(new File("images/strawberry.png"));
 			_menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
 			FileReader inFile = new FileReader("Char Files/Char0.txt");
@@ -37,5 +39,6 @@ public class PartyMember extends Character {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 }

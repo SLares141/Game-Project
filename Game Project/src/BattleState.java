@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 public class BattleState extends JPanel implements State, KeyListener {
 	
 	private BufferedImage background, _player, _enemy, _cursor;
-	private PlayerCharacter _charPlayer;
+	private Player _charPlayer;
 	private EnemyCharacter _charEnemy;
 	private int _cursorX, _cursorY, _cursorIndexX, _cursorIndexY;
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
@@ -53,7 +53,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 		this.setFocusable(true);
 
 		try {
-			background = ImageIO.read(new File("images/menuback.png"));
+			background = ImageIO.read(new File("images/fightBackground.png"));
 			_player = ImageIO.read(new File("images/Mario thumbs up.png"));
 			_enemy = ImageIO.read(new File("images/strawberry.png"));
 			_cursor = ImageIO.read(new File("images/arrow.png"));
@@ -64,7 +64,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 	}
 	
 	// setter methods to give the BattleState a player and an enemy
-	public void setPlayer(PlayerCharacter p){ _charPlayer = p; }
+	public void setPlayer(Player p){ _charPlayer = p; }
 	public void setEnemy(EnemyCharacter e){ _charEnemy = e; }
 
 
