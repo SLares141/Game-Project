@@ -74,6 +74,10 @@ public class Tile {
 	}
 	public void setEnemy(EnemyCharacter e){
 		enemy = e;
+		hasEnemy = true;
+	}
+	public void setTile(BufferedImage bi){
+		im = bi;
 	}
 
 }

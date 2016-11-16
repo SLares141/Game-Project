@@ -88,6 +88,9 @@ public class Character {
 	public void setMap(int s){
 		_currentMap = s;
 	}
+	public void setSprite(BufferedImage bi){
+		_sprite = bi;
+	}
 	
 	// this can serve as a loop condition during battle to determine a game over or victory
 	public boolean isDead() {

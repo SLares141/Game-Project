@@ -42,6 +42,22 @@ public class StateStackSingleton {
 		top.render();
 	}
 
+	protected void push(BattleState bs){
+		
+		if(!mStack.isEmpty()) //means that the old state can be removed from the windowFrame.	 
+		{
+			State oldState = peek();
+			_frame.removeState(oldState); //gets old state and removes it from windowFrame
+			oldState.onExit();
+		}
+			
+		
+		//State newState = stateMap.get(name); //state the user wants to enter here.
+		_frame.addState(bs); // in with the new
+		bs.onEnter(); //do entrance code
+		
+		mStack.push(bs); //actually pushes it to the stack
+	}
 	protected void push(String name) {
 		
 		if(!mStack.isEmpty()) //means that the old state can be removed from the windowFrame.	 
