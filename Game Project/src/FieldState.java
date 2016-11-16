@@ -128,12 +128,14 @@ public class FieldState extends JPanel implements State, KeyListener {
 	
 
 	private void drawEnemies(Graphics g) {
-		EnemyCharacter e = new EnemyCharacter();
-		e.setSprite(carrot);
-		Coordinate c = new Coordinate(32*5, 5*32);
-		e.setLocation(c);
-		
-		g.drawImage(e.getSprite(), e.getLocation().x, e.getLocation().y, null);
+		if(currentMapNum ==0){
+			EnemyCharacter e = new EnemyCharacter();
+			e.setSprite(carrot);
+			Coordinate c = new Coordinate(32*5, 5*32);
+			e.setLocation(c);
+			
+			g.drawImage(e.getSprite(), e.getLocation().x, e.getLocation().y, null);
+		}
 	}
 
 	@Override
@@ -371,7 +373,9 @@ public class FieldState extends JPanel implements State, KeyListener {
 		Coordinate t = new Coordinate(26*32, 3*32);
 		map.get(t).setDestination(2);
 		map.get(t).setReturnCord(new Coordinate(512,512));
-		
+		t.set(5*32, 5*32);
+		EnemyCharacter em = new EnemyCharacter();
+		map.get(t).setEnemy(em);
 		
 		return map;
 	}

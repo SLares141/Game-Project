@@ -53,7 +53,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 		this.setFocusable(true);
 
 		try {
-			background = ImageIO.read(new File("images/menuback.png"));
+			background = ImageIO.read(new File("images/fightBackground.png"));
 			_player = ImageIO.read(new File("images/Mario thumbs up.png"));
 			_enemy = ImageIO.read(new File("images/strawberry.png"));
 			_cursor = ImageIO.read(new File("images/arrow.png"));
