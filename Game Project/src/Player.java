@@ -66,7 +66,6 @@ public class Player extends Character {
 				this.setExp(Integer.valueOf(temp.get(7)));
 				this.setIsDead(Boolean.valueOf(temp.get(8)));
 				this.setWeapon(temp.get(9));
-				this.
 				spaddress = temp.get(10);
 				int x = Integer.valueOf(temp.get(11));
 				int y = Integer.valueOf(temp.get(12));
@@ -85,20 +84,14 @@ public class Player extends Character {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else{
+		} else {
 			
 		}
 	}
-	public BufferedImage getSprite(){
-		return sprite;
-	}
 	
-	public void setName(String s) { 
-	_name = s; 
-	}
-	public String getName() { 
-	return _name;
-	}
+	public BufferedImage getSprite(){ return sprite; }
+	public void setName(String s) { _name = s; }
+	public String getName() { return _name; }
 	
 	public void savePlayer(){
 		try{

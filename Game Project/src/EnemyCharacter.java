@@ -52,5 +52,10 @@ public class EnemyCharacter extends Character {
 		}
 		return null;
 	}
+	
+	public void awardOnVictoru(Player p) {
+		p.setExp(p.getExp() + this.getExp());
+		p.setMoney(p.getMoney() + this.getMoney());
+	}
 
 }

@@ -21,11 +21,13 @@ public class Character {
 	protected BufferedImage _menuSprite;
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
-	private int _levelStat, _expStat;
+	private int _levelStat, _expStat, _money;
 	private boolean _isDead, _usedDef;
 	private Weapon _weapon;
+	private Armor _armor;
 
 	private String _weap;
+	private String _armo;
 
 	private Coordinate _loc;
 	private int _currentMap;
@@ -42,9 +44,11 @@ public class Character {
 		_currentMagic = 	_totalMagic;
 		_levelStat = 		1;
 		_expStat = 			0;
+		_money = 			0;
 		_isDead = 			false;
 		_usedDef =			false;
 		_weapon = 			null;
+		_armor = 			null;
 	}
 	
 	// getters
@@ -65,24 +69,30 @@ public class Character {
 	}
 	public int getLevel()		{ return _levelStat; }
 	public int getExp() 		{ return _expStat; }
+	public int getMoney()		{ return _money; }
 	public boolean getIsDead()	{ return _isDead; }
 	public Weapon getWeapon()	{ return _weapon; }
+	public Armor getArmor()		{ return _armor; }
 	public BufferedImage getSprite() 	{ return _sprite; }
 	public BufferedImage getMenuSprite() { return _menuSprite; }
 
 
 	
 	// setters
-	public void setStr(int i){ _strStat = i;}
-	public void setDef(int i) {_defStat = i;}
-	public void setStrMag(int i){_strMagic = i;}
-	public void setdefMag(int i){_defMagic = i;}
-	public void setHealth (int i) { _currentHealth = i; }
-	public void setMagic (int i ) { _currentMagic = i; } 
-	public void setLevel(int i){ _levelStat = i;}
-	public void setExp (int i) { _expStat = i; }
-	public void setIsDead(boolean b){_isDead = b;}
-	public void setWeapon(String w){_weap = w;}
+	public void setStr(int i){ _strStat = i; }
+	public void setDef(int i) { _defStat = i; }
+	public void setStrMag(int i){ _strMagic = i; }
+	public void setdefMag(int i){ _defMagic = i; }
+	public void setHealth(int i) { _currentHealth = i; }
+	public void setMagic(int i ) { _currentMagic = i; } 
+	public void setLevel(int i){ _levelStat = i; }
+	public void setExp(int i) { _expStat = i; }
+	public void setMoney(int i) { _money = i; }
+	public void setIsDead(boolean b) { _isDead = b; }
+	public void setWeapon(Weapon w) { _weapon = w; } // set the weapon object
+	public void setArmor(Armor a) { _armor = a; } // set the armor object
+	public void setWeapon(String w) { _weap = w; }
+	public void setArmor(String a) { _armo = a; }
 	public void setLocation(Coordinate c){
 		_loc = c;
 	}
@@ -103,29 +113,43 @@ public class Character {
 	// this indicates if "defend" was used on the previous turn, to note if _defStat should be restored
 	public boolean usedDefend() { return _usedDef; }
 	
-	int tempHealth;
+	int tempHealth, totalAttack, totalDefense;
 	public void attack(Character c) {
+		totalAttack = _strStat + c.getWeapon().getStrStat();
+		totalDefense = c.getDef() + c.getArmor().getDefStat();
 		if (c.usedDefend()) {
-			tempHealth = (int) (c.getHealth() - Math.ceil((_strStat + c.getDef()) / 2));
-			c.setHealth(tempHealth);
+			if (Math.ceil((totalDefense - totalAttack) / 2) <= 0) {// make sure health does not increase after attack()
+				tempHealth = (int) (c.getHealth() + Math.ceil((totalDefense - totalAttack) / 2));
+				c.setHealth(tempHealth);
+				c.restoreDef();
+			} // else, no change
 		} else {
-			tempHealth = c.getHealth() - _strStat + c.getDef();
-			c.setHealth(tempHealth);
+			if (totalDefense <= totalAttack) { // make sure health does not increase after attack()
+				tempHealth = c.getHealth() + (totalDefense - totalAttack);
+				c.setHealth(tempHealth);
+			} // else, no change
 		}
 	}
 	
-	// special attack does double damage
+	// special attack does ~1.5x damage
 	public boolean specialAttack(Character c) {
 		Random r = new Random();
-		if (r.nextInt(100) >= 66){ // successfully special attack 33% of the time
+		if (r.nextInt(100) >= 60){ // successfully special attack 40% of the time
 			System.out.println("Special Attack Hits");
+			totalAttack = _strStat + c.getWeapon().getStrStat();
+			totalDefense = c.getDef() + c.getArmor().getDefStat();
 			if (c.usedDefend()) {
-				tempHealth = (int) (c.getHealth() - Math.ceil((_strStat * 2) + c.getDef()) / 2);
-				c.setHealth(tempHealth);
-				c.restoreDef();
+				if (((int) Math.ceil((totalDefense - totalAttack) * 1.5 / 2)) >= 0) {
+					tempHealth = (int) Math.ceil((totalDefense - totalAttack) * 1.5 / 2);
+					c.setHealth(tempHealth);
+					c.restoreDef();
+				} // else, no change
 			} else {
-				tempHealth = c.getHealth() - (_strStat * 2) + c.getDef();
-				c.setHealth(tempHealth);
+				if (((int) Math.ceil((totalDefense - totalAttack) * 1.5)) >= 0) {
+					tempHealth = c.getHealth() + (int) Math.ceil((totalDefense - totalAttack) * 1.5);
+					c.setHealth(tempHealth);
+					c.restoreDef();
+				} // else, no change
 			}
 			return true;
 		} else {
@@ -136,15 +160,21 @@ public class Character {
 	
 	// each magic attack may need to be its own object with its own stats and required magic points
 	public void magicAttack(Character c) {
+		totalAttack = _strMagic; //+ c.getWeapon().get       // should weapon boost magic attack?...
+		totalDefense = c.getMagicDef() + c.getArmor().getDefMagic();
 		if (c.usedDefend()) {
-			tempHealth = (int) (c.getHealth() - Math.ceil((_strMagic + c.getMagicDef()) / 2));
-			c.setHealth(tempHealth);
-			_currentMagic -= 2;
-			c.restoreDef();
+			if (Math.ceil((totalDefense - totalAttack) / 2) <= 0) {// make sure health does not increase after attack()
+				tempHealth = (int) (c.getHealth() + Math.ceil((totalDefense - totalAttack) / 2));
+				c.setHealth(tempHealth);
+				_currentMagic -= 2;
+				c.restoreDef();
+			} // else, no change
 		} else {
-			tempHealth = c.getHealth() - _strMagic + c.getMagicDef();
-			c.setHealth(tempHealth);
-			_currentMagic -= 2;
+			if (totalDefense <= totalAttack) { // make sure health does not increase after attack()
+				tempHealth = c.getHealth() + (totalDefense - totalAttack);
+				c.setHealth(tempHealth);
+				_currentMagic -= 2;
+			} // else, no change
 		}
 	}
 	
