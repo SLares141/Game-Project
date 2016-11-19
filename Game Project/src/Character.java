@@ -2,6 +2,7 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -21,7 +22,7 @@ public class Character {
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
 	private int _levelStat, _expStat;
-	private boolean _isDead, _usedDefend;
+	private boolean _isDead, _usedDef;
 	private Weapon _weapon;
 
 	private String _weap;
@@ -42,7 +43,7 @@ public class Character {
 		_levelStat = 		1;
 		_expStat = 			0;
 		_isDead = 			false;
-		_usedDefend =		false;
+		_usedDef =			false;
 		_weapon = 			null;
 	}
 	
@@ -100,40 +101,55 @@ public class Character {
 	}
 	
 	// this indicates if "defend" was used on the previous turn, to note if _defStat should be restored
-	public boolean usedDefend() { return _usedDefend; }
+	public boolean usedDefend() { return _usedDef; }
 	
 	int tempHealth;
 	public void attack(Character c) {
-		tempHealth = c.getHealth() - _strStat + c.getDef();
-		c.setHealth(tempHealth);
+		if (c.usedDefend()) {
+			tempHealth = (int) (c.getHealth() - Math.ceil((_strStat + c.getDef()) / 2));
+			c.setHealth(tempHealth);
+		} else {
+			tempHealth = c.getHealth() - _strStat + c.getDef();
+			c.setHealth(tempHealth);
+		}
 	}
 	
 	// special attack does double damage
-	public void specialAttack(Character c) {
-		tempHealth = c.getHealth() - (_strStat * 2) + c.getDef();
-		c.setHealth(tempHealth);
+	public boolean specialAttack(Character c) {
+		Random r = new Random();
+		if (r.nextInt(100) >= 66){ // successfully special attack 33% of the time
+			System.out.println("Special Attack Hits");
+			if (c.usedDefend()) {
+				tempHealth = (int) (c.getHealth() - Math.ceil((_strStat * 2) + c.getDef()) / 2);
+				c.setHealth(tempHealth);
+				c.restoreDef();
+			} else {
+				tempHealth = c.getHealth() - (_strStat * 2) + c.getDef();
+				c.setHealth(tempHealth);
+			}
+			return true;
+		} else {
+			System.out.println("Special Attack Missed");
+			return false;
+		}
 	}
 	
 	// each magic attack may need to be its own object with its own stats and required magic points
 	public void magicAttack(Character c) {
-		tempHealth = c.getHealth() - _strMagic + c.getMagicDef();
-		c.setHealth(tempHealth);
-		_currentMagic -= 2;
-	}
-	
-	
-	
-
-	
-	public void defend() { 
-		_defStat++;
-		_usedDefend = true;
+		if (c.usedDefend()) {
+			tempHealth = (int) (c.getHealth() - Math.ceil((_strMagic + c.getMagicDef()) / 2));
+			c.setHealth(tempHealth);
+			_currentMagic -= 2;
+			c.restoreDef();
+		} else {
+			tempHealth = c.getHealth() - _strMagic + c.getMagicDef();
+			c.setHealth(tempHealth);
+			_currentMagic -= 2;
 		}
-	
-	public void restoreDef() {
-		_defStat--;
-		_usedDefend = false;
 	}
+	
+	public void defend() { _usedDef = true; }
+	public void restoreDef() { _usedDef = false; }
 
 
 }

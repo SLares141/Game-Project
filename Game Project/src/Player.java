@@ -27,6 +27,7 @@ public class Player extends Character {
 	private String spaddress;
 	private String weaponeq;
 	private boolean lostlastbattle;
+	private boolean _usedDefend = false;
 	
 	public Player() {
 		_name = "Player";
@@ -65,6 +66,7 @@ public class Player extends Character {
 				this.setExp(Integer.valueOf(temp.get(7)));
 				this.setIsDead(Boolean.valueOf(temp.get(8)));
 				this.setWeapon(temp.get(9));
+				this.
 				spaddress = temp.get(10);
 				int x = Integer.valueOf(temp.get(11));
 				int y = Integer.valueOf(temp.get(12));
