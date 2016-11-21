@@ -22,13 +22,11 @@ public class Character {
 	private int _levelStat, _expStat;
 	private boolean _isDead, _usedDefend;
 	private Weapon _weapon;
-
-	private String _weap;
+	private Armor _armor;
 
 	private Coordinate _loc;
 	private int _currentMap;
 
-	
 	public Character(){
 		_strStat = 			1;
 		_defStat = 			0;
@@ -43,6 +41,7 @@ public class Character {
 		_isDead = 			false;
 		_usedDefend =		false;
 		_weapon = 			null;
+		_armor = 			null;
 	}
 	
 	// getters
@@ -65,6 +64,7 @@ public class Character {
 	public int getExp() 		{ return _expStat; }
 	public boolean getIsDead()	{ return _isDead; }
 	public Weapon getWeapon()	{ return _weapon; }
+	public Armor getArmor()		{ return _armor; }
 	public BufferedImage getSprite() 	{ return _sprite; }
 	public BufferedImage getMenuSprite() { return _menuSprite; }
 	public BufferedImage getSmallMenuSprite() { return _smallMenuSprite; }
@@ -81,7 +81,8 @@ public class Character {
 	public void setLevel(int i){ _levelStat = i;}
 	public void setExp (int i) { _expStat = i; }
 	public void setIsDead(boolean b){_isDead = b;}
-	public void setWeapon(String w){_weap = w;}
+	public void setWeapon(Weapon w){_weapon = w;}
+	public void setArmor(Armor a) { _armor = a;}
 	public void setLocation(Coordinate c){
 		_loc = c;
 	}
@@ -118,10 +119,6 @@ public class Character {
 		_currentMagic -= 2;
 	}
 	
-	
-	
-
-	
 	public void defend() { 
 		_defStat++;
 		_usedDefend = true;
@@ -133,4 +130,20 @@ public class Character {
 	}
 
 
+	public void use(Consumable cons) {
+		if((_totalHealth - _currentHealth) > cons.getRestoreAmt()) 
+			_currentHealth += cons.getRestoreAmt();
+		else
+			_currentHealth = _totalHealth;
+
+	}
+	public void equip(Weapon w) {
+		_weapon = w;
+		//weapon modifier function
+
+	}
+	public void equip(Armor a) {
+		_armor = a;
+		//armor modifier functions
+	}
 }

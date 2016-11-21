@@ -29,41 +29,23 @@ public class Inventory  {
 	private int money = 420;
 	private int numItems = 0;
 	private int numEquip = 0;
+	private boolean invFull;
+	private boolean equipFull;
 	
 	ItemNode[] inv = new ItemNode[SIZE];
 	ItemNode[] equipment = new ItemNode[SIZE];
+
 	
-	public Inventory() {
-		buildEquipment();
-	}
-	
+	//adds one of a specific item
 	public void add(Item i) {
 		for(int j = 0; j < SIZE; j++) {
-			if(numItems == SIZE) {
-				//indicate that inventory is full
-				break;
-			}
-			
-			if(inv[j] == null) {
-				inv[j] = new ItemNode(i, 1);
-				numItems++;
-				break;
-			}
-			else if(inv[j].getItem().equals(i) && inv[j].getAmount() < 99) {
-				inv[j].increment();
-				break;
-			}
-			else if(inv[j].getItem().equals(i) && inv[j].getAmount() == 99) {
-				break;
-			}
-		}
-		buildEquipment();
-	}
-	
-	public void add(Item i, int x) {
-		int count = 1;
-		while(count <= x && numItems < SIZE) {
-			for(int j = 0; j < SIZE; j++) {
+			//for consumables
+			if(i instanceof Consumable) {
+				if(numItems == SIZE) {
+					invFull = true;
+					break;
+				}
+
 				if(inv[j] == null) {
 					inv[j] = new ItemNode(i, 1);
 					numItems++;
@@ -77,45 +59,125 @@ public class Inventory  {
 					break;
 				}
 			}
-			count++;
+			//for equipment
+			else {
+				if(numEquip == SIZE) {
+					equipFull = true;
+					break;
+				}
+				if(equipment[j] == null) {
+					equipment[j] = new ItemNode(i, 1);
+					numEquip++;
+					break;
+				}
+				else if(equipment[j].getItem().equals(i) && equipment[j].getAmount() < 99) {
+					equipment[j].increment();
+					break;
+				}
+				else if(equipment[j].getItem().equals(i) && equipment[j].getAmount() == 99) {
+					break;
+				}
+			}
 		}
-		buildEquipment();
+	}
+
+	//adds multiple of a specific item
+	public void add(Item i, int x) {
+		int count = 1;
+		//for consumables
+		if(i instanceof Consumable) {
+			while(count <= x && numItems < SIZE) {
+				for(int j = 0; j < SIZE; j++) {
+					if(inv[j] == null) {
+						inv[j] = new ItemNode(i, 1);
+						numItems++;
+						break;
+					}
+					else if(inv[j].getItem().equals(i) && inv[j].getAmount() < 99) {
+						inv[j].increment();
+						break;
+					}
+					else if(inv[j].getItem().equals(i) && inv[j].getAmount() == 99) {
+						break;
+					}
+				}
+				count++;
+			}
+		}
+		//for equipment
+		else {
+			while(count <= x && numEquip < SIZE) {
+				for(int j = 0; j < SIZE; j++) {
+					if(equipment[j] == null) {
+						equipment[j] = new ItemNode(i, 1);
+						numEquip++;
+						break;
+					}
+					else if(equipment[j].getItem().equals(i) && equipment[j].getAmount() < 99) {
+						equipment[j].increment();
+						break;
+					}
+					else if(equipment[j].getItem().equals(i) && equipment[j].getAmount() == 99) {
+						break;
+					}
+				}
+				count++;
+			}
+		}
 	}
 	
-	public Item use(int index, Character c) {
+	//uses a consumable on a character
+	public Consumable use(int index, Character c) {
 		Consumable cons = (Consumable)inv[index].getItem();
-		cons.use(c);
+		c.use(cons);
 		if(inv[index].getAmount() == 1) {
 			inv[index] = null;
+			//moves each subsequent item back
 			for(int j = index; j < numItems - 1; j++) {
-				System.out.println(j);
 				inv[j] = inv[j + 1];
 				inv[j + 1] = null;
 			}
 			numItems--;
-			buildEquipment();
 			return cons;
 		}
 		inv[index].decrement();
-		buildEquipment();
 		return cons;	
 	}
-	
-	public void buildEquipment() {
-		clearEquipment();
-		int i = 0;
-		for(int j = 0; j < numItems; j++) {
-			if(inv[j].getItem() instanceof Weapon || inv[j].getItem() instanceof Armor) {
-				equipment[i] = inv[j];
-				numEquip++;
-				i++;
+
+	//equips a weapon or armor to a character
+	public Item equip(int index, Character c) {
+		if(equipment[index].getItem() instanceof Weapon) {
+			Weapon w = (Weapon)equipment[index].getItem();
+			c.equip(w);
+			if(equipment[index].getAmount() == 1) {
+				equipment[index] = null;
+				//moves each subsequent piece of equipment back 
+				for(int j = index; j < numEquip - 1; j++) {
+					equipment[j] = equipment[j + 1];
+					equipment[j + 1] = null;
+				}
+				numEquip--;
+				return w;
 			}
+			equipment[index].decrement();
+			return w;	
 		}
-	}
-	public void clearEquipment() {
-		for(int j = 0; j < SIZE; j++) 
-			equipment[j] = null;
-		numEquip = 0;
+		else {
+			Armor a = (Armor)equipment[index].getItem();
+			c.equip(a);
+			if(equipment[index].getAmount() == 1) {
+				equipment[index] = null;
+				//moves each subsequent piece of equipment back 
+				for(int j = index; j < numEquip - 1; j++) {
+					equipment[j] = equipment[j + 1];
+					equipment[j + 1] = null;
+				}
+				numEquip--;
+				return a;
+			}
+			equipment[index].decrement();
+			return a;	
+		}
 	}
 
 	public int getItemAmount(int index) {

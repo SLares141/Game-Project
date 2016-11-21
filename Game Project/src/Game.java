@@ -9,16 +9,12 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
-
 public class Game extends JPanel {
 	private Dimension _screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private double _windowWidth = _screenSize.getWidth();
     private double _windowHeight = _screenSize.getHeight();
     private static WindowFrame _frame;
     private Graphics g;
-   
-
 	
 	public Game() {
 		createWindow();
@@ -40,7 +36,6 @@ public class Game extends JPanel {
 		PartyMember pm2 = new PartyMember();
 		PartyMember pm3 = new PartyMember();
 		Inventory inv = new Inventory();
-		
 		
 		inv.add(new Consumable("Strawberry Juice", 10));
 		inv.add(new Consumable("Strawberry Jam", 20));

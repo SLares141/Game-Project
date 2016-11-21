@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -9,22 +8,27 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
+/*
+ * things to add: another button to see the effect of an item
+ * 				  saving and settings
+ * 
+ */
 public class InventoryMenuState extends JPanel implements State {
 
 	Player player;
 	PartyMember pm1, pm2, pm3;
-	Character[] party = {player, pm1, pm2, pm3,};
+	Character[] party;
 	int characterIndex = 0;
 	Inventory inv;
-	
+
 	int invIndex = 0;
-	
+
 	BufferedImage arrow, biggerArrow;
 	int cursorX;
 	int cursorY;
-	boolean savePrompt;
+	boolean yesSelected = true;
 	boolean itemSelected;
+	boolean itemUsed;
 	boolean characterSelected;
 	WindowFrame frame = WindowFrame.getInstance();
 	int windowWidth = frame.getWidth();
@@ -40,6 +44,7 @@ public class InventoryMenuState extends JPanel implements State {
 		this.pm1 = pm1;
 		this.pm2 = pm2;
 		this.pm3 = pm3;
+		party = new Character[] {player, pm1, pm2, null};
 		inv = i;
 
 		addKeyListener(new KeyAdapter() {
@@ -108,7 +113,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 	@Override
 	public void update() {
-		
+
 	}
 
 	@Override
@@ -117,9 +122,8 @@ public class InventoryMenuState extends JPanel implements State {
 	}
 
 	public void paintComponent(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-
 		Font large = new Font("Comic sans MS", Font.PLAIN, 32);
+		Font medium = new Font("Comic sans MS", Font.PLAIN, 26);
 		Font small = new Font("Comic sans MS", Font.PLAIN, 20);
 
 		g.setColor(Color.BLACK);
@@ -155,9 +159,9 @@ public class InventoryMenuState extends JPanel implements State {
 		g.drawRect(360, 215, 100, 100);
 		g.drawImage(pm2.getMenuSprite(), 360, 335, null);
 		g.drawRect(360, 335, 100, 100);
-		g.drawImage(pm3.getMenuSprite(), 360, 455, null);
-		g.drawRect(360, 455, 100, 100);
-		
+		//g.drawImage(pm3.getMenuSprite(), 360, 455, null);
+		//g.drawRect(360, 455, 100, 100);
+
 		//need to finish drawing party stuff
 
 		if(currentMenu.equals("Main")) {
@@ -200,9 +204,25 @@ public class InventoryMenuState extends JPanel implements State {
 				g.drawRect(360, 270, 80, 80);
 				g.drawImage(pm2.getSmallMenuSprite(), 360, 370, null);
 				g.drawRect(360, 370, 80, 80);
-				g.drawImage(pm3.getSmallMenuSprite(), 360, 470, null);
-				g.drawRect(360, 470, 80, 80);
+				//g.drawImage(pm3.getSmallMenuSprite(), 360, 470, null);
+				//g.drawRect(360, 470, 80, 80);
 				g.drawImage(biggerArrow, (280 + cursorX), (187 + cursorY), null);
+			}
+			else if(itemUsed) {
+				g.setColor(Color.BLACK);
+				g.fillRect(260, 75, 758, 495);
+				g.setColor(Color.WHITE);
+				g.drawRect(260, 75, 758, 495);
+				g.setColor(Color.BLACK);
+				g.fillRect(415, 200, 450, 250);
+				g.setColor(Color.WHITE);
+				g.drawRect(415, 200, 450, 250);
+				
+				Consumable cons = inv.use(invIndex, party[characterIndex]);
+				g.setFont(medium);
+				g.drawString(cons.getName(), 500, 300);
+				g.drawString("Restored " + cons.getRestoreAmt() + " HP", 500, 360);
+				g.setFont(small);
 			}
 			else 
 				g.drawImage(arrow, (280 + cursorX), (103 + cursorY), null);
@@ -227,7 +247,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 				int x = 330;
 				int y = 125;
-				
+
 				for(int j = 0; j < inv.getNumEquip(); j++) {
 					if(j%2 == 0) {
 						g.drawString(inv.getEquip(j).getName(), x, y);
@@ -241,6 +261,38 @@ public class InventoryMenuState extends JPanel implements State {
 					y += 50;
 				}
 				g.drawImage(arrow, (280 + cursorX), (103 + cursorY), null);
+			}
+			else if(itemSelected) {
+				g.setColor(Color.BLACK);
+				g.fillRect(260, 75, 758, 495);
+				g.setColor(Color.WHITE);
+				g.drawRect(260, 75, 758, 495);
+				g.setColor(Color.BLACK);
+				g.fillRect(415, 200, 450, 250);
+				g.setColor(Color.WHITE);
+				g.drawRect(415, 200, 450, 250);
+
+				g.setFont(medium);
+				g.drawString("Equip " + inv.getEquip(invIndex).getName() + "?", 550, 300);
+				g.drawString("Yes", 520, 400);
+				g.drawString("No", 700, 400);
+				g.setFont(small);
+				g.drawImage(arrow, (475 + cursorX), 377, null);
+			}
+			else if(itemUsed) {
+				g.setColor(Color.BLACK);
+				g.fillRect(260, 75, 758, 495);
+				g.setColor(Color.WHITE);
+				g.drawRect(260, 75, 758, 495);
+				g.setColor(Color.BLACK);
+				g.fillRect(415, 200, 450, 250);
+				g.setColor(Color.WHITE);
+				g.drawRect(415, 200, 450, 250);
+				
+				g.setFont(medium);
+				g.drawString("Equipped " + inv.getEquip(invIndex).getName(), 550, 300);
+				inv.equip(invIndex, party[characterIndex]);
+				g.setFont(small);
 			}
 		}
 		else if(currentMenu.equals("Status")) {
@@ -298,18 +350,18 @@ public class InventoryMenuState extends JPanel implements State {
 			characterIndex = 0;
 		}
 		else if(currentMenu.equals("Items")) {
-			if(itemSelected) {
-				System.out.println("Player HP is " + player.getHealth());
-				inv.use(invIndex, party[characterIndex]);
-				System.out.println("Player HP is now " + player.getHealth());
-				
+			if(itemSelected && party[characterIndex] != null) {
+				itemSelected = false;
+				itemUsed = true;
+			}
+			else if(itemUsed) {
 				cursorX = 0;
 				cursorY = 0;
 				invIndex = 0;
 				characterIndex = 0;
-				itemSelected = false;
+				itemUsed = false;
 			}
-			else if(inv.getItem(invIndex) != null && inv.getItem(invIndex) instanceof Consumable) {
+			else if(inv.getItem(invIndex) != null && party[characterIndex] != null) {
 				itemSelected = true;
 				cursorX = 0;
 				cursorY = 0;
@@ -321,9 +373,40 @@ public class InventoryMenuState extends JPanel implements State {
 			cursorY = 0;
 		}
 		else if(currentMenu.equals("Equip")) {
-			characterSelected = true;
-			cursorX = 0;
-			cursorY = 0;
+			if(characterSelected) {
+				if(inv.getEquip(invIndex) == null) {}
+				else {
+					characterSelected = false;
+					itemSelected = true;
+					cursorX = 0;
+					cursorY = 0;
+				}
+			}
+			else if(itemSelected) {
+				if(yesSelected) {
+					itemSelected = false;
+					itemUsed = true;
+					cursorX = 0;
+				}
+				else {
+					cursorX = 0;
+					invIndex = 0;
+					itemSelected = false;
+					characterSelected = true;
+					yesSelected = true;
+				}
+			}
+			else if(itemUsed) {
+				cursorX = 0;
+				cursorY = 0;
+				invIndex = 0;
+				characterIndex = 0;
+				itemUsed = false;
+			}
+			else if(party[characterIndex] != null) {
+				characterSelected = true;
+				cursorY = 0;
+			}
 		}
 		else if(currentMenu.equals("Status")) {
 			characterSelected = true;
@@ -331,11 +414,11 @@ public class InventoryMenuState extends JPanel implements State {
 			cursorY = 0;
 		}
 		else if(currentMenu.equals("Save")) {
-			if(!savePrompt) {
+			if(!yesSelected) {
 				currentMenu = "Main";
 				cursorX = 0;
 				cursorY = (50*4);
-				savePrompt = true;
+				yesSelected = true;
 			}
 		}
 		else if(currentMenu.equals("Settings")) {
@@ -357,6 +440,13 @@ public class InventoryMenuState extends JPanel implements State {
 				}
 				itemSelected = false;
 			}
+			else if(itemUsed) {
+				cursorX = 0;
+				cursorY = 0;
+				invIndex = 0;
+				characterIndex = 0;
+				itemUsed = false;
+			}
 			else {
 				currentMenu = "Main";
 				cursorY = 0;
@@ -370,11 +460,25 @@ public class InventoryMenuState extends JPanel implements State {
 		}
 		else if(currentMenu.equals("Equip")) {
 			if(characterSelected) {
-				characterIndex = 0;
 				invIndex = 0;
+				characterIndex = 0;
 				cursorX = 0;
 				cursorY = 0;
 				characterSelected = false;
+			}
+			else if(itemSelected) {
+				invIndex = 0;
+				cursorX = 0;
+				cursorY = 0;
+				itemSelected = false;
+				characterSelected = true;
+			}
+			else if(itemUsed) {
+				cursorX = 0;
+				cursorY = 0;
+				invIndex = 0;
+				characterIndex = 0;
+				itemUsed = false;
 			}
 			else {
 				currentMenu = "Main";
@@ -386,13 +490,13 @@ public class InventoryMenuState extends JPanel implements State {
 		else if(currentMenu.equals("Status")) {
 			currentMenu = "Main";
 			cursorY = (50*3);
-			
+
 		}
 		else if(currentMenu.equals("Save")) {
 			currentMenu = "Main";
 			cursorX = 0;
 			cursorY = (50*4);
-			savePrompt = true;
+			yesSelected = true;
 		}
 		else if(currentMenu.equals("Settings")) {
 			currentMenu = "Main";
@@ -418,7 +522,7 @@ public class InventoryMenuState extends JPanel implements State {
 					characterIndex--;
 				}
 			}
-			else {
+			else if (!itemUsed){
 				if(cursorY == 0) {
 					cursorY = 400;
 					invIndex = invIndex + 16;
@@ -449,6 +553,10 @@ public class InventoryMenuState extends JPanel implements State {
 					cursorY -= 50;
 					invIndex = invIndex - 2;
 				}
+			}
+			else if(itemSelected) {}
+			else if(itemUsed) {
+				
 			}
 			else {
 				if(cursorY == 0) {
@@ -474,11 +582,11 @@ public class InventoryMenuState extends JPanel implements State {
 		else if(currentMenu.equals("Save")) {
 			if(cursorY == 0) {
 				cursorY = 65;
-				savePrompt = false;
+				yesSelected = false;
 			}	
 			else {
 				cursorY -= 65;
-				savePrompt = true;
+				yesSelected = true;
 			}
 		}
 		else if(currentMenu.equals("Settings")) {
@@ -504,7 +612,7 @@ public class InventoryMenuState extends JPanel implements State {
 					characterIndex++;
 				}
 			}
-			else {
+			else if(!itemUsed){
 				if(cursorY == 400) {
 					cursorY = 0;
 					invIndex = invIndex - 16;
@@ -535,6 +643,10 @@ public class InventoryMenuState extends JPanel implements State {
 					cursorY += 50;
 					invIndex = invIndex + 2;
 				}
+			}
+			else if(itemSelected) {}
+			else if(itemUsed) {
+				
 			}
 			else {
 				if(cursorY == 360) {
@@ -560,11 +672,11 @@ public class InventoryMenuState extends JPanel implements State {
 		else if(currentMenu.equals("Save")) {
 			if(cursorY == 65) {
 				cursorY = 0;
-				savePrompt = true;
+				yesSelected = true;
 			}
 			else {
 				cursorY += 65;
-				savePrompt = false;
+				yesSelected = false;
 			}
 		}
 		else if(currentMenu.equals("Settings")) {
@@ -575,20 +687,18 @@ public class InventoryMenuState extends JPanel implements State {
 	private void rightPressed() {
 		if(currentMenu.equals("Main")) {}
 		else if(currentMenu.equals("Items")) {
-			if(!itemSelected) {
+			if(!itemSelected && !itemUsed) {
 				if(cursorX == 0) {
 					cursorX += 380;
 					invIndex++;
 				}
-				else {
+				else if(!itemUsed){
 					cursorX -= 380;
 					invIndex--;
 				}
 			}
 		}
-		else if(currentMenu.equals("Magic")) {
-			//some code
-		}
+		else if(currentMenu.equals("Magic")) {}
 		else if(currentMenu.equals("Equip")) {
 			if(characterSelected) {
 				if(cursorX == 380) {
@@ -600,13 +710,22 @@ public class InventoryMenuState extends JPanel implements State {
 					invIndex++;
 				}
 			}
+			else if(itemSelected) {
+				if(cursorX == 0) {
+					cursorX += 180;
+					yesSelected = false;
+				}
+				else {
+					cursorX -= 180;
+					yesSelected = true;
+				}
+			}
+			else if(itemUsed) {
+
+			}
 		}
-		else if(currentMenu.equals("Status")) {
-			//some code
-		}
-		else if(currentMenu.equals("Save")) {
-			//some code
-		}
+		else if(currentMenu.equals("Status")) {}
+		else if(currentMenu.equals("Save")) {}
 		else if(currentMenu.equals("Settings")) {
 			//some code
 		}
@@ -615,20 +734,18 @@ public class InventoryMenuState extends JPanel implements State {
 	private void leftPressed() {
 		if(currentMenu.equals("Main")) {}
 		else if(currentMenu.equals("Items")) {
-			if(!itemSelected) {
+			if(!itemSelected && !itemUsed) {
 				if(cursorX == 0) {
 					cursorX += 380;
 					invIndex++;
 				}
-				else {
+				else if (!itemUsed){
 					cursorX -= 380;
 					invIndex--;
 				}
 			}
 		}
-		else if(currentMenu.equals("Magic")) {
-			//some code
-		}
+		else if(currentMenu.equals("Magic")) {}
 		else if(currentMenu.equals("Equip")) {
 			if(characterSelected) {
 				if(cursorX == 0) {
@@ -640,13 +757,22 @@ public class InventoryMenuState extends JPanel implements State {
 					invIndex--;
 				}
 			}
+			else if(itemSelected) {
+				if(cursorX == 0) {
+					cursorX += 180;
+					yesSelected = false;
+				}
+				else {
+					cursorX -= 180;
+					yesSelected = true;
+				}
+			}
+			else if(itemUsed) {
+
+			}
 		}
-		else if(currentMenu.equals("Status")) {
-			//some code
-		}
-		else if(currentMenu.equals("Save")) {
-			//some code
-		}
+		else if(currentMenu.equals("Status")) {}
+		else if(currentMenu.equals("Save")) {}
 		else if(currentMenu.equals("Settings")) {
 			//some code
 		}

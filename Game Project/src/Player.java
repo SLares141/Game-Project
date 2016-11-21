@@ -64,7 +64,6 @@ public class Player extends Character {
 				this.setLevel(Integer.valueOf(temp.get(6)));
 				this.setExp(Integer.valueOf(temp.get(7)));
 				this.setIsDead(Boolean.valueOf(temp.get(8)));
-				this.setWeapon(temp.get(9));
 				spaddress = temp.get(10);
 				int x = Integer.valueOf(temp.get(11));
 				int y = Integer.valueOf(temp.get(12));

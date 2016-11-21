@@ -2,11 +2,14 @@
 // each particular weapon may need to extend this
 public class Weapon extends Item {
 	
-	private int _strStat;
+	private int strModifier;
 	
-	public Weapon(String name, int strStat) {
+	public Weapon(String name, int strModifier) {
 		super(name);
-		_strStat = strStat;
+		this.strModifier = strModifier;
 	}
-
+	
+	public int getStrModifier() {
+		return strModifier;
+	}
 }
