@@ -27,7 +27,6 @@ public class Player extends Character {
 	private String spaddress;
 	private String weaponeq;
 	private boolean lostlastbattle;
-	private boolean _usedDefend = false;
 	
 	public Player() {
 		_name = "Player";
@@ -84,14 +83,20 @@ public class Player extends Character {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else {
+		}else{
 			
 		}
 	}
+	public BufferedImage getSprite(){
+		return sprite;
+	}
 	
-	public BufferedImage getSprite(){ return sprite; }
-	public void setName(String s) { _name = s; }
-	public String getName() { return _name; }
+	public void setName(String s) { 
+	_name = s; 
+	}
+	public String getName() { 
+	return _name;
+	}
 	
 	public void savePlayer(){
 		try{
