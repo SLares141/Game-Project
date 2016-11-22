@@ -21,41 +21,21 @@ public class EnemyCharacter extends Character {
 	public void setName(String s) { _name = s; }
 	public String getName() { return _name; }
 	
-	public String enemyAttack(Character c) {
+	public void enemyAttack(Character c) {
 		Random r = new Random();
 		int n = r.nextInt(100);
 		if (n < 10) { // defend 10% of time
 			this.defend();
-			System.out.println("Enemy used DEFEND");
-			c.restoreDef(); // restore player's defend status to false
-			return "def";
 		} else if (n < 25) { // use magic attack 15% of time
 			if (this.getMagic() - 2 >= 0) {
 				this.magicAttack(c);
-				System.out.println("Enemy used MAGIC");
-				return "mag";
 			} else
 				this.enemyAttack(c); // select different action if enemy has no MP left
 		} else if (n < 40) { // use special attack 15% of time
-			boolean spHit = this.specialAttack(c);
-			if (spHit) {
-				System.out.println("Enemy used SPECIAL");
-				return "spe";
-			} else {
-				System.out.println("Enemy Special Missed");
-				return "mis";
-			}
+			this.specialAttack(c);
 		} else { // use melee attack 60% of time
 			this.attack(c);
-			System.out.println("Enemy used MELEE");
-			return "mel";
 		}
-		return null;
-	}
-	
-	public void awardOnVictoru(Player p) {
-		p.setExp(p.getExp() + this.getExp());
-		p.setMoney(p.getMoney() + this.getMoney());
 	}
 
 }

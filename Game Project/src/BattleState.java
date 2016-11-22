@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -25,13 +24,10 @@ import javax.swing.JTextField;
 public class BattleState extends JPanel implements State, KeyListener {
 	
 	private BufferedImage background, _player, _enemy, _cursor;
-	private BufferedImage melee, special, magic, defend;
 	private Player _charPlayer;
 	private EnemyCharacter _charEnemy;
 	private int _cursorX, _cursorY, _cursorIndexX, _cursorIndexY;
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
-	StateMapSingleton stateMap = StateMapSingleton.getInstance();
-	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	private Rectangle topLeftButton			= new Rectangle(460, 400, 200, 40);
 	private Rectangle topRightButton		= new Rectangle(710, 400, 200, 40);
 	private Rectangle bottomLeftButton		= new Rectangle(460, 450, 200, 40);
@@ -61,10 +57,6 @@ public class BattleState extends JPanel implements State, KeyListener {
 			_player = ImageIO.read(new File("images/Mario thumbs up.png"));
 			_enemy = ImageIO.read(new File("images/strawberry.png"));
 			_cursor = ImageIO.read(new File("images/arrow.png"));
-			melee = ImageIO.read(new File("images/melee.png"));
-			special = ImageIO.read(new File("images/special.png"));
-			magic = ImageIO.read(new File("images/magic.png"));
-			defend = ImageIO.read(new File("images/shield.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -105,15 +97,17 @@ public class BattleState extends JPanel implements State, KeyListener {
 	Font font0 = new Font("Comic sans MS", Font.BOLD, 50);
 	Font font1 = new Font("Comic sans MS", Font.PLAIN, 25);
 	Font font2 = new Font("arial", Font.BOLD, 30);
-	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		
 		if (_currentScreen.equals("PlayerTurn")){
+			if (_charPlayer.usedDefend()) 
+				_charPlayer.restoreDef(); // restore player's defense if player used defend last turn
+			
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 200, 300, null);
 			g.drawImage(_enemy, 700, 100, null);
 			g.drawImage(_cursor, _cursorX, _cursorY, null);
+			
 			g.setFont(font0);
 			g.setColor(Color.BLACK);
 			g2d.draw(playerInfoBox);
@@ -207,7 +201,12 @@ public class BattleState extends JPanel implements State, KeyListener {
 			g.drawString("BACK", bottomRightButton.x + 70, bottomRightButton.y + 30);
 			g2d.draw(bottomRightButton);
 			
-		} else if (_currentScreen.equals("EnemyTurn")) {
+			
+			
+		} else if (_currentScreen.equals("EnemyTurn")){
+			if (_charEnemy.usedDefend())
+				_charEnemy.restoreDef(); // restore enemy's defense if enemy used defend last turn
+			
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 200, 300, null);
 			g.drawImage(_enemy, 700, 100, null);
@@ -227,73 +226,18 @@ public class BattleState extends JPanel implements State, KeyListener {
 			g.drawString("HP:   " + _charEnemy.getHealth() + " / " + _charEnemy.getTotalHealth(), 
 				  enemyInfoBox.x + 10, enemyInfoBox.y + 45);
 			
+			//g2d.setFont(font2);
+			//g2d.setColor(Color.BLACK);
 			
-			String s = _charEnemy.enemyAttack(_charPlayer); // ENEMY TAKES TURN HERE
-			
-			if (s.equals("def")) {
-				this.getGraphics().drawImage(defend, 600, 0, null);
-    			repaint();
-    			try {
-					Thread.sleep(500);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-    			defend.flush();
-				
-			} else if (s.equals("mag")) {
-				this.getGraphics().drawImage(magic, 100, 200, null);
-    			repaint();
-    			try {
-					Thread.sleep(500);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-    			magic.flush();
-				
-			} else if (s.equals("spe")) {
-				this.getGraphics().drawImage(special, 100, 200, null);
-    			repaint();
-    			try {
-					Thread.sleep(500);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-    			special.flush();
-    			
-			} else if (s.equals("mis")) {
-				// DISPLAY "MISS" /////////////////////////////////////////////////////////////////////////
-				
-			} else if (s.equals("mel")) {
-				this.getGraphics().drawImage(melee, 100, 200, null);
-    			repaint();
-    			try {
-					Thread.sleep(500);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-    			melee.flush();
-				
-			}
-			
-			
-			
-			
-			
+			_charEnemy.enemyAttack(_charPlayer); // ENEMY TAKES TURN HERE
+			// NEED TO DISPLAY THE ENEMY'S ACTIONS
 			if (_charPlayer.isDead()){
 				// if player dies, end fight
 				_currentScreen = "GameOver";
 			} else {
 				// if the player isn't dead, transition to player turn
-				
 				_currentScreen = "PlayerTurn";
-				repaint();
 			}
-			
-			
 			
 		} else if (_currentScreen.equals("Victory")){
 			g.setFont(font0);
@@ -369,20 +313,6 @@ public class BattleState extends JPanel implements State, KeyListener {
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)){ // top right (defend) button selected
         			// DEFEND
         			_charPlayer.defend();
-        			_charEnemy.restoreDef(); // restore enemy's defend status to false
-        			
-        			this.getGraphics().drawImage(defend, 100, 200, null);
-        			repaint();
-        			try {
-						Thread.sleep(500);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-        			defend.flush();
-        			
-        			System.out.println("DEFEND used");
-        			_currentScreen = "EnemyTurn";
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)){ // bottom right (run) button selected
         			if (_charEnemy.isBoss()){
         				// DISPLAY "YOU COULD NOT RUN"
@@ -405,19 +335,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 
         		if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left (melee) button selected
         			// MELEE ATTACK HAPPENS HERE
-        			System.out.println("Player used MELEE");
         			_charPlayer.attack(_charEnemy);
-        			
-        			this.getGraphics().drawImage(melee, 600, 0, null);
-        			repaint();
-        			try {
-						Thread.sleep(500);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-        			melee.flush();
-        			
         			if (_charEnemy.isDead()){
         				// if enemy dies, end fight
         				_currentScreen = "Victory";
@@ -425,50 +343,32 @@ public class BattleState extends JPanel implements State, KeyListener {
         				// if the enemy isn't dead, transition to enemy turn
         				_currentScreen = "EnemyTurn";
         			}
+        			// NEED TO VISUALLY SHOW ATTACK
         		
         		} else if ((_cursorIndexX == 0) && (_cursorIndexY == 1)) { // bottom left (special) button selected
         			// SPECIAL ATTACK HAPPENS HERE
-        			boolean spHit = _charPlayer.specialAttack(_charEnemy);
-        			
-        			if (spHit) {
-        				this.getGraphics().drawImage(special, 600, 0, null);
-            			repaint();
-            			try {
-    						Thread.sleep(500);
-    					} catch (InterruptedException e1) {
-    						// TODO Auto-generated catch block
-    						e1.printStackTrace();
-    					}
-            			special.flush();
-        			} else {
-        				// NEED TO SHOW MISSED/////////////////////////////////////////////////////////
-        			}
-        			
-        			
-        			if (_charEnemy.isDead()){
-        				// if enemy dies, end fight
-        				_currentScreen = "Victory";
-        			} else {
-        				// if the enemy isn't dead, transition to enemy turn
-    	    			_currentScreen = "EnemyTurn";
-    	    		}
+        			Random r = new Random();
+    				if (r.nextInt(100) >= 66){ // successfully special attack 33% of the time
+    					System.out.println("Special Attack Success");
+    					_charPlayer.specialAttack(_charEnemy);
+    					if (_charEnemy.isDead()){
+    	    				// if enemy dies, end fight
+    	    				_currentScreen = "Victory";
+    	    			} else {
+    	    				// if the enemy isn't dead, transition to enemy turn
+    	    				_currentScreen = "EnemyTurn";
+    	    			}
+    					// NEED TO VISUALLY SHOW ATTACK
+    				} else {
+    					System.out.println("Special Attack Failed");
+    					_currentScreen = "EnemyTurn";
+    				}
         			
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)) { // top right (magic) button selected
         			// MAGIC ATTACK HAPPENS HERE
         			if (_charPlayer.getMagic() - 2 >= 0) {
         				System.out.println("Magic Attack Success");
         				_charPlayer.magicAttack(_charEnemy);
-        				
-        				this.getGraphics().drawImage(magic, 600, 0, null);
-            			repaint();
-            			try {
-    						Thread.sleep(500);
-    					} catch (InterruptedException e1) {
-    						// TODO Auto-generated catch block
-    						e1.printStackTrace();
-    					}
-            			magic.flush();
-        				
         				if (_charEnemy.isDead()){
     	    				// if enemy dies, end fight
     	    				_currentScreen = "Victory";
@@ -479,18 +379,13 @@ public class BattleState extends JPanel implements State, KeyListener {
         				// NEED TO VISUALLY SHOW ATTACK
         			} else {
         				System.out.println("NOT ENOUGH MP");
-        				// DISPLAY NOT ENOUGHT MP/////////////////////////////////////////////////
+        				// DISPLAY NOT ENOUGHT MP
         			}
         			
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)) { // bottom right (back) button selected
         			// this button transitions back to "PlayerTurn"
         			_currentScreen = "PlayerTurn";	
         		}
-        	} else if (_currentScreen.equals("Victory")) {
-        		stateStack.pop();
-        		
-        	} else if (_currentScreen.equals("GameOver")) {
-        		
         	}
         	
         	
