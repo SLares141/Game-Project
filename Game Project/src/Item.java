@@ -13,7 +13,7 @@ public class Item {
 	public String getName() {
 		return name;
 	}
-	public boolean itemMatch(Item i) {
+	public boolean itemMatches(Item i) {
 		if(name.equals(i.getName()))
 			return true;
 		return false;
