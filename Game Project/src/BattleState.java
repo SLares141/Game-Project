@@ -38,7 +38,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 	
 	String _currentScreen;
 	
-		
+	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	
 	public BattleState()
 	{
@@ -86,6 +86,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 		if (_currentScreen.equals("EnemyTurn")){
 		}
 		if (_currentScreen.equals("Victory")){
+			stateStack.pop();
 		}
 		if (_currentScreen.equals("GameOver")){
 		}
@@ -321,6 +322,7 @@ public class BattleState extends JPanel implements State, KeyListener {
         				if (r.nextInt(100) >= 40){ // successful run 60% of the time
         					System.out.println("RunSuccess");
         					// RUN SUCCESS, TRANSITION TO EXIT
+        					stateStack.pop();
         				} else {
         					// "RUN FAILED"
         					System.out.println("RunFailed");

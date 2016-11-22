@@ -13,8 +13,8 @@ public class Item {
 	public String getName() {
 		return name;
 	}
-	public boolean equals(Item i) {
-		if(name == i.getName())
+	public boolean itemMatch(Item i) {
+		if(name.equals(i.getName()))
 			return true;
 		return false;
 	}
