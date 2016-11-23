@@ -51,6 +51,8 @@ public class FieldState extends JPanel implements State, KeyListener {
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	
 	
+	
+	
 	// this is the name of the state that the field state will transition to.
 	//onExit function will look at this, and push the string to the state stack
 	//this will allow the proper state to be put on the stack, and to transition accordingly.
@@ -65,6 +67,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 		Graphics g = _frame.getGraphics();
 		addKeyListener(this);
 		this.setFocusable(true);
+		
+		if (p.isDead() || p.beatBoss()) {
+			p.setLocation(new Coordinate(512, 288));
+			p.setMap(2);
+		}
+		
 		this.player = p;
 		_sp = p.getLocation();
 		_oldsp = new Coordinate(_sp.x, _sp.y);
@@ -99,7 +107,6 @@ public class FieldState extends JPanel implements State, KeyListener {
 		
 	}
 	public void paintComponent(Graphics g) {
-		
 		//grid of tile values
 		
 		
@@ -128,9 +135,10 @@ public class FieldState extends JPanel implements State, KeyListener {
 	
 
 	private void drawEnemies(Graphics g) {
-		if(currentMapNum ==0){
+		if(currentMapNum == 0){
 			EnemyCharacter e = new EnemyCharacter();
 			e.setSprite(carrot);
+			
 			Coordinate c = new Coordinate(32*5, 5*32);
 			e.setLocation(c);
 			
@@ -140,9 +148,18 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void onEnter() {
+		if (player.isDead()) {
+			/*
+			 * We can increment a counter just so that we can create a new unique FieldState
+			 * that is independent from the one in which the player just got a GameOver in.
+			 * This will reset the stats of both the player and enemies
+			 */
+			stateStack.incrementCount();
+			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
+			stateStack.pop();
+		} 
 		/*
 		 * 	when FieldState is entered, the whole field needs to be painted.
-		 * 
 		 */
 		loadall = true;
 		repaint();
@@ -156,7 +173,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 	 * save the players new data onExit of the fieldState
 	 */
 	public void onExit() {
-		player.savePlayer();
+		if (player.isDead()) {
+			player.resetPlayer();
+			player = new Player();
+		}
+		else
+			player.savePlayer();
 	}
 
 	@Override
@@ -477,9 +499,4 @@ public class FieldState extends JPanel implements State, KeyListener {
 		return temp;
 	}
 }
-
-
-
-
-	
 

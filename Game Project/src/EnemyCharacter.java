@@ -14,6 +14,8 @@ public class EnemyCharacter extends Character {
 		_index = i;
 		_isBoss = false;
 		_name = "Default Name";
+		this.setWeapon(new Weapon("none", 0));
+		this.setArmor(new Armor("none", 0, 0));
 	}
 	
 	public boolean isBoss() { return _isBoss; }
@@ -35,10 +37,10 @@ public class EnemyCharacter extends Character {
 				System.out.println("Enemy used MAGIC");
 				return "mag";
 			} else
-				this.enemyAttack(c); // select different action if enemy has no MP left
+				return this.enemyAttack(c); // select different action if enemy has no MP left
 		} else if (n < 40) { // use special attack 15% of time
-			boolean spHit = this.specialAttack(c);
-			if (spHit) {
+			int spHit = this.specialAttack(c);
+			if (spHit >= 0) {
 				System.out.println("Enemy used SPECIAL");
 				return "spe";
 			} else {
@@ -50,7 +52,6 @@ public class EnemyCharacter extends Character {
 			System.out.println("Enemy used MELEE");
 			return "mel";
 		}
-		return null;
 	}
 	
 	public void awardOnVictoru(Player p) {

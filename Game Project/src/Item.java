@@ -6,13 +6,11 @@ public class Item {
 	protected Image sprite;
 	protected String description;
 	
-	public Item(String name) {
-		this.name = name;
-	}
+	public Item(String name) { this.name = name; } // constructor
 	
-	public String getName() {
-		return name;
-	}
+	public String getName() { return name; }
+	public void setName(String s) { name = s; }
+	
 	public boolean equals(Item i) {
 		if(name == i.getName())
 			return true;

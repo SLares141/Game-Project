@@ -279,7 +279,10 @@ public class MainMenuState
 		}else if(_currentMenu.equals("Main")){
 			if ((_cursor/50) == 0){
 				System.out.println("Play Pressed");
-				stateStack.push("field"); //exits this state, goes to field state.
+				if (stateStack.getCount() <= 0)
+					stateStack.push("field"); //exits this state, goes to field state.
+				else
+					stateStack.push("field" + stateStack.getCount()); //exits this state, goes to field state.
 				
 				
 			}else if((_cursor/50)== 1){
