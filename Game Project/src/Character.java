@@ -23,6 +23,7 @@ public class Character {
 	private boolean _isDead, _usedDefend;
 	private Weapon _weapon;
 	private Armor _armor;
+	private String _name;
 
 	private Coordinate _loc;
 	private int _currentMap;
@@ -42,6 +43,7 @@ public class Character {
 		_usedDefend =		false;
 		_weapon = 			null;
 		_armor = 			null;
+		_name = "Insert name here";
 	}
 	
 	// getters
@@ -53,7 +55,8 @@ public class Character {
 	public int getHealth() 		{ return _currentHealth; }
 	public int getTotalMagic()  { return _totalMagic; } 
 	public int getMagic() 		{ return _currentMagic; }
-
+	public String getName() 	{ return _name; }
+	
 	public Coordinate getLocation(){
 		return _loc;
 	}
