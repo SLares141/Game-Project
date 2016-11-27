@@ -6,14 +6,22 @@ public class Item {
 	protected Image sprite;
 	protected String description;
 	
-	public Item(String name) { this.name = name; } // constructor
+	public Item(String name) {
+		this.name = name;
+	}
 	
-	public String getName() { return name; }
-	public void setName(String s) { name = s; }
+	public String getName() {
+		return name;
+	}
 	
-	public boolean equals(Item i) {
-		if(name == i.getName())
+	public void setName(String s) {
+		name = s;
+	}
+	
+	public boolean itemMatch(Item i) {
+		if(name.equals(i.getName()))
 			return true;
 		return false;
 	}
+
 }

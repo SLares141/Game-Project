@@ -12,7 +12,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -32,8 +31,6 @@ public class BattleState extends JPanel implements State, KeyListener {
 	private EnemyCharacter _charEnemy;
 	private int _cursorX, _cursorY, _cursorIndexX, _cursorIndexY;
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
-	StateMapSingleton stateMap = StateMapSingleton.getInstance();
-	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	private Rectangle topLeftButton			= new Rectangle(460, 400, 200, 40);
 	private Rectangle topRightButton		= new Rectangle(710, 400, 200, 40);
 	private Rectangle bottomLeftButton		= new Rectangle(460, 450, 200, 40);
@@ -44,7 +41,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 	
 	String _currentScreen;
 	
-		
+	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	
 	public BattleState()
 	{
@@ -68,6 +65,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 			specialMissed = ImageIO.read(new File("images/specialMissed.png"));
 			runFailed = ImageIO.read(new File("images/runFailed.png"));
 			cannotRun = ImageIO.read(new File("images/cannotRun.png"));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -101,6 +99,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 		if (_currentScreen.equals("EnemyTurn")){
 		}
 		if (_currentScreen.equals("Victory")){
+			stateStack.pop();
 		}
 		if (_currentScreen.equals("GameOver")){
 		}
@@ -111,15 +110,17 @@ public class BattleState extends JPanel implements State, KeyListener {
 	Font font0 = new Font("Comic sans MS", Font.BOLD, 50);
 	Font font1 = new Font("Comic sans MS", Font.PLAIN, 25);
 	Font font2 = new Font("arial", Font.BOLD, 30);
-	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		
 		if (_currentScreen.equals("PlayerTurn")){
+			if (_charPlayer.usedDefend()) 
+				_charPlayer.restoreDef(); // restore player's defense if player used defend last turn
+			
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 125, 300, null);
 			g.drawImage(_enemy, 700, 75, null);
 			g.drawImage(_cursor, _cursorX, _cursorY, null);
+			
 			g.setFont(font0);
 			g.setColor(Color.BLACK);
 			g2d.draw(playerInfoBox);
@@ -217,7 +218,12 @@ public class BattleState extends JPanel implements State, KeyListener {
 			g.drawString("BACK", bottomRightButton.x + 70, bottomRightButton.y + 30);
 			g2d.draw(bottomRightButton);
 			
-		} else if (_currentScreen.equals("EnemyTurn")) {
+			
+			
+		} else if (_currentScreen.equals("EnemyTurn")){
+			if (_charEnemy.usedDefend())
+				_charEnemy.restoreDef(); // restore enemy's defense if enemy used defend last turn
+			
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 125, 300, null);
 			g.drawImage(_enemy, 700, 75, null);
@@ -311,9 +317,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 			} else {
 				// if the player isn't dead, transition to player turn
 				_currentScreen = "PlayerTurn";
-				repaint();
 			}
-			
 			
 		} else if (_currentScreen.equals("Victory")){
 			g.setFont(font0);
@@ -398,6 +402,7 @@ public class BattleState extends JPanel implements State, KeyListener {
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)){ // top right (defend) button selected
         			// DEFEND
         			_charPlayer.defend();
+
         			_charEnemy.restoreDef(); // restore enemy's defend status to false
         			
         			this.getGraphics().drawImage(defend, 125, 300, null);
@@ -413,6 +418,7 @@ public class BattleState extends JPanel implements State, KeyListener {
         			System.out.println("DEFEND used");
         			resetCursor();
         			_currentScreen = "EnemyTurn";
+
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)){ // bottom right (run) button selected
         			if (_charEnemy.isBoss()){
         				this.getGraphics().drawImage(cannotRun, 460, 500, null);
@@ -431,6 +437,7 @@ public class BattleState extends JPanel implements State, KeyListener {
         				if (r.nextInt(100) >= 40){ // successful run 60% of the time
         					System.out.println("RunSuccess");
         					_currentScreen = "RunSuccess";
+
         				} else {
         					System.out.println("RunFailed");
         					this.getGraphics().drawImage(runFailed, 460, 500, null);
@@ -452,7 +459,6 @@ public class BattleState extends JPanel implements State, KeyListener {
 
         		if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left (melee) button selected
         			// MELEE ATTACK HAPPENS HERE
-        			System.out.println("Player used MELEE");
         			_charPlayer.attack(_charEnemy);
         			
         			this.getGraphics().drawImage(melee, 700, 50, null);
@@ -465,6 +471,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 					}
         			melee.flush();
         			
+
         			if (_charEnemy.isDead()){
         				// if enemy dies, end fight
         				_currentScreen = "Victory";
@@ -473,9 +480,11 @@ public class BattleState extends JPanel implements State, KeyListener {
         				resetCursor();
         				_currentScreen = "EnemyTurn";
         			}
+        			// NEED TO VISUALLY SHOW ATTACK
         		
         		} else if ((_cursorIndexX == 0) && (_cursorIndexY == 1)) { // bottom left (special) button selected
         			// SPECIAL ATTACK HAPPENS HERE
+
         			int spHit = _charPlayer.specialAttack(_charEnemy);
         			
         			if (spHit >= 0) {
@@ -509,12 +518,14 @@ public class BattleState extends JPanel implements State, KeyListener {
         				resetCursor();
     	    			_currentScreen = "EnemyTurn";
     	    		}
+
         			
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)) { // top right (magic) button selected
         			// MAGIC ATTACK HAPPENS HERE
         			if (_charPlayer.getMagic() - 2 >= 0) {
         				System.out.println("Magic Attack Success");
         				_charPlayer.magicAttack(_charEnemy);
+
         				
         				this.getGraphics().drawImage(magic, 700, 50, null);
         				this.getGraphics().fillRect(460, 400, 450, 90);
@@ -526,6 +537,7 @@ public class BattleState extends JPanel implements State, KeyListener {
     					}
             			magic.flush();
         				
+
         				if (_charEnemy.isDead()){
     	    				// if enemy dies, end fight
     	    				_currentScreen = "Victory";
@@ -546,12 +558,14 @@ public class BattleState extends JPanel implements State, KeyListener {
     						e1.printStackTrace();
     					}
         				notEnoughMP.flush();
+
         			}
         			
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)) { // bottom right (back) button selected
         			// this button transitions back to "PlayerTurn"
         			_currentScreen = "PlayerTurn";	
         		}
+
         	} else if (_currentScreen.equals("Victory")) {
         		if (_charEnemy.isBoss()) {
         			// NEED TO INCREMENT BOSS LEVEL//////////////////////////////////////////////////////////
@@ -564,6 +578,7 @@ public class BattleState extends JPanel implements State, KeyListener {
         	} else if (_currentScreen.equals("RunSuccess")){
         		stateStack.pop();
         		
+
         	}
         	
         	

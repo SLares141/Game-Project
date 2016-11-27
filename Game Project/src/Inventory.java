@@ -43,11 +43,11 @@ public class Inventory  {
 				numItems++;
 				break;
 			}
-			else if(inv[j].getItem().equals(i) && inv[j].getAmount() < 99) {
+			else if(inv[j].getItem().itemMatch(i) && inv[j].getAmount() < 99) {
 				inv[j].increment();
 				break;
 			}
-			else if(inv[j].getItem().equals(i) && inv[j].getAmount() == 99) {
+			else if(inv[j].getItem().itemMatch(i) && inv[j].getAmount() == 99) {
 				break;
 			}
 			
@@ -62,11 +62,11 @@ public class Inventory  {
 					numItems++;
 					break;
 				}
-				else if(inv[j].getItem().equals(i) && inv[j].getAmount() < 99) {
+				else if(inv[j].getItem().itemMatch(i) && inv[j].getAmount() < 99) {
 					inv[j].increment();
 					break;
 				}
-				else if(inv[j].getItem().equals(i) && inv[j].getAmount() == 99) {
+				else if(inv[j].getItem().itemMatch(i) && inv[j].getAmount() == 99) {
 					break;
 				}
 			}

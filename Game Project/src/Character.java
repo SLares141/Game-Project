@@ -2,7 +2,6 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -21,13 +20,11 @@ public class Character {
 	protected BufferedImage _menuSprite;
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
-	private int _levelStat, _expStat, _money;
-	private boolean _isDead, _usedDef;
+	private int _levelStat, _expStat;
+	private boolean _isDead, _usedDefend;
 	private Weapon _weapon;
-	private Armor _armor;
 
 	private String _weap;
-	private String _armo;
 
 	private Coordinate _loc;
 	private int _currentMap;
@@ -44,11 +41,9 @@ public class Character {
 		_currentMagic = 	_totalMagic;
 		_levelStat = 		1;
 		_expStat = 			0;
-		_money = 			0;
 		_isDead = 			false;
-		_usedDef =			false;
+		_usedDefend =		false;
 		_weapon = 			null;
-		_armor = 			null;
 	}
 	
 	// getters
@@ -69,7 +64,6 @@ public class Character {
 	}
 	public int getLevel()		{ return _levelStat; }
 	public int getExp() 		{ return _expStat; }
-	public int getMoney()		{ return _money; }
 	public boolean getIsDead()	{ return _isDead; }
 	public Weapon getWeapon()	{ return _weapon; }
 	public String getWeapName() { return _weapon.getName(); }
@@ -101,6 +95,7 @@ public class Character {
 	public void setLocation(Coordinate c) { _loc = c; }
 	public void setMap(int s) { _currentMap = s; }
 	public void setSprite(BufferedImage bi) { _sprite = bi; }
+
 	
 	// this can serve as a loop condition during battle to determine a game over or victory
 	public boolean isDead() {
@@ -110,8 +105,9 @@ public class Character {
 	}
 	
 	// this indicates if "defend" was used on the previous turn, to note if _defStat should be restored
-	public boolean usedDefend() { return _usedDef; }
+	public boolean usedDefend() { return _usedDefend; }
 	
+
 	int tempHealth, totalAttack, totalDefense, damageDone;
 	// regular attack favors defender, so it uses floor
 	public int attack(Character c) {
@@ -189,10 +185,22 @@ public class Character {
 			} // else, no change
 		}
 		return damageDone;
+
 	}
 	
-	public void defend() { _usedDef = true; }
-	public void restoreDef() { _usedDef = false; }
+	
+	
+
+	
+	public void defend() { 
+		_defStat++;
+		_usedDefend = true;
+		}
+	
+	public void restoreDef() {
+		_defStat--;
+		_usedDefend = false;
+	}
 
 
 }

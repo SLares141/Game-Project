@@ -26,9 +26,13 @@ public class Player extends Character {
 	BufferedImage sprite = null;
 	private String spaddress;
 	private String weaponeq;
+
 	//private boolean lostlastbattle;
 	private boolean _usedDefend = false;
 	private boolean _beatBoss = false;
+
+
+
 	
 	public Player() {
 		_name = "Player";
@@ -105,14 +109,20 @@ public class Player extends Character {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else {
+		}else{
 			
 		}
 	}
+	public BufferedImage getSprite(){
+		return sprite;
+	}
 	
-	public BufferedImage getSprite(){ return sprite; }
-	public void setName(String s) { _name = s; }
-	public String getName() { return _name; }
+	public void setName(String s) { 
+	_name = s; 
+	}
+	public String getName() { 
+	return _name;
+	}
 	
 	public boolean beatBoss() { return _beatBoss; }
 	public void setBeatBoss(boolean b) { _beatBoss = b; } 
