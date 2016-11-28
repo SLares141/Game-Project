@@ -12,9 +12,9 @@ public class StateStackSingleton {
 
 	public static StateMapSingleton stateMap;
 	public Stack<State> mStack;
-	 private static WindowFrame _frame = WindowFrame.getInstance(); //used to streamline _frame adding and removing states
-
+	private static WindowFrame _frame = WindowFrame.getInstance(); //used to streamline _frame adding and removing states
 	private static StateStackSingleton StateStackSingleton = new StateStackSingleton();
+	private int gameCounter = 0;
 
 	/* A private Constructor prevents any other
 	 * class from instantiating.
@@ -88,11 +88,13 @@ public class StateStackSingleton {
 			newState.onEnter(); //calls entrance code
 		}
 			
-		
 		return currentState; //still returns expected value
 	}
-
+	
 	protected State peek() {
 		return mStack.peek();
 	}
+	
+	public void incrementCount() { gameCounter++; }
+	public int getCount() { return gameCounter; }
 }   
