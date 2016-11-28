@@ -52,9 +52,17 @@ public class Game extends JPanel {
 		inv.add(new Consumable("item3", 30));
 		inv.add(new Consumable("soda", 30));
 		inv.add(new Weapon("sword", 10));
+		inv.add(new Weapon("sword", 10));
 		inv.add(new Armor("armour", 30, 35));
 		inv.add(new Consumable("random items", 30));
 		inv.add(new Consumable("...", 30));
+		inv.add(new Weapon("knife", 10));
+		inv.add(new Weapon("staff", 10));
+		inv.add(new Weapon("pencil", 10));
+		inv.add(new Weapon("gun", 10));
+		inv.add(new Weapon("swords", 10));
+		inv.add(new Armor("shield", 10, 10));
+		
 		
         //put all states into statemap
 		StateMapSingleton stateMap = StateMapSingleton.getInstance();

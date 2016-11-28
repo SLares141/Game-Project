@@ -207,4 +207,3 @@ public class Inventory  {
 		return numEquip;
 	}
 }
-
