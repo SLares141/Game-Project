@@ -44,7 +44,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 	
 	String _currentScreen;
 	
-	StateStackSingleton stateStack = StateStackSingleton.getInstance();
+	
 	
 	public BattleState()
 	{
