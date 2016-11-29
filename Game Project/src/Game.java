@@ -37,32 +37,20 @@ public class Game extends JPanel {
 		PartyMember pm3 = new PartyMember();
 		Inventory inv = new Inventory();
 		
-		inv.add(new Consumable("Strawberry Juice", 10));
-		inv.add(new Consumable("Strawberry Jam", 20));
-		inv.add(new Consumable("Strawberry Jelly", 30));
-		inv.add(new Consumable("Strawberry Jelly", 30));
-		inv.add(new Consumable("item", 30));
-		inv.add(new Consumable("Long Item Name asdfghjkl", 30));
-		inv.add(new Consumable("Moo moo milk", 30), 99);
-		inv.add(new Consumable("TM87", 30));
-		inv.add(new Consumable("item2", 30));
-		inv.add(new Consumable("atm card", 30));
-		inv.add(new Consumable("lemonade", 30));
-		inv.add(new Consumable("key item", 30), 100);
-		inv.add(new Consumable("item3", 30));
-		inv.add(new Consumable("soda", 30));
+		inv.add(new Consumable("Strawberry Juice", 10, true));
+		inv.add(new Consumable("Strawberry Jam", 20, true));
+		inv.add(new Consumable("Strawberry Jelly", 30, true));
+		inv.add(new Consumable("Strawberry Jelly", 30, true));
+		inv.add(new Consumable("item", 30, false));
+		inv.add(new Consumable("Long Item Name asdfghjkl", 30, false));
+		inv.add(new Consumable("Moo moo milk", 30, false), 3);
+		
 		inv.add(new Weapon("sword", 10));
 		inv.add(new Weapon("sword", 10));
-		inv.add(new Armor("armour", 30, 35));
-		inv.add(new Consumable("random items", 30));
-		inv.add(new Consumable("...", 30));
-		inv.add(new Weapon("knife", 10));
 		inv.add(new Weapon("staff", 10));
 		inv.add(new Weapon("pencil", 10));
 		inv.add(new Weapon("gun", 10));
-		inv.add(new Weapon("swords", 10));
 		inv.add(new Armor("shield", 10, 10));
-		
 		
         //put all states into statemap
 		StateMapSingleton stateMap = StateMapSingleton.getInstance();

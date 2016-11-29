@@ -1,10 +1,7 @@
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 
 /**
  * This class is currently meant to get a model of the stats the main character has.
@@ -71,8 +68,6 @@ public class Character {
 	public BufferedImage getSprite() 	{ return _sprite; }
 	public BufferedImage getMenuSprite() { return _menuSprite; }
 	public BufferedImage getSmallMenuSprite() { return _smallMenuSprite; }
-
-
 	
 	// setters
 	public void setStr(int i){ _strStat = i;}
@@ -131,8 +126,20 @@ public class Character {
 		_defStat--;
 		_usedDefend = false;
 	}
-
-
+	
+	public boolean hasWeapon() {
+		if(_weapon != null)
+			return true;
+		else
+			return false;
+	}
+	public boolean hasArmor() {
+		if(_armor != null)
+			return true;
+		else
+			return false;
+	}
+	
 	public void use(Consumable cons) {
 		if((_totalHealth - _currentHealth) > cons.getRestoreAmt()) 
 			_currentHealth += cons.getRestoreAmt();

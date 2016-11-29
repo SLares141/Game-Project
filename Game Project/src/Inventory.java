@@ -1,4 +1,4 @@
-
+//fix equip method so it doesnt eat up replaced equipment
 public class Inventory  {
 	private class ItemNode {
 		private Item i;
