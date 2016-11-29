@@ -1,12 +1,6 @@
-import java.util.HashMap;
-import java.util.Stack;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import java.io.IOException;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Game extends JPanel {
