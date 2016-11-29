@@ -9,6 +9,11 @@ public class Game {
 		
        
 		Player player = new Player();
+		
+		player.setArmor(new Armor("none", 0, 0));
+		player.setWeapon(new Weapon("none", 0));
+		
+		
 		PartyMember pm1 = new PartyMember();
 		PartyMember pm2 = new PartyMember();
 		PartyMember pm3 = new PartyMember();

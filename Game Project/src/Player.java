@@ -26,7 +26,9 @@ public class Player extends Character {
 	BufferedImage sprite = null;
 	private String spaddress;
 	private String weaponeq;
-	private boolean lostlastbattle;
+	//private boolean lostlastbattle;
+	private boolean _usedDefend = false;
+	private boolean _beatBoss = false;
 	
 	public Player() {
 		_name = "Player";
@@ -64,12 +66,32 @@ public class Player extends Character {
 				this.setLevel(Integer.valueOf(temp.get(6)));
 				this.setExp(Integer.valueOf(temp.get(7)));
 				this.setIsDead(Boolean.valueOf(temp.get(8)));
-				this.setWeapon(temp.get(9));
-				spaddress = temp.get(10);
-				int x = Integer.valueOf(temp.get(11));
-				int y = Integer.valueOf(temp.get(12));
+				
+				switch(temp.get(9)){
+				case "none":
+					this.setWeapon(new Weapon("none", 0));
+					break;
+				default:
+					this.setWeapon(new Weapon("none", 0));
+					break;
+				}
+				
+				
+				switch(temp.get(10)){
+				case "none":
+					this.setArmor(new Armor("none", 0, 0));
+					break;
+				default:
+					this.setArmor(new Armor("none", 0, 0));
+					break;
+				}
+				
+				
+				spaddress = temp.get(11);
+				int x = Integer.valueOf(temp.get(12));
+				int y = Integer.valueOf(temp.get(13));
 				this.setLocation(new Coordinate(x,y));
-				this.setMap(Integer.valueOf(temp.get(13)));
+				this.setMap(Integer.valueOf(temp.get(14)));
 				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -83,20 +105,17 @@ public class Player extends Character {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else{
+		} else {
 			
 		}
 	}
-	public BufferedImage getSprite(){
-		return sprite;
-	}
 	
-	public void setName(String s) { 
-	_name = s; 
-	}
-	public String getName() { 
-	return _name;
-	}
+	public BufferedImage getSprite(){ return sprite; }
+	public void setName(String s) { _name = s; }
+	public String getName() { return _name; }
+	
+	public boolean beatBoss() { return _beatBoss; }
+	public void setBeatBoss(boolean b) { _beatBoss = b; } 
 	
 	public void savePlayer(){
 		try{
@@ -110,7 +129,8 @@ public class Player extends Character {
 			wr.println(String.valueOf(this.getLevel()));
 			wr.println(String.valueOf(this.getExp()));
 			wr.println(String.valueOf(this.getIsDead()));
-			wr.println(this.getWeapon());
+			wr.println(this.getWeapName());
+			wr.println(this.getArmName());
 			wr.println(this.spaddress);
 			wr.println(String.valueOf(this.getLocation().x));
 			wr.println(String.valueOf(this.getLocation().y));
@@ -121,6 +141,49 @@ public class Player extends Character {
 
 		}
 	}
+	
+	/**
+	 * This method is a modified version of the savePlayer() method. This method
+	 * restores the original player stats for a new game after game over
+	 */
+	public void resetPlayer(){ // save  and set original stats
+		try{
+			PrintWriter wr = new PrintWriter("PlayerFiles/Player0", "UTF-8");
+			wr.println(String.valueOf(1));
+			wr.println(String.valueOf(0));
+			wr.println(String.valueOf(3));
+			wr.println(String.valueOf(1));
+			wr.println(String.valueOf(10));
+			wr.println(String.valueOf(5));
+			wr.println(String.valueOf(1));
+			wr.println(String.valueOf(0));
+			wr.println(String.valueOf(false));
+			wr.println("none");
+			wr.println("none"); 
+			wr.println("images/strawberry.png");
+			wr.println(String.valueOf(512));
+			wr.println(String.valueOf(288));
+			wr.println(String.valueOf(2));
+			wr.close();
+		} catch (IOException e){
+		
+		}
+		this.setStr(1);
+		this.setDef(0);
+		this.setStrMag(3);
+		this.setdefMag(1);
+		this.setHealth(10);
+		this.setMagic(5);
+		this.setLevel(1);
+		this.setExp(0);
+		this.setIsDead(false);
+		this.setWeapName("none");
+		this.setArmName("none");
+		spaddress = "images/strawberry.png";
+		this.setLocation(new Coordinate(512, 288));
+		this.setMap(2);
+	}
+	
 	public void move() {
 		
 	}
