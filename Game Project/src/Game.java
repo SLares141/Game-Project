@@ -20,7 +20,6 @@ public class Game extends JPanel {
 		_frame = WindowFrame.getInstance();
 	}
 	
-	
 	public static void main(String[] args) {
 	
 		Game g = new Game();  

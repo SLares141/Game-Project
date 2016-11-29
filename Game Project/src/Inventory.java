@@ -1,4 +1,4 @@
-//fix equip method so it doesnt eat up replaced equipment
+
 public class Inventory  {
 	private class ItemNode {
 		private Item i;
@@ -148,6 +148,8 @@ public class Inventory  {
 	public Item equip(int index, Character c) {
 		if(equipment[index].getItem() instanceof Weapon) {
 			Weapon w = (Weapon)equipment[index].getItem();
+			if(c.getWeapon() != null) 
+				add(c.getWeapon());
 			c.equip(w);
 			if(equipment[index].getAmount() == 1) {
 				equipment[index] = null;
@@ -164,6 +166,8 @@ public class Inventory  {
 		}
 		else {
 			Armor a = (Armor)equipment[index].getItem();
+			if(c.getArmor() != null) 
+				add(c.getArmor());
 			c.equip(a);
 			if(equipment[index].getAmount() == 1) {
 				equipment[index] = null;
