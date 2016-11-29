@@ -12,12 +12,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 /*
- * 	things to add/change: empty equipment inventory exception
- * 						  player character MP bug
+ * 	things to add/change: *saving*
  * 						  next level exp
- * 				   		  character artwork without white background
  * 						  character names
- * 						  *saving*
  * 						  (not necessary) making money and current location actually depend on something
  */
 public class InventoryMenuState extends JPanel implements State {
@@ -56,8 +53,8 @@ public class InventoryMenuState extends JPanel implements State {
 		this.pm1 = pm1;
 		this.pm2 = pm2;
 		this.pm3 = pm3;
-		party = new Character[] {player, pm1, pm2, null};
-		partySize = 3;
+		party = new Character[] {player, null, null, null};
+		partySize = 1;
 		inv = i;
 
 		addKeyListener(new KeyAdapter() {
@@ -158,7 +155,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 		//draws current location
 		g.setFont(large);
-		g.drawString("Strawberry Fields", 385, 50);
+		g.drawString("Strawberry Fields", 504 - g.getFontMetrics().stringWidth("Strawberry Fields")/2, 50);
 
 		//draws submenu selections
 		g.setFont(small);
@@ -178,7 +175,6 @@ public class InventoryMenuState extends JPanel implements State {
 		while(count < partySize) {
 			Character c = party[count];
 			g.drawImage(c.getMenuSprite(), 360, 95 + 120*count, null);
-			g.drawRect(360, 95 + 120*count, 100, 100);
 			g.setFont(large);
 			g.drawString(c.getName(), 475, 125 + 120*count);
 			g.setFont(medium);
@@ -242,7 +238,6 @@ public class InventoryMenuState extends JPanel implements State {
 				while(count < partySize) {
 					Character c = party[count];
 					g.drawImage(c.getSmallMenuSprite(), 360, 170 + 100*count, null);
-					g.drawRect(360, 170 + 100*count, 80, 80);
 					g.setFont(medium);
 					g.drawString(c.getName(), 475, 190 + 100*count);
 					g.setFont(small);
@@ -289,7 +284,6 @@ public class InventoryMenuState extends JPanel implements State {
 			while(count < partySize) {
 				Character c = party[count];
 				g.drawImage(c.getMenuSprite(), 360, 95 + 120*count, null);
-				g.drawRect(360, 95 + 120*count, 100, 100);
 				g.setFont(large);
 				g.drawString(c.getName(), 475, 125 + 120*count);
 				g.setFont(medium);
@@ -367,7 +361,7 @@ public class InventoryMenuState extends JPanel implements State {
 				}
 				else {
 					Armor a = (Armor)inv.getEquip(invIndex);
-					if(party[characterIndex].hasWeapon()) {
+					if(party[characterIndex].hasArmor()) {
 						g.drawString("Physical Defense : " + party[characterIndex].getArmor().getDefMod() + " --> " + a.getDefMod(), 640 - g.getFontMetrics().stringWidth("Physical Defense : " + party[characterIndex].getArmor().getDefMod() + " --> " + a.getDefMod())/2, 310);
 						g.drawString("Magical Defense : " + party[characterIndex].getArmor().getDefMagMod() + " --> " + a.getDefMagMod(), 640 - g.getFontMetrics().stringWidth("Magical Defense : " + party[characterIndex].getArmor().getDefMagMod() + " --> " + a.getDefMagMod())/2, 350);
 					}
@@ -409,7 +403,6 @@ public class InventoryMenuState extends JPanel implements State {
 
 				Character c = party[characterIndex];
 				g.drawImage(c.getMenuSprite(), 310, 120, null);
-				g.drawRect(310, 120, 100, 100);
 				g.setFont(large);
 				g.drawString(c.getName(), 430, 150);
 				g.setFont(medium);

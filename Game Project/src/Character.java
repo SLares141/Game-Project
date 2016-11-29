@@ -32,7 +32,7 @@ public class Character {
 		_defMagic = 		1;
 		_totalHealth = 		10;
 		_currentHealth = 	_totalHealth;
-		_totalMagic = 		5;
+		_totalMagic = 		10;
 		_currentMagic = 	_totalMagic;
 		_levelStat = 		1;
 		_expStat = 			0;
