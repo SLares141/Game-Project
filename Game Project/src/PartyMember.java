@@ -17,6 +17,7 @@ public class PartyMember extends Character {
 			
 			_sprite = ImageIO.read(new File("images/strawberry.png"));
 			_menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
+			_smallMenuSprite = ImageIO.read(new File("images/smallMenuStrawberry.png"));
 			FileReader inFile = new FileReader("Char Files/Char0.txt");
 			BufferedReader buffReader = new BufferedReader(inFile);
 			ArrayList<String> temp = new ArrayList<String>();

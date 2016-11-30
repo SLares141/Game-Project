@@ -42,6 +42,7 @@ public class Player extends Character {
 				try {
 					_sprite = ImageIO.read(new File("images/strawberry.png"));
 					_menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
+					_smallMenuSprite = ImageIO.read(new File("images/smallMenuStrawberry.png"));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -65,6 +66,7 @@ public class Player extends Character {
 				this.setStrMag(Integer.valueOf(temp.get(2)));
 				this.setDefMag(Integer.valueOf(temp.get(3)));
 				this.setHealth(Integer.valueOf(temp.get(4)));
+
 				this.setTotalHealth(Integer.valueOf(temp.get(5)));
 				this.setMagic(Integer.valueOf(temp.get(6)));
 				this.setTotalMagic(Integer.valueOf(temp.get(7)));

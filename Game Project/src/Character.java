@@ -1,11 +1,12 @@
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.util.Random;
 
+>>>>>>> stable-release-11/28/16
 import javax.imageio.ImageIO;
-
 
 /**
  * This class is currently meant to get a model of the stats the main character has.
@@ -17,22 +18,21 @@ import javax.imageio.ImageIO;
  */
 public class Character {
 	
-	protected BufferedImage _sprite;
-	protected BufferedImage _menuSprite;
+	protected BufferedImage _sprite, _menuSprite, _smallMenuSprite;
 	private int _strStat, _defStat, _strMagic, _defMagic;
 	private int _totalHealth, _currentHealth, _totalMagic, _currentMagic;
 	private int _levelStat, _expStat, _money;
 	private boolean _isDead, _usedDef;
 	private Weapon _weapon;
 	private Armor _armor;
-
+	private String _name;
 	private String _weap;
 	private String _armo;
+
 
 	private Coordinate _loc;
 	private int _currentMap;
 
-	
 	public Character(){
 		_strStat = 			1;
 		_defStat = 			0;
@@ -40,15 +40,18 @@ public class Character {
 		_defMagic = 		1;
 		_totalHealth = 		10;
 		_currentHealth = 	_totalHealth;
-		_totalMagic = 		5;
+		_totalMagic = 		10;
 		_currentMagic = 	_totalMagic;
 		_levelStat = 		1;
 		//_expStat = 			0;
 		_money = 			0;
 		_isDead = 			false;
-		_usedDef =			false;
-		//_weapon = 			null;
-		//_armor = 			null;
+
+		_usedDef =		false;
+		_weapon = 			null;
+		_armor = 			null;
+		_name = "Insert name here";
+
 	}
 	
 	// getters
@@ -60,7 +63,8 @@ public class Character {
 	public int getHealth() 		{ return _currentHealth; }
 	public int getTotalMagic()  { return _totalMagic; } 
 	public int getMagic() 		{ return _currentMagic; }
-
+	public String getName() 	{ return _name; }
+	
 	public Coordinate getLocation(){
 		return _loc;
 	}
@@ -72,15 +76,17 @@ public class Character {
 	public int getMoney()		{ return _money; }
 	public boolean getIsDead()	{ return _isDead; }
 	public Weapon getWeapon()	{ return _weapon; }
+
 	public String getWeapName() { return _weapon.getName(); }
 	public Armor getArmor()		{ return _armor; }
 	public String getArmName()  { return _armor.getName(); }
+
 	public BufferedImage getSprite() 	{ return _sprite; }
 	public BufferedImage getMenuSprite() { return _menuSprite; }
-
-
+	public BufferedImage getSmallMenuSprite() { return _smallMenuSprite; }
 	
 	// setters
+
 	public void setStr(int i){ _strStat = i; }
 	public void setDef(int i) { _defStat = i; }
 	public void setStrMag(int i){ _strMagic = i; }
@@ -95,14 +101,13 @@ public class Character {
 	public void setIsDead(boolean b) { _isDead = b; }
 	public void setWeapon(Weapon w) { _weapon = w; } // set the weapon object
 	public void setArmor(Armor a) { _armor = a; } // set the armor object
-	//public void setWeapon(String w) { _weap = w; }
-	//public void setArmor(String a) { _armo = a; }
 	public void setWeapName(String w) { _weapon.setName(w); }
 	public void setArmName(String a) { _armor.setName(a); }
 	
 	public void setLocation(Coordinate c) { _loc = c; }
 	public void setMap(int s) { _currentMap = s; }
 	public void setSprite(BufferedImage bi) { _sprite = bi; }
+
 	
 	// this can serve as a loop condition during battle to determine a game over or victory
 	public boolean isDead() {
@@ -189,12 +194,43 @@ public class Character {
 				c.setHealth(tempHealth);
 				_currentMagic -= 2;
 			} // else, no change
+
 		}
 		return damageDone;
 	}
 	
+
+	public boolean hasWeapon() {
+		if(_weapon != null)
+			return true;
+		else
+			return false;
+	}
+	public boolean hasArmor() {
+		if(_armor != null)
+			return true;
+		else
+			return false;
+	}
+	
+	public void use(Consumable cons) {
+		if((_totalHealth - _currentHealth) > cons.getRestoreAmt()) 
+			_currentHealth += cons.getRestoreAmt();
+		else
+			_currentHealth = _totalHealth;
+
 	public void defend() { _usedDef = true; }
 	public void restoreDef() { _usedDef = false; }
 
 
+	}
+	public void equip(Weapon w) {
+		_weapon = w;
+		//weapon modifier function
+
+	}
+	public void equip(Armor a) {
+		_armor = a;
+		//armor modifier functions
+	}
 }
