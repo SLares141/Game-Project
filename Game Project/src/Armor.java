@@ -3,18 +3,21 @@
 // each particular armor item may need to extend this
 public class Armor extends Item {
 	
-	private int defModifier, defMagicModifier;
+
+	private int _defStat, _defMagic, _value;
+
 	
 	public Armor(String name, int defModifier, int defMagicModifier) {
 		super(name);
-		this.defModifier = defModifier;
-		this.defMagicModifier = defMagicModifier;
+		_defStat = defModifier;
+		_defMagic = defMagicModifier;
 	}
 	
-	public int getDefMod() {
-		return defModifier;
-	}
-	public int getDefMagMod() {
-		return defMagicModifier;
-	}
+	
+
+	
+	public int getDefStat() { return _defStat; }
+	public int getDefMagic() { return _defMagic; }
+
+
 }

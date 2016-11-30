@@ -36,19 +36,7 @@ public class MainMenuState
 	
 	//load the singleton classes
 	StateMapSingleton stateMap = StateMapSingleton.getInstance();
-	StateStackSingleton stateStack = StateStackSingleton.getInstance();
-	
-	
-
-	/*
-	public static void main(String[] args)
-	{
-		System.out.println("in main");
-		MainMenuState mms = new MainMenuState();
-		Graphics g = _frame.getGraphics();
-		mms.paintComponent(g);
-	}
-	*/	
+	StateStackSingleton stateStack = StateStackSingleton.getInstance();	
 		
 	
 	public MainMenuState()
@@ -57,14 +45,6 @@ public class MainMenuState
 		_cursor = 0;
 		_currentMenu = new String("Start");
 		Graphics g = _frame.getGraphics();
-		//this.paintComponent(g);
-		/*
-		_frame.setSize(new Dimension(960,540));
-		_frame.setLocationRelativeTo(null);
-		_frame.setResizable(false);
-		_frame.setVisible(true);
-		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		*/
 		addKeyListener(this);
 		
 		this.setFocusable(true);
@@ -73,7 +53,7 @@ public class MainMenuState
 			background = ImageIO.read(new File("images/menuback2.jpg"));
 			_arrow = ImageIO.read(new File("images/arrow.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		this.addNotify();
@@ -97,8 +77,8 @@ public class MainMenuState
 			if (_cursor < 0){
 				System.out.println(" cursor < 0");
 				_cursor += 50;
-			}else if (_cursor > 100){				
-				System.out.println(" cursor > 150");
+			}else if (_cursor > 150){				
+				System.out.println(" cursor > 200");
 				_cursor -=50;
 			}
 		}
@@ -109,7 +89,6 @@ public class MainMenuState
 	}
 
 	public void render() {
-		//Graphics g = _frame.getGraphics();
 		repaint();
 		
 	}
@@ -119,42 +98,19 @@ public class MainMenuState
 		if (_currentMenu.equals("Start")){
 
 			g.drawImage(background, 0,0, null);
-			/*Rectangle test = new Rectangle(0,0,1024,576);
-			g2d.setColor(Color.BLACK);
-			g2d.fill(test);
-			*/
 			Font fnt0 = new Font("Comic sans MS", Font.BOLD, 50);
 			g.setFont(fnt0);
 			g.setColor(Color.BLACK);
-			g.drawString("SAMPLE TEXT:", _windowWidth/2 - 190, 100);
+			g.drawString("FRUIT VS VEGETABLES:", _windowWidth/2 - 300, 100);
 			Font fnt2 = new Font("comic sans MS", Font.PLAIN, 30);
 			g.setFont(fnt2);
-			g.drawString(" The Adventures of (INSERT NAME HERE)", _windowWidth/2-320, _windowHeight/2 -125);
+			g.drawString(" The Adventures of Straw the Berry", _windowWidth/2 - 275, _windowHeight/2 -125);
 			g.drawString("Press Enter", _windowWidth/2 - 80, 300);
-			//g.drawImage(_arrow, _windowWidth/2 - 200, (_windowHeight/2 - 100)+ _cursor, null);
-			//frame.getContentPane().add(this);
 			
-			//PRINTS A GRID
-			/*
-			int i=0,j=0;
-			for(i = 0; i < 32; i++){
-				g.setColor(Color.gray);
-				if(i==16)
-					g.setColor(Color.red);
-				g.drawLine(i*32, 0, i*32, 576);
-			}
-			for(j = 0; j < 18; j++){
-				g.setColor(Color.gray);
-				if(i==9)
-					g.setColor(Color.red);
-				g.drawLine(0, j*32, 1024, j*32);
-			}
-			*/
+			
 		}else if (_currentMenu.equals("Main")){
 			
-			
 			g.drawImage(background, 0,0, null);
-			//g.fillRect(0, 0, _windowWidth, _windowHeight);
 			Font fnt0 = new Font("arial", Font.BOLD, 50);
 			g.setFont(fnt0);
 			g.setColor(Color.RED);
@@ -162,35 +118,23 @@ public class MainMenuState
 			
 			g.drawImage(_arrow, _windowWidth/2 -160, (_windowHeight/2 - 116)+ _cursor, null);
 			
-			Rectangle playButton		= new Rectangle(_windowWidth/2 -100, 175, 200, 40);
-			Rectangle settingsButton	= new Rectangle(_windowWidth/2 -100, 225, 200, 40);
-			Rectangle quitButton		= new Rectangle(_windowWidth/2 -100, 275, 200, 40);
+			Rectangle newGameButton		= new Rectangle(_windowWidth/2 -100, 175, 200, 40);
+			Rectangle continueButton	= new Rectangle(_windowWidth/2 -100, 225, 200, 40);
+			Rectangle settingsButton	= new Rectangle(_windowWidth/2 -100, 275, 200, 40);
+			Rectangle quitButton		= new Rectangle(_windowWidth/2 -100, 325, 200, 40);
 			
 			Font font1 = new Font("arial", Font.BOLD, 30);
 			g2d.setFont(font1);
 			g2d.setColor(Color.MAGENTA);
-			g.drawString("Play", playButton.x + 70, playButton.y + 30);
-			g2d.draw(playButton);
+			g.drawString("New Game", newGameButton.x + 30, newGameButton.y + 30);
+			g2d.draw(newGameButton);
+			g.drawString("Continue", continueButton.x + 45, continueButton.y + 30);
+			g2d.draw(continueButton);
 			g.drawString("Settings", settingsButton.x + 45, settingsButton.y + 30);
 			g2d.draw(settingsButton);
 			g.drawString("Quit", quitButton.x + 70, quitButton.y + 30);
 			g2d.draw(quitButton);
-			//frame.getContentPane().add(this);
-			//GRID FOR FIXING PLACEMENT
-			/*
-			int i=0,j=0;
-			for(i = 0; i < 32; i++){
-				g.setColor(Color.gray);
-				if(i==16)
-					g.setColor(Color.red);
-				g.drawLine(i*32, 0, i*32, 576);
-			}
-			for(j = 0; j < 18; j++){
-				g.setColor(Color.gray);
-				if(i==9)
-					g.setColor(Color.red);
-				g.drawLine(0, j*32, 1024, j*32);
-			}*/
+		
 		}else if (_currentMenu.equals("Settings")){
 			g.setColor(Color.GRAY);
 			g.fillRect(0, 0, _windowWidth, _windowHeight);
@@ -278,14 +222,29 @@ public class MainMenuState
 			_currentMenu = "Main";
 		}else if(_currentMenu.equals("Main")){
 			if ((_cursor/50) == 0){
-				System.out.println("Play Pressed");
-				stateStack.push("field"); //exits this state, goes to field state.
+				System.out.println("NewGame Pressed");
+				stateStack.incrementCount();
+				stateMap.put("field" + stateStack.getCount(), new FieldState(new Player()));
+				((FieldState) stateMap.get("field" + stateStack.getCount())).getPlayer().resetPlayer();
+				stateStack.push("field" + stateStack.getCount());
+				stateStack.incrementCount();
+				stateMap.put("field" + stateStack.getCount(), new FieldState(new Player()));
+				stateStack.popAndPush();
 				
 				
 			}else if((_cursor/50)== 1){
+				System.out.println("Continue Pressed");
+				
+				if (stateStack.getCount() <= 0)
+					stateStack.push("field"); //exits this state, goes to field state.
+				else
+					stateStack.push("field" + stateStack.getCount()); //exits this state, goes to field state.
+				
+				
+			}else if((_cursor/50)== 2){
 				System.out.println("Settings Pressed");
 				_currentMenu = "Settings";
-			}else if ((_cursor/50)== 2){
+			}else if ((_cursor/50)== 3){
 				System.out.println("Quit Pressed");
 				
 				_frame.quit();

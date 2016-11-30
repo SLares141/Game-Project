@@ -31,24 +31,33 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 
     private Player player;
-    private BufferedImage _playersprite;
+    private BufferedImage _playersprite;//, enemySprite;
     private Coordinate _sp;
     private Coordinate _oldsp;
     private boolean loadall = true;
     
-    //causes significant loadtime
-    List<Map<Coordinate,Tile>> mapList = null;
-    Map<Coordinate, Tile> map0 = makeMap0();
-    Map<Coordinate, Tile> map1 = makeMap1();
-    Map<Coordinate, Tile> map2 = makeMap2();
-    private int currentMapNum;
     
+    
+    //causes significant loadtime
+    List<Map<Coordinate,Tile>> mapList;		
+    Map<Coordinate, Tile> map0;			 	
+    Map<Coordinate, Tile> map1; 			
+    Map<Coordinate, Tile> map2; 
+    
+    
+    private int currentMapNum;
 	int _windowWidth = 1024;
 	int _windowHeight = 576;
+	
+	ArrayList<EnemyCharacter> enemyList = new ArrayList<EnemyCharacter>(); // list of enemy instances in field
+	
 
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
 	StateMapSingleton stateMap = StateMapSingleton.getInstance();
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
+	
+	public Player getPlayer() { return player; }
+	public void setPlayer(Player p) { player = p; }
 	
 	
 	// this is the name of the state that the field state will transition to.
@@ -62,16 +71,33 @@ public class FieldState extends JPanel implements State, KeyListener {
 	{
 		System.out.println("in constructor");
 		
-		Graphics g = _frame.getGraphics();
-		addKeyListener(this);
-		this.setFocusable(true);
 		this.player = p;
 		_sp = p.getLocation();
 		_oldsp = new Coordinate(_sp.x, _sp.y);
 		_playersprite = p.getSprite();
+		
+		
+		enemyList.add(new EnemyCharacter(1, player.getEnemyLevel())); // sample enemy added
+		
+		
+		mapList = null;
+	    map0 = makeMap0();
+	    map1 = makeMap1();
+	    map2 = makeMap2();
+		
+		Graphics g = _frame.getGraphics();
+		addKeyListener(this);
+		this.setFocusable(true);
+		
+		if (p.isDead() || p.isBossBeat()) {  /////////////////////////////////////////////////
+			p.setLocation(new Coordinate(512, 288));
+			p.setMap(2);
+		}
+		
 		mapList = makeMapList();
 		currentMapNum = p.getMap();
 		this.addNotify();
+		
 	}
 
 	public void addNotify() {
@@ -83,17 +109,13 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void update() {
-        
-		
 		
 	}
 
 	public void render() {
-		//repaint();
 		
 	}
 	public void paintComponent(Graphics g) {
-		
 		//grid of tile values
 		
 		
@@ -110,22 +132,63 @@ public class FieldState extends JPanel implements State, KeyListener {
 				Tile t = entry.getValue();
 				g.drawImage(t.im, c.x, c.y, null);
 			}
+			
+			if (currentMapNum == 2) { // DISPLAY CURRENT ENEMY DIFFICULTY LEVEL WHEN IN HOUSE
+				
+				g.setFont(new Font("Comic sans MS", Font.BOLD, 50));
+				g.setColor(Color.RED);
+				g.drawString("ENEMIES AT LEVEL " + player.getEnemyLevel(), 100, 100);
+				
+				//enemyList.get(0).setLevel(player.getEnemyLevel());
+				
+			}
+			
+			
 		}else{
 			//prints the tile that the sprite moved from
 			System.out.println("covering old char sprite");
 			g.drawImage(mapList.get(currentMapNum).get(_oldsp).im, _oldsp.x, _oldsp.y, null);
 		}
 		g.drawImage(_playersprite, _sp.x, _sp.y, 32, 32, null); 
-		
+		drawEnemies(g);
 	}
     
 	
 
+	private void drawEnemies(Graphics g) {
+		if(currentMapNum == 0){
+			EnemyCharacter e = enemyList.get(0);
+			
+			Coordinate c = new Coordinate(32*5, 5*32);
+			e.setLocation(c);
+			
+			g.drawImage(e.getSprite(), e.getLocation().x, e.getLocation().y, null);
+		}
+	}
+
 	@Override
 	public void onEnter() {
+		if (player.isDead()) {
+			/*
+			 * We can increment a counter just so that we can create a new unique FieldState
+			 * that is independent from the one in which the player just got a GameOver in.
+			 * This will reset the stats of both the player and enemies
+			 */
+			player.resetPlayer();
+			player = new Player();
+			stateStack.incrementCount();
+			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
+			stateStack.pop();
+		} else if (player.isBossBeat()) {
+			stateStack.incrementCount();
+			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
+			stateStack.popAndPush(); /////////////////////////////////////////////////////////
+			
+			
+			
+		}
 		/*
 		 * 	when FieldState is entered, the whole field needs to be painted.
-		 * 
 		 */
 		loadall = true;
 		repaint();
@@ -139,7 +202,16 @@ public class FieldState extends JPanel implements State, KeyListener {
 	 * save the players new data onExit of the fieldState
 	 */
 	public void onExit() {
-		player.savePlayer();
+		if (player.isDead()) {
+			player.resetPlayer();
+			player = new Player();
+			
+		} else if (player.isBossBeat()) { ////////////////////////////////////////////////////////////////	
+			player.prepareNextLevel();
+			player = new Player();
+			
+		} else
+			player.savePlayer();
 	}
 
 	@Override
@@ -207,6 +279,15 @@ public class FieldState extends JPanel implements State, KeyListener {
 			//do nothing, on boundary
 		}else if (!nextTile.canMoveTo()){
 			//DO NOTHING 
+		}else if (nextTile.hasEnemy()){
+			EnemyCharacter e = nextTile.getEnemy();
+			
+			e.setLevel(player.getEnemyLevel()); // must reset enemy level, sometimes level is off from constructor
+			
+			BattleState bs = new BattleState();
+			bs.setEnemy(e);
+			bs.setPlayer(player);
+			stateStack.push(bs);
 		}else if (nextTile.isBorder()){
 			_sp = check;
 			player.setLocation(_sp);
@@ -350,6 +431,11 @@ public class FieldState extends JPanel implements State, KeyListener {
 		Coordinate t = new Coordinate(26*32, 3*32);
 		map.get(t).setDestination(2);
 		map.get(t).setReturnCord(new Coordinate(512,512));
+		t.set(5*32, 5*32);
+		
+		EnemyCharacter em = enemyList.get(0);  //new EnemyCharacter(0, player.getEnemyLevel());
+		map.get(t).setEnemy(em);
+		
 		return map;
 	}
 	public Map<Coordinate, Tile> makeMap1(){
@@ -434,7 +520,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 				Coordinate t = new Coordinate(x*32, y*32);
 				
 				map.put(t, new Tile(ia[y][x], false));
-				if((y==17)&&((x==16)||(x==17))){
+				if((y==17)&&((x==16)||(x==15))){
 					map.get(t).setDestination(0);
 					map.get(t).setReturnCord(new Coordinate(26*32, 3*32));
 				}
@@ -450,9 +536,4 @@ public class FieldState extends JPanel implements State, KeyListener {
 		return temp;
 	}
 }
-
-
-
-
-	
 

@@ -12,9 +12,9 @@ public class StateStackSingleton {
 
 	public static StateMapSingleton stateMap;
 	public Stack<State> mStack;
-	 private static WindowFrame _frame = WindowFrame.getInstance(); //used to streamline _frame adding and removing states
-
+	private static WindowFrame _frame = WindowFrame.getInstance(); //used to streamline _frame adding and removing states
 	private static StateStackSingleton StateStackSingleton = new StateStackSingleton();
+	private int gameCounter = 0;
 
 	/* A private Constructor prevents any other
 	 * class from instantiating.
@@ -42,6 +42,22 @@ public class StateStackSingleton {
 		top.render();
 	}
 
+	protected void push(BattleState bs){
+		
+		if(!mStack.isEmpty()) //means that the old state can be removed from the windowFrame.	 
+		{
+			State oldState = peek();
+			_frame.removeState(oldState); //gets old state and removes it from windowFrame
+			oldState.onExit();
+		}
+			
+		
+		//State newState = stateMap.get(name); //state the user wants to enter here.
+		_frame.addState(bs); // in with the new
+		bs.onEnter(); //do entrance code
+		
+		mStack.push(bs); //actually pushes it to the stack
+	}
 	protected void push(String name) {
 		
 		if(!mStack.isEmpty()) //means that the old state can be removed from the windowFrame.	 
@@ -72,11 +88,37 @@ public class StateStackSingleton {
 			newState.onEnter(); //calls entrance code
 		}
 			
-		
 		return currentState; //still returns expected value
 	}
-
+	
+	protected void popAndPush() {
+		State currentState = mStack.pop(); //pops the value out
+		_frame.removeState(currentState); //removes it from the frame
+		currentState.onExit(); //exit code
+		
+		
+		push("field" + gameCounter);
+		
+		
+		/*State newState = stateMap.get("field" + gameCounter); //state the user wants to enter here.
+		_frame.addState(newState); // in with the new
+		((FieldState) newState).getPlayer().prepareNextLevel();
+		((FieldState) newState).setPlayer(new Player());
+		
+		newState.onEnter(); //do entrance code
+		
+		mStack.push(newState); //actually pushes it to the stack
+		*/
+	}
+	
+	
+	
 	protected State peek() {
 		return mStack.peek();
 	}
+	
+	public void incrementCount() { gameCounter++; }
+	public int getCount() { return gameCounter; }
+	
+	
 }   

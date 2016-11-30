@@ -1,4 +1,3 @@
-
 public class Inventory  {
 	private class ItemNode {
 		private Item i;
