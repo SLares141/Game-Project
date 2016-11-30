@@ -25,7 +25,6 @@ public class Inventory  {
 		}
 	}
 	private final int SIZE = 18;
-	private int money = 420;
 	private int numItems = 0;
 	private int numEquip = 0;
 	private boolean invFull;
@@ -200,9 +199,6 @@ public class Inventory  {
 		return null;
 	}
 	
-	public int getMoney() {
-		return money;
-	}
 	public int getNumItems() {
 		return numItems;
 	}

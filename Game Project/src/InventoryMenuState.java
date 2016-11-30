@@ -15,7 +15,6 @@ import javax.swing.JPanel;
  * 	things to add/change: *saving*
  * 						  next level exp
  * 						  character names
- * 						  (not necessary) making money and current location actually depend on something
  */
 public class InventoryMenuState extends JPanel implements State {
 
@@ -167,7 +166,7 @@ public class InventoryMenuState extends JPanel implements State {
 
 		//draws money and in-game time
 		g.drawString("Money: ", 30, 475);
-		g.drawString("$" + inv.getMoney(), 100, 475);
+		g.drawString("$" + player.getMoney(), 100, 475);
 		//g.drawString("Time: ", 30, 525);
 
 		//draws party
@@ -182,7 +181,8 @@ public class InventoryMenuState extends JPanel implements State {
 			g.drawString("MP: " + c.getMagic() + "/" + c.getTotalMagic() , 475, 190 + 120*count);
 			g.drawString("Level: " + c.getLevel(), 745, 125 + 120*count);
 			g.drawString("EXP: " + c.getExp(), 745, 160 + 120*count);
-			g.drawString("Next Level: ", 745, 190 + 120*count);
+			Player p = (Player)party[count];
+			g.drawString("Next Level: " + (p.getExp4NextLvl() - p.getExp()), 745, 190 + 120*count);
 			count++;
 		}
 
