@@ -78,6 +78,8 @@ public class FieldState extends JPanel implements State, KeyListener {
 		
 		
 		enemyList.add(new EnemyCharacter(1, player.getEnemyLevel())); // sample enemy added
+		enemyList.add(new EnemyCharacter(0, player.getEnemyLevel())); // sample enemy added
+		
 		
 		
 		mapList = null;
@@ -89,7 +91,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 		addKeyListener(this);
 		this.setFocusable(true);
 		
-		if (p.isDead() || p.isBossBeat()) {  /////////////////////////////////////////////////
+		if (p.isDead() || p.isBossBeat()) {  
 			p.setLocation(new Coordinate(512, 288));
 			p.setMap(2);
 		}
@@ -157,9 +159,17 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	private void drawEnemies(Graphics g) {
 		if(currentMapNum == 0){
-			EnemyCharacter e = enemyList.get(0);
+			EnemyCharacter e = enemyList.get(0); // carrot
 			
 			Coordinate c = new Coordinate(32*5, 5*32);
+			e.setLocation(c);
+			
+			g.drawImage(e.getSprite(), e.getLocation().x, e.getLocation().y, null);
+		}
+		else if (currentMapNum == 1) {
+			EnemyCharacter e = enemyList.get(1); // broccoli
+			
+			Coordinate c = new Coordinate(460, 250);
 			e.setLocation(c);
 			
 			g.drawImage(e.getSprite(), e.getLocation().x, e.getLocation().y, null);
@@ -182,7 +192,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 		} else if (player.isBossBeat()) {
 			stateStack.incrementCount();
 			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
-			stateStack.popAndPush(); /////////////////////////////////////////////////////////
+			stateStack.popAndPush();
 			
 			
 			
@@ -433,8 +443,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 		map.get(t).setReturnCord(new Coordinate(512,512));
 		t.set(5*32, 5*32);
 		
-		EnemyCharacter em = enemyList.get(0);  //new EnemyCharacter(0, player.getEnemyLevel());
-		map.get(t).setEnemy(em);
+		EnemyCharacter carrot = enemyList.get(0);  //new EnemyCharacter(1, player.getEnemyLevel());
+		//EnemyCharacter boss = enemyList.get(1);
+		
+		//map.get(new Coordinate(460, 255)).setEnemy(boss);
+		
+		map.get(t).setEnemy(carrot);
 		
 		return map;
 	}
@@ -488,6 +502,16 @@ public class FieldState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
+		
+		Coordinate t = new Coordinate(26*32, 3*32);
+		map.get(t).setDestination(2);
+		map.get(t).setReturnCord(new Coordinate(512,512));
+		t.set(15*32, 9*32);
+		EnemyCharacter boss = enemyList.get(1);
+		
+		map.get(t).setEnemy(boss);
+		
+		
 		return map;
 	}
 	public Map<Coordinate, Tile> makeMap2(){
