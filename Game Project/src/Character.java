@@ -1,11 +1,10 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-<<<<<<< HEAD
-=======
+
 import java.util.Random;
 
->>>>>>> stable-release-11/28/16
+
 import javax.imageio.ImageIO;
 
 /**
@@ -123,8 +122,8 @@ public class Character {
 	// regular attack favors defender, so it uses floor
 	public int attack(Character c) {
 		damageDone = 0;
-		totalAttack = _strStat + this.getWeapon().getStrStat();
-		totalDefense = c.getDef() + c.getArmor().getDefStat();
+		totalAttack = _strStat + this.getWeapon().getStrModifier();
+		totalDefense = c.getDef() + c.getArmor().getDefMod();
 		if (c.usedDefend()) {
 			if (Math.floor((totalAttack - totalDefense) / 2) >= 0) {// make sure health does not increase after attack()
 				damageDone = (int) (Math.floor((totalAttack - totalDefense) / 2));
@@ -149,8 +148,8 @@ public class Character {
 		Random r = new Random();
 		if (r.nextInt(100) >= 60){ // successfully special attack 40% of the time
 			System.out.println("Special Attack Hits");
-			totalAttack = _strStat + this.getWeapon().getStrStat();
-			totalDefense = c.getDef() + c.getArmor().getDefStat();
+			totalAttack = _strStat + this.getWeapon().getStrModifier();
+			totalDefense = c.getDef() + c.getArmor().getDefMod();
 			if (c.usedDefend()) {
 				if (Math.floor((totalAttack - totalDefense) * 1.5 / 2) >= 0) {
 					damageDone = (int) Math.ceil((totalAttack - totalDefense) * 1.5 / 2);
@@ -178,7 +177,7 @@ public class Character {
 	public int magicAttack(Character c) {
 		damageDone = 0;
 		totalAttack = _strMagic; //+ this.getWeapon().get       // should weapon boost magic attack?...
-		totalDefense = c.getMagicDef() + c.getArmor().getDefMagic();
+		totalDefense = c.getMagicDef() + c.getArmor().getDefMagMod();
 		if (c.usedDefend()) {
 			if (Math.floor((totalAttack - totalDefense) / 2) >= 0) {// make sure health does not increase after attack()
 				damageDone = (int) (Math.floor((totalAttack - totalDefense) / 2));
@@ -218,12 +217,12 @@ public class Character {
 			_currentHealth += cons.getRestoreAmt();
 		else
 			_currentHealth = _totalHealth;
-
+	}
 	public void defend() { _usedDef = true; }
 	public void restoreDef() { _usedDef = false; }
 
 
-	}
+	
 	public void equip(Weapon w) {
 		_weapon = w;
 		//weapon modifier function

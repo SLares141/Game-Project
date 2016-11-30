@@ -15,9 +15,9 @@ public class Armor extends Item {
 	
 	
 
-	
-	public int getDefStat() { return _defStat; }
-	public int getDefMagic() { return _defMagic; }
-
+	//getDefStat
+	public int getDefMod() { return _defStat; }
+	public int getDefMagMod() { return _defMagic; }
+//getDefMagic
 
 }
