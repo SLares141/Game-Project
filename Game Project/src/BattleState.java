@@ -34,15 +34,16 @@ public class BattleState extends JPanel implements State, KeyListener {
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
 	StateMapSingleton stateMap = StateMapSingleton.getInstance();
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
-	private Rectangle topLeftButton			= new Rectangle(460, 400, 200, 40);
-	private Rectangle topRightButton		= new Rectangle(710, 400, 200, 40);
-	private Rectangle bottomLeftButton		= new Rectangle(460, 450, 200, 40);
-	private Rectangle bottomRightButton		= new Rectangle(710, 450, 200, 40);
-	private Rectangle playerInfoBox			= new Rectangle(460, 300, 450, 75);
-	private Rectangle enemyInfoBox			= new Rectangle( 40,  75, 450, 75);
-	//private EnemyCharacter[] enemies; // array of enemies that can be loaded to select which enemy is being fought
+	private Rectangle topLeftButton			= new Rectangle(460, 400, 200,  40);
+	private Rectangle topRightButton		= new Rectangle(710, 400, 200,  40);
+	private Rectangle bottomLeftButton		= new Rectangle(460, 450, 200,  40);
+	private Rectangle bottomRightButton		= new Rectangle(710, 450, 200,  40);
+	private Rectangle playerInfoBox			= new Rectangle(460, 300, 450,  75);
+	private Rectangle enemyInfoBox			= new Rectangle( 40,  75, 450,  75);
+	//private Rectangle victoryInfoBox		= new Rectangle(150, 550, 100, 250);
+	private String _currentScreen;
+	private int tempExpVal;
 	
-	String _currentScreen;
 	
 	
 	
@@ -54,11 +55,10 @@ public class BattleState extends JPanel implements State, KeyListener {
 		addKeyListener(this);
 		
 		this.setFocusable(true);
-
+		
 		try {
 			background = ImageIO.read(new File("images/fightBackground.png"));
 			_player = ImageIO.read(new File("images/battleStrawberry.png"));
-			_enemy = ImageIO.read(new File("images/battleCarrot.png"));
 			_cursor = ImageIO.read(new File("images/arrow.png"));
 			melee = ImageIO.read(new File("images/melee.png"));
 			special = ImageIO.read(new File("images/special.png"));
@@ -101,7 +101,6 @@ public class BattleState extends JPanel implements State, KeyListener {
 		if (_currentScreen.equals("EnemyTurn")){
 		}
 		if (_currentScreen.equals("Victory")){
-			stateStack.pop();
 		}
 		if (_currentScreen.equals("GameOver")){
 		}
@@ -240,8 +239,6 @@ public class BattleState extends JPanel implements State, KeyListener {
 			g.drawString("HP:   " + _charEnemy.getHealth() + " / " + _charEnemy.getTotalHealth(), 
 				  enemyInfoBox.x + 10, enemyInfoBox.y + 45);
 			
-			//g.clearRect(460, 400, 250, 90);
-			
 			String s = _charEnemy.enemyAttack(_charPlayer); // ENEMY TAKES TURN HERE
 			switch(s) {
 			case "def" :
@@ -249,7 +246,7 @@ public class BattleState extends JPanel implements State, KeyListener {
     			try {
 					Thread.sleep(500);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
     			defend.flush();
@@ -259,7 +256,7 @@ public class BattleState extends JPanel implements State, KeyListener {
     			try {
 					Thread.sleep(500);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
     			magic.flush();
@@ -269,7 +266,7 @@ public class BattleState extends JPanel implements State, KeyListener {
     			try {
 					Thread.sleep(500);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
     			special.flush();
@@ -279,49 +276,70 @@ public class BattleState extends JPanel implements State, KeyListener {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
 				specialMissed.flush();
 				break;
-			case "mel":
+			case "mel": default:
 				this.getGraphics().drawImage(melee, 125, 300, null);
     			try {
 					Thread.sleep(500);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-    			melee.flush();
-    			break;
-			default:
-				this.getGraphics().drawImage(melee, 125, 300, null);
-    			try {
-					Thread.sleep(500);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
     			melee.flush();
     			break;
 			}
 			
-			if (_charPlayer.isDead()){
-				// if player dies, end fight
+			if (_charPlayer.isDead()){ // if player dies, end fight
 				_currentScreen = "GameOver";
-			} else {
-				// if the player isn't dead, transition to player turn
+				repaint();
+			} else { // if the player isn't dead, transition to player turn
 				_currentScreen = "PlayerTurn";
 				repaint();
 			}
 			
 			
-		} else if (_currentScreen.equals("Victory")){
+		} else if (_currentScreen.equals("Victory")) {
 			g.setFont(font0);
 			g.setColor(Color.GREEN);
 			g.drawImage(background, 0,0, null);
 			g.drawString("VICTORY", 350, 200);
 			
+		} else if (_currentScreen.equals("VictoryInfo")) {
+			g.setFont(font0);
+			g.setColor(Color.GREEN);
+			g.drawImage(background, 0,0, null);
+			g.drawString("VICTORY", 350, 200);
+			
+			boolean tempBool = false;
+			if (_charPlayer.getExp() >= tempExpVal) { // check if a level-up has occurred
+				_charPlayer.levelUp();
+				_charPlayer.updateExp4NextLvl();
+				tempBool = true;
+			}
+			
+			g.setColor(Color.WHITE);
+			g.setFont(font2);
+			g.drawString("REWARDS", 250, 250);
+			g.drawString("Money: +$" + _charEnemy.getMoney() 
+				+ "..........TOTAL: $" + _charPlayer.getMoney(), 250, 290);
+			g.drawString("EXP:     +  " + _charEnemy.getExp() 
+				+ "..........EXP UNTIL NEXT LEVEL:  "
+				+ (_charPlayer.getExp4NextLvl() - _charPlayer.getExp()), 250, 330);
+			
+			// DISPLAY HOW MUCH EXP UNTIL NEXT LEVEL
+			
+			if (tempBool) { // display that level up occured
+				g.setFont(font0);
+				g.setColor(Color.GREEN);
+				g.drawString("LEVEL UP! Current Level: " + _charPlayer.getLevel(), 250, 400);
+				tempBool = false;
+			}
+			
+		
 		} else if (_currentScreen.equals("GameOver")){
 			g.setFont(font0);
 			g.setColor(Color.RED);
@@ -340,7 +358,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void onEnter() {
-		// TODO Auto-generated method stub
+		_enemy = _charEnemy.getBattleSprite();
 	}
 
 	@Override
@@ -393,9 +411,11 @@ public class BattleState extends JPanel implements State, KeyListener {
         		if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left (fight) button selected
         			resetCursor();
         			_currentScreen = "PlayerTurnFight";
+        			//repaint();
         		} else if ((_cursorIndexX == 0) && (_cursorIndexY == 1)){ // bottom left (item) button selected
         			resetCursor();
         			_currentScreen = "PlayerTurnItem";
+        			//repaint();
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 0)){ // top right (defend) button selected
         			// DEFEND
         			_charPlayer.defend();
@@ -406,7 +426,7 @@ public class BattleState extends JPanel implements State, KeyListener {
         			try {
 						Thread.sleep(500);
 					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 					}
         			defend.flush();
@@ -421,7 +441,7 @@ public class BattleState extends JPanel implements State, KeyListener {
         				try {
     						Thread.sleep(500);
     					} catch (InterruptedException e1) {
-    						// TODO Auto-generated catch block
+    						
     						e1.printStackTrace();
     					}
         				cannotRun.flush();
@@ -440,14 +460,13 @@ public class BattleState extends JPanel implements State, KeyListener {
             				try {
         						Thread.sleep(500);
         					} catch (InterruptedException e1) {
-        						// TODO Auto-generated catch block
+        						
         						e1.printStackTrace();
         					}
             				runFailed.flush();
             				resetCursor();
         					_currentScreen = "EnemyTurn";
         				}
-        			
         			}
         		}	
         	} else if (_currentScreen.equals("PlayerTurnFight")){
@@ -462,16 +481,14 @@ public class BattleState extends JPanel implements State, KeyListener {
         			try {
 						Thread.sleep(500);
 					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 					}
         			melee.flush();
         			
-        			if (_charEnemy.isDead()){
-        				// if enemy dies, end fight
+        			if (_charEnemy.isDead()){ // if enemy dies, end fight
         				_currentScreen = "Victory";
-        			} else {
-        				// if the enemy isn't dead, transition to enemy turn
+        			} else { // if the enemy isn't dead, transition to enemy turn
         				resetCursor();
         				_currentScreen = "EnemyTurn";
         			}
@@ -486,7 +503,7 @@ public class BattleState extends JPanel implements State, KeyListener {
             			try {
     						Thread.sleep(500);
     					} catch (InterruptedException e1) {
-    						// TODO Auto-generated catch block
+    						
     						e1.printStackTrace();
     					}
             			special.flush();
@@ -496,18 +513,16 @@ public class BattleState extends JPanel implements State, KeyListener {
         				try {
     						Thread.sleep(500);
     					} catch (InterruptedException e1) {
-    						// TODO Auto-generated catch block
+    						
     						e1.printStackTrace();
     					}
         				specialMissed.flush();
         			}
         			
         			
-        			if (_charEnemy.isDead()){
-        				// if enemy dies, end fight
+        			if (_charEnemy.isDead()) { // if enemy dies, end fight
         				_currentScreen = "Victory";
-        			} else {
-        				// if the enemy isn't dead, transition to enemy turn
+        			} else { // if the enemy isn't dead, transition to enemy turn
         				resetCursor();
     	    			_currentScreen = "EnemyTurn";
     	    		}
@@ -523,20 +538,17 @@ public class BattleState extends JPanel implements State, KeyListener {
             			try {
     						Thread.sleep(500);
     					} catch (InterruptedException e1) {
-    						// TODO Auto-generated catch block
+    						
     						e1.printStackTrace();
     					}
             			magic.flush();
         				
-        				if (_charEnemy.isDead()){
-    	    				// if enemy dies, end fight
+        				if (_charEnemy.isDead()) { // if enemy dies, end fight
     	    				_currentScreen = "Victory";
-    	    			} else {
-    	    				// if the enemy isn't dead, transition to enemy turn
+    	    			} else { // if the enemy isn't dead, transition to enemy turn
     	    				resetCursor();
     	    				_currentScreen = "EnemyTurn";
     	    			}
-        				// NEED TO VISUALLY SHOW ATTACK
         			} else {
         				System.out.println("NOT ENOUGH MP");
         				this.getGraphics().drawImage(notEnoughMP, 460, 500, null);
@@ -544,7 +556,7 @@ public class BattleState extends JPanel implements State, KeyListener {
         				try {
     						Thread.sleep(500);
     					} catch (InterruptedException e1) {
-    						// TODO Auto-generated catch block
+    						
     						e1.printStackTrace();
     					}
         				notEnoughMP.flush();
@@ -552,13 +564,25 @@ public class BattleState extends JPanel implements State, KeyListener {
         			
         		} else if ((_cursorIndexX == 1) && (_cursorIndexY == 1)) { // bottom right (back) button selected
         			// this button transitions back to "PlayerTurn"
-        			_currentScreen = "PlayerTurn";	
+        			_currentScreen = "PlayerTurn";
+        			resetCursor();
         		}
+        		
         	} else if (_currentScreen.equals("Victory")) {
+        		tempExpVal = _charPlayer.getExp4NextLvl();
+        		_charEnemy.awardOnVictory(_charPlayer);  // EXP AND MONEY AWARDED HERE
+        	
+        		_currentScreen = "VictoryInfo";
+        		
+        	} else if (_currentScreen.equals("VictoryInfo")) {
         		if (_charEnemy.isBoss()) {
         			// NEED TO INCREMENT BOSS LEVEL//////////////////////////////////////////////////////////
-        		} else 
-        			stateStack.pop();
+        			
+        			_charPlayer.beatBoss();
+        			
+        		}
+        		
+        		stateStack.pop();
         		
         	} else if (_currentScreen.equals("GameOver")) {
         		stateStack.pop();
@@ -568,8 +592,6 @@ public class BattleState extends JPanel implements State, KeyListener {
         		
         	}
         	
-        	
-        	//transition();
         }
         if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
         	resetCursor();
@@ -586,14 +608,6 @@ public class BattleState extends JPanel implements State, KeyListener {
 			_currentScreen = "PlayerTurn";
 	}
 	
-
-	private void transition() {
-		if(_currentScreen.equals("PlayerTurn")){
-		}else if(_currentScreen.equals("EnemyTurn")){
-		}else if(_currentScreen.equals("Victory")){
-		}else if(_currentScreen.equals("GameOver")){
-		}
-	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
