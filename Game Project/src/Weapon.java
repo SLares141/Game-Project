@@ -12,8 +12,8 @@ public class Weapon extends Item {
 	}
 	
 	
-	
-	public int getStrStat() { return _strStat; }
+	//getStrStat
+	public int getStrModifier() { return _strStat; }
 
 
 }
