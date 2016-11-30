@@ -190,10 +190,12 @@ public class EnemyCharacter extends Character {
 				for (int i = 0; i < this.getLevel(); i++)
 				{
 					newStr += 2;
-					newDef += 1;
-					newStrMag += 1;
-					newDefMag += 1;
-					newTotalHealth += 4;
+					if (i % 2 == 0) {
+						newDef += 1;
+						newStrMag += 1;
+						newDefMag += 1;
+					}
+					newTotalHealth += 3;
 					newTotalMagic += 2;
 				}
 			
@@ -208,8 +210,8 @@ public class EnemyCharacter extends Character {
 				for (int i = 0; i < this.getLevel(); i++)
 				{
 					newStr += 1;
-					newDef += 1;
 					if (i % 2 == 0) {
+						newDef += 1;
 						newStrMag += 1;
 						newDefMag += 1;
 					}
@@ -229,18 +231,6 @@ public class EnemyCharacter extends Character {
 			this.setIsDead(false);
 			this.restoreDef();
 		} 
-		//return;
 	}
-	
-	
-	
-	/*public void levelUp() {
-		if (this.isBoss()) {
-			
-		}
-	}*/
-	
-	
-	
 
 }
