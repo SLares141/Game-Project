@@ -91,10 +91,34 @@ public class StateStackSingleton {
 		return currentState; //still returns expected value
 	}
 	
+	protected void popAndPush() {
+		State currentState = mStack.pop(); //pops the value out
+		_frame.removeState(currentState); //removes it from the frame
+		currentState.onExit(); //exit code
+		
+		
+		push("field" + gameCounter);
+		
+		
+		/*State newState = stateMap.get("field" + gameCounter); //state the user wants to enter here.
+		_frame.addState(newState); // in with the new
+		((FieldState) newState).getPlayer().prepareNextLevel();
+		((FieldState) newState).setPlayer(new Player());
+		
+		newState.onEnter(); //do entrance code
+		
+		mStack.push(newState); //actually pushes it to the stack
+		*/
+	}
+	
+	
+	
 	protected State peek() {
 		return mStack.peek();
 	}
 	
 	public void incrementCount() { gameCounter++; }
 	public int getCount() { return gameCounter; }
+	
+	
 }   

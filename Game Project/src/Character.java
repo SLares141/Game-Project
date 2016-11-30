@@ -43,12 +43,12 @@ public class Character {
 		_totalMagic = 		5;
 		_currentMagic = 	_totalMagic;
 		_levelStat = 		1;
-		_expStat = 			0;
+		//_expStat = 			0;
 		_money = 			0;
 		_isDead = 			false;
 		_usedDef =			false;
-		_weapon = 			null;
-		_armor = 			null;
+		//_weapon = 			null;
+		//_armor = 			null;
 	}
 	
 	// getters
@@ -84,9 +84,11 @@ public class Character {
 	public void setStr(int i){ _strStat = i; }
 	public void setDef(int i) { _defStat = i; }
 	public void setStrMag(int i){ _strMagic = i; }
-	public void setdefMag(int i){ _defMagic = i; }
+	public void setDefMag(int i){ _defMagic = i; }
 	public void setHealth(int i) { _currentHealth = i; }
+	public void setTotalHealth(int i) { _totalHealth = i; }
 	public void setMagic(int i ) { _currentMagic = i; } 
+	public void setTotalMagic(int i) { _totalMagic = i; }
 	public void setLevel(int i){ _levelStat = i; }
 	public void setExp(int i) { _expStat = i; }
 	public void setMoney(int i) { _money = i; }
