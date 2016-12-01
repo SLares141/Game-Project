@@ -28,9 +28,11 @@ public class ItemMap {
 		
 		map.add(new Node("Sword", new Weapon("Sword", 5)));
 		map.add(new Node("Staff", new Weapon("Staff", 5)));
+		map.add(new Node("no weapon", new Weapon("no weapon", 0)));
 		
 		map.add(new Node("Shield", new Armor("Shield", 5, 1)));
 		map.add(new Node("Robe", new Armor("Robe", 1, 5)));
+		map.add(new Node("no armor", new Armor("no armor", 0, 0)));
 	}
 	
 	public Item get(String name) {

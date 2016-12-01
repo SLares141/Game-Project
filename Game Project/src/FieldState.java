@@ -8,7 +8,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,14 +39,11 @@ public class FieldState extends JPanel implements State, KeyListener {
     private Coordinate _oldsp;
     private boolean loadall = true;
     
-    
-    
     //causes significant loadtime
     List<Map<Coordinate,Tile>> mapList;		
     Map<Coordinate, Tile> map0;			 	
     Map<Coordinate, Tile> map1; 			
     Map<Coordinate, Tile> map2; 
-    
     
     private int currentMapNum;
 	int _windowWidth = 1024;
@@ -51,7 +51,6 @@ public class FieldState extends JPanel implements State, KeyListener {
 	
 	ArrayList<EnemyCharacter> enemyList = new ArrayList<EnemyCharacter>(); // list of enemy instances in field
 	
-
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
 	StateMapSingleton stateMap = StateMapSingleton.getInstance();
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
@@ -59,13 +58,11 @@ public class FieldState extends JPanel implements State, KeyListener {
 	public Player getPlayer() { return player; }
 	public void setPlayer(Player p) { player = p; }
 	
-	
 	// this is the name of the state that the field state will transition to.
 	//onExit function will look at this, and push the string to the state stack
 	//this will allow the proper state to be put on the stack, and to transition accordingly.
 	// in the case of field state, this will be either main menu, inventory, or battle states.
 	String _stateDestination; 	
-		
 	
 	public FieldState(Player p)
 	{
@@ -76,9 +73,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 		_oldsp = new Coordinate(_sp.x, _sp.y);
 		_playersprite = p.getSprite();
 		
-		
 		enemyList.add(new EnemyCharacter(1, player.getEnemyLevel())); // sample enemy added
-		
 		
 		mapList = null;
 	    map0 = makeMap0();
@@ -89,10 +84,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 		addKeyListener(this);
 		this.setFocusable(true);
 		
+		
 		if (p.isDead() || p.isBossBeat()) {  /////////////////////////////////////////////////
 			p.setLocation(new Coordinate(512, 288));
 			p.setMap(2);
 		}
+		
 		
 		mapList = makeMapList();
 		currentMapNum = p.getMap();
@@ -172,10 +169,9 @@ public class FieldState extends JPanel implements State, KeyListener {
 			/*
 			 * We can increment a counter just so that we can create a new unique FieldState
 			 * that is independent from the one in which the player just got a GameOver in.
-			 * This will reset the stats of both the player and enemies
+			 * This will reset the stats of the enemies
 			 */
 			player.resetPlayer();
-			player = new Player();
 			stateStack.incrementCount();
 			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
 			stateStack.pop();
@@ -183,9 +179,6 @@ public class FieldState extends JPanel implements State, KeyListener {
 			stateStack.incrementCount();
 			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
 			stateStack.popAndPush(); /////////////////////////////////////////////////////////
-			
-			
-			
 		}
 		/*
 		 * 	when FieldState is entered, the whole field needs to be painted.
@@ -204,14 +197,10 @@ public class FieldState extends JPanel implements State, KeyListener {
 	public void onExit() {
 		if (player.isDead()) {
 			player.resetPlayer();
-			player = new Player();
 			
 		} else if (player.isBossBeat()) { ////////////////////////////////////////////////////////////////	
 			player.prepareNextLevel();
-			player = new Player();
-			
-		} else
-			player.savePlayer();
+		}
 	}
 
 	@Override

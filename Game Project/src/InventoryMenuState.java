@@ -1,11 +1,8 @@
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,14 +15,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class InventoryMenuState extends JPanel implements State {
-
+	
 	Player player;
 	PartyMember pm1, pm2, pm3;
 	Character[] party;
 	int characterIndex = 0;
 	int partySize;
 	Inventory inv;
-
 	int invIndex = 0;
 
 	BufferedImage arrow, smallArrow, biggerArrow;
@@ -43,8 +39,8 @@ public class InventoryMenuState extends JPanel implements State {
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	String currentMenu;
 	String[] menus = {"Items", "Equip", "Status", "Save", "Settings"};
-	Color textColor;
-	Color backgroundColor;
+	static Color textColor;
+	static Color backgroundColor;
 	int settingOption;
 	int colorOption;
 
@@ -56,28 +52,7 @@ public class InventoryMenuState extends JPanel implements State {
 		party = new Character[] {player, null, null, null};
 		partySize = 1;
 		inv = i;
-
-		FileReader inFile;
-		try {
-			inFile = new FileReader("InventoryFiles/Settings");
-			BufferedReader buffReader = new BufferedReader(inFile);
-			ArrayList<String> temp = new ArrayList<String>();
-			String line;
-			try {
-				while((line = buffReader.readLine()) != null){
-					temp.add(line);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			textColor = new Color(Integer.parseInt(temp.get(0)));
-			backgroundColor = new Color(Integer.parseInt(temp.get(1)));
-		}
-		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT 
@@ -432,7 +407,8 @@ public class InventoryMenuState extends JPanel implements State {
 				g.drawString("MP: " + c.getMagic() + "/" + c.getTotalMagic() , 430, 215);
 				g.drawString("Level: " + c.getLevel(), 700, 150);
 				g.drawString("EXP: " + c.getExp(), 700, 185);
-				g.drawString("Next Level: ", 700, 215);
+				Player p = (Player)party[characterIndex];
+				g.drawString("Next Level: " + (p.getExp4NextLvl() - p.getExp()), 700, 215);
 
 				g.drawString("Strength:", 310, 310);
 				g.drawString(c.getStr() + "", 560, 310);
@@ -500,7 +476,18 @@ public class InventoryMenuState extends JPanel implements State {
 	@Override
 	public void onEnter() { 
 		currentMenu = new String("Main");
-		update();
+		characterIndex = 0;
+		invIndex = 0;
+		cursorX = 0;
+		cursorY = 0;
+		yesSelected = true;
+		infoSelected = false;
+		itemSelected = false;
+		itemUsed = false;
+		characterSelected = false;
+		settingOption = 0;
+		colorOption = 0;
+		
 		render();
 	}
 
@@ -532,8 +519,14 @@ public class InventoryMenuState extends JPanel implements State {
 			wr.println(String.valueOf(player.getMoney()));
 			wr.println(String.valueOf(player.getEnemyLevel()));
 			wr.println(String.valueOf(player.getIsDead()));
-			wr.println(player.getWeapName());
-			wr.println(player.getArmName());
+			if(player.getWeapon().getName().equals("no weapon"))
+				wr.println("no weapon");
+			else
+				wr.println(player.getWeapon().getName());
+			if(player.getArmor().getName().equals("no armor"))
+				wr.println("no armor");
+			else
+				wr.println(player.getArmor().getName());
 			wr.println(player.getspaddress());
 			wr.println(String.valueOf(player.getLocation().x));
 			wr.println(String.valueOf(player.getLocation().y));
@@ -546,10 +539,14 @@ public class InventoryMenuState extends JPanel implements State {
 		try{
 			PrintWriter wr = new PrintWriter("InventoryFiles/Items", "UTF-8");
 			for(int j = 0; j < 18; j++) {
-				if(inv.getItem(j) != null) 
+				if(inv.getItem(j) != null) {
 					wr.println(inv.getItem(j).getName());
-				else 
+					wr.println(inv.getItemAmount(j));
+				}
+				else  {
 					wr.println("empty");
+					wr.println(0);
+				}
 			}
 			wr.close();
 		} catch (IOException e){}
@@ -559,10 +556,14 @@ public class InventoryMenuState extends JPanel implements State {
 		try{
 			PrintWriter wr = new PrintWriter("InventoryFiles/Equipment", "UTF-8");
 			for(int j = 0; j < 18; j++) {
-				if(inv.getEquip(j) != null) 
+				if(inv.getEquip(j) != null) {
 					wr.println(inv.getEquip(j).getName());
-				else 
+					wr.println(inv.getEquipAmount(j));
+				}
+				else {
 					wr.println("empty");
+					wr.println(0);
+				}
 			}
 			wr.close();
 		} catch (IOException e){}
@@ -687,44 +688,44 @@ public class InventoryMenuState extends JPanel implements State {
 		else if(currentMenu.equals("Settings")) {
 			if(settingOption == 1) {
 				switch(colorOption) {
-				case 1: if(backgroundColor != Color.RED)
+				case 1: if(backgroundColor.getRGB() != Color.RED.getRGB())
 					textColor = Color.RED;
 				break;
-				case 2: if(backgroundColor != Color.BLUE)
+				case 2: if(backgroundColor.getRGB() != Color.BLUE.getRGB())
 					textColor = Color.BLUE;
 				break;
-				case 3: if(backgroundColor != Color.GREEN)
+				case 3: if(backgroundColor.getRGB() != Color.GREEN.getRGB())
 					textColor = Color.GREEN;
 				break;
-				case 4: if(backgroundColor != Color.YELLOW)
+				case 4: if(backgroundColor.getRGB() != Color.YELLOW.getRGB())
 					textColor = Color.YELLOW;
 				break;
-				case 5: if(backgroundColor != Color.BLACK)
+				case 5: if(backgroundColor.getRGB() != Color.BLACK.getRGB())
 					textColor = Color.BLACK;
 				break;
-				case 6: if(backgroundColor != Color.WHITE)
+				case 6: if(backgroundColor.getRGB() != Color.WHITE.getRGB())
 					textColor = Color.WHITE;
 				break;
 				}
 			}
 			else if(settingOption == 2) {
 				switch(colorOption) {
-				case 1: if(textColor != Color.RED)
+				case 1: if(textColor.getRGB() != Color.RED.getRGB())
 					backgroundColor = Color.RED;
 				break;
-				case 2: if(textColor != Color.BLUE)
+				case 2: if(textColor.getRGB() != Color.BLUE.getRGB())
 					backgroundColor = Color.BLUE;
 				break;
-				case 3: if(textColor != Color.GREEN)
+				case 3: if(textColor.getRGB() != Color.GREEN.getRGB())
 					backgroundColor = Color.GREEN;
 				break;
-				case 4: if(textColor != Color.YELLOW)
+				case 4: if(textColor.getRGB() != Color.YELLOW.getRGB())
 					backgroundColor = Color.YELLOW;
 				break;
-				case 5: if(textColor != Color.BLACK)
+				case 5: if(textColor.getRGB() != Color.BLACK.getRGB())
 					backgroundColor = Color.BLACK;
 				break;
-				case 6: if(textColor != Color.WHITE)
+				case 6: if(textColor.getRGB() != Color.WHITE.getRGB())
 					backgroundColor = Color.WHITE;
 				break;
 				}

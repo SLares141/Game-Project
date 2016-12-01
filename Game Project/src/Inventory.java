@@ -42,81 +42,7 @@ public class Inventory  {
 	ItemNode[] inv = new ItemNode[SIZE];
 	ItemNode[] equipment = new ItemNode[SIZE];
 	
-	ItemMap itemMap = new ItemMap();
-
-	public Inventory() {
-		FileReader inFile;
-		try {
-			inFile = new FileReader("InventoryFiles/Items");
-			BufferedReader buffReader = new BufferedReader(inFile);
-			ArrayList<String> temp = new ArrayList<String>();
-			String line;
-			try {
-				while((line = buffReader.readLine()) != null){
-					temp.add(line);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			this.add(itemMap.get(temp.get(0)));
-			this.add(itemMap.get(temp.get(1)));
-			this.add(itemMap.get(temp.get(2)));
-			this.add(itemMap.get(temp.get(3)));
-			this.add(itemMap.get(temp.get(4)));
-			this.add(itemMap.get(temp.get(5)));
-			this.add(itemMap.get(temp.get(6)));
-			this.add(itemMap.get(temp.get(7)));
-			this.add(itemMap.get(temp.get(8)));
-			this.add(itemMap.get(temp.get(9)));
-			this.add(itemMap.get(temp.get(10)));
-			this.add(itemMap.get(temp.get(11)));
-			this.add(itemMap.get(temp.get(12)));
-			this.add(itemMap.get(temp.get(13)));
-			this.add(itemMap.get(temp.get(14)));
-			this.add(itemMap.get(temp.get(15)));
-			this.add(itemMap.get(temp.get(16)));
-			this.add(itemMap.get(temp.get(17)));
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			inFile = new FileReader("InventoryFiles/Equipment");
-			BufferedReader buffReader = new BufferedReader(inFile);
-			ArrayList<String> temp = new ArrayList<String>();
-			String line;
-			try {
-				while((line = buffReader.readLine()) != null){
-					temp.add(line);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			this.add(itemMap.get(temp.get(0)));
-			this.add(itemMap.get(temp.get(1)));
-			this.add(itemMap.get(temp.get(2)), 2);
-			this.add(itemMap.get(temp.get(3)));
-			this.add(itemMap.get(temp.get(4)));
-			this.add(itemMap.get(temp.get(5)));
-			this.add(itemMap.get(temp.get(6)));
-			this.add(itemMap.get(temp.get(7)));
-			this.add(itemMap.get(temp.get(8)));
-			this.add(itemMap.get(temp.get(9)));
-			this.add(itemMap.get(temp.get(10)));
-			this.add(itemMap.get(temp.get(11)));
-			this.add(itemMap.get(temp.get(12)));
-			this.add(itemMap.get(temp.get(13)));
-			this.add(itemMap.get(temp.get(14)));
-			this.add(itemMap.get(temp.get(15)));
-			this.add(itemMap.get(temp.get(16)));
-			this.add(itemMap.get(temp.get(17)));
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	public static ItemMap itemMap = new ItemMap();
 
 	//adds one of a specific item
 	public void add(Item i) {
@@ -230,7 +156,7 @@ public class Inventory  {
 	public Item equip(int index, Character c) {
 		if(equipment[index].getItem() instanceof Weapon) {
 			Weapon w = (Weapon)equipment[index].getItem();
-			if(c.getWeapon() != null) 
+			if(c.getWeapon() != null && !c.getWeapon().getName().equals("no weapon")) 
 				add(c.getWeapon());
 			c.equip(w);
 			if(equipment[index].getAmount() == 1) {
@@ -248,7 +174,7 @@ public class Inventory  {
 		}
 		else {
 			Armor a = (Armor)equipment[index].getItem();
-			if(c.getArmor() != null) 
+			if(c.getArmor() != null && !c.getArmor().getName().equals("no armor")) 
 				add(c.getArmor());
 			c.equip(a);
 			if(equipment[index].getAmount() == 1) {
@@ -263,6 +189,14 @@ public class Inventory  {
 			}
 			equipment[index].decrement();
 			return a;	
+		}
+	}
+	public void clear() {
+		for(int j = 0; j < SIZE; j++) {
+			inv[j] = null;
+			numItems = 0;
+			equipment[j] = null;
+			numEquip = 0;
 		}
 	}
 
