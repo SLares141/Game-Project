@@ -10,24 +10,14 @@ public class EnemyCharacter extends Character {
 	private BufferedImage _battleSprite;
 	private String _name;
 	private boolean _isBoss; // player cannot run from boss
+	private int _enemyCode;
 	
 	
 	//public EnemyCharacter(){ this(0); }
 	
 	public EnemyCharacter(int enemyCode, int enemyLevel){
-		//super();
 		
-		/*this.setStr(1);
-		this.setDef(0);;
-		this.setStrMag(3);
-		this.setDefMag(1);
-		this.setTotalHealth(10);
-		this.setHealth(10);
-		this.setTotalMagic(5);
-		this.setMagic(5);*/
-		
-		//this.setLevel(1);
-		//this.setExp(0);
+		_enemyCode = enemyCode;
 		
 		this.setLevel(enemyLevel);
 		this.setIsDead(false);
@@ -69,6 +59,22 @@ public class EnemyCharacter extends Character {
 				e.printStackTrace();
 			}
 			
+			break;
+			
+		case 2:
+			_isBoss = false;
+			_name = "Casual Corn";
+			
+			setRewards(enemyLevel);
+			setStats();
+			
+			try {
+				_sprite = ImageIO.read(new File("images/corn.png"));
+				_battleSprite = ImageIO.read(new File("images/battleCorn.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			break;
 		}
@@ -80,6 +86,7 @@ public class EnemyCharacter extends Character {
 	public void setName(String s) { _name = s; }
 	public String getName() { return _name; }
 	public BufferedImage getBattleSprite() { return _battleSprite; }
+	public int getCode() { return _enemyCode; }
 	
 	public String enemyAttack(Character c) {
 		Random r = new Random();
@@ -129,17 +136,31 @@ public class EnemyCharacter extends Character {
 	public void setRewards(int enemyLevel) {
 		int answer;
 		if (enemyLevel == 0)
-			if (this.isBoss())
-				answer = 60;
-			else
-				answer = 30;
-		else {
+			switch (_enemyCode) {
+				case 0:
+					answer = 60;
+					break;
+				case 1: default:
+					answer = 30;
+					break;
+				case 2:
+					answer = 10;
+					break;
+			}
+		else { // if enemyLevel != 0
 			int initial;
-			if (this.isBoss()) 
+			switch (_enemyCode) {
+			case 0:
 				initial = 60;
-			else
+				break;
+			case 1: default:
 				initial = 30;
-				
+				break;
+			case 2:
+				initial = 10;
+				break;
+		}
+			
 			answer = initial;
 			for (int i = 0; i < enemyLevel; i++) {
 				answer = (int) Math.floor(answer * 1.25);
@@ -153,71 +174,112 @@ public class EnemyCharacter extends Character {
 	
 	public void setStats() {
 		if (this.getLevel() == 0) {
-			if (this.isBoss()) { // initial boss stats
-				this.setStr(1);
-				this.setDef(0);;
-				this.setStrMag(3);
-				this.setDefMag(1);
-				this.setTotalHealth(10);
-				this.setHealth(this.getTotalHealth());
-				this.setTotalMagic(5);
-				this.setMagic(this.getTotalMagic());
-				this.setIsDead(false);
-				this.restoreDef();
-			} else {  // initial common enemy stats
-				this.setStr(1);
-				this.setDef(0);;
-				this.setStrMag(2);
-				this.setDefMag(0);
-				this.setTotalHealth(5);
-				this.setHealth(this.getTotalHealth());
-				this.setTotalMagic(3);
-				this.setMagic(this.getTotalMagic());
-				this.setIsDead(false);
-				this.restoreDef();
+			switch (_enemyCode) { 
+				case 0: // initial boss stats
+					this.setStr(1);
+					this.setDef(0);;
+					this.setStrMag(3);
+					this.setDefMag(1);
+					this.setTotalHealth(10);
+					this.setHealth(this.getTotalHealth());
+					this.setTotalMagic(5);
+					this.setMagic(this.getTotalMagic());
+					this.setIsDead(false);
+					this.restoreDef();
+					break;
+				case 1: default:  // initial common enemy stats
+					this.setStr(1);
+					this.setDef(0);;
+					this.setStrMag(2);
+					this.setDefMag(0);
+					this.setTotalHealth(5);
+					this.setHealth(this.getTotalHealth());
+					this.setTotalMagic(3);
+					this.setMagic(this.getTotalMagic());
+					this.setIsDead(false);
+					this.restoreDef();
+					break;
+				case 2:
+					this.setStr(1);
+					this.setDef(0);;
+					this.setStrMag(2);
+					this.setDefMag(0);
+					this.setTotalHealth(3);
+					this.setHealth(this.getTotalHealth());
+					this.setTotalMagic(1);
+					this.setMagic(this.getTotalMagic());
+					this.setIsDead(false);
+					this.restoreDef();
+					break;
 			}
 			return;
 		} else {
 			int newStr, newDef, newStrMag, newDefMag, newTotalHealth, newTotalMagic;
-			if (this.isBoss()) {
-				newStr = 1;
-				newDef = 0;
-				newStrMag = 3;
-				newDefMag = 1;
-				newTotalHealth = 10;
-				newTotalMagic = 5;
+			switch (_enemyCode) { 
+				case 0:
+					newStr = 1;
+					newDef = 0;
+					newStrMag = 3;
+					newDefMag = 1;
+					newTotalHealth = 10;
+					newTotalMagic = 5;
 				
-				for (int i = 0; i < this.getLevel(); i++)
-				{
-					newStr += 2;
-					if (i % 2 == 0) {
-						newDef += 1;
-						newStrMag += 1;
-						newDefMag += 1;
+					for (int i = 0; i < this.getLevel(); i++)
+					{
+						newStr += 2;
+						if (i != 0 && i % 2 == 0) {
+							newDef += 1;
+							newStrMag += 1;
+							newDefMag += 1;
+						}
+						newTotalHealth += 3;
+						newTotalMagic += 2;
 					}
-					newTotalHealth += 3;
-					newTotalMagic += 2;
-				}
+					break;
 			
-			} else {
-				newStr = 1;
-				newDef = 0;
-				newStrMag = 2;
-				newDefMag = 0;
-				newTotalHealth = 5;
-				newTotalMagic = 3;
+				case 1: default:
+					newStr = 1;
+					newDef = 0;
+					newStrMag = 2;
+					newDefMag = 0;
+					newTotalHealth = 5;
+					newTotalMagic = 3;
 				
-				for (int i = 0; i < this.getLevel(); i++)
-				{
-					newStr += 1;
-					if (i % 2 == 0) {
-						newDef += 1;
-						newStrMag += 1;
-						newDefMag += 1;
+					for (int i = 0; i < this.getLevel(); i++)
+					{
+						newStr += 1;
+						if (i != 0 && i % 2 == 0) {
+							newDef += 1;
+							newStrMag += 1;
+							newDefMag += 1;
+						}
+						newTotalHealth += 2;
+						newTotalMagic += 1;
 					}
-					newTotalHealth += 2;
-					newTotalMagic += 1;
-				}
+					break;
+					
+				case 2: // corn has low stats to allow play to grind addition EXP if behind in level
+					newStr = 1;
+					newDef = 0;
+					newStrMag = 2;
+					newDefMag = 0;
+					newTotalHealth = 3;
+					newTotalMagic = 1;
+				
+					for (int i = 0; i < this.getLevel(); i++)
+					{
+						if (i != 0 && i % 2 == 0) {
+							newStr += 1;
+							newDef += 1;
+							newStrMag += 1;
+							newDefMag += 1;
+							newTotalHealth += 2;
+							newTotalMagic += 1;
+						}
+						
+					}
+					break;
+					
 			}
 
 			this.setStr(newStr);

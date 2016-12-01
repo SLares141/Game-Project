@@ -77,8 +77,9 @@ public class FieldState extends JPanel implements State, KeyListener {
 		_playersprite = p.getSprite();
 		
 		
-		enemyList.add(new EnemyCharacter(1, player.getEnemyLevel())); // sample enemy added
-		enemyList.add(new EnemyCharacter(0, player.getEnemyLevel())); // sample enemy added
+		enemyList.add(new EnemyCharacter(1, player.getEnemyLevel())); // sample carrot
+		enemyList.add(new EnemyCharacter(0, player.getEnemyLevel())); // sample boss
+		enemyList.add(new EnemyCharacter(2, player.getEnemyLevel())); // sample corn
 		
 		
 		
@@ -159,12 +160,16 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	private void drawEnemies(Graphics g) {
 		if(currentMapNum == 0){
-			EnemyCharacter e = enemyList.get(0); // carrot
+			EnemyCharacter carrot = enemyList.get(0); // carrot
+			EnemyCharacter corn = enemyList.get(2);
 			
 			Coordinate c = new Coordinate(32*5, 5*32);
-			e.setLocation(c);
-			
-			g.drawImage(e.getSprite(), e.getLocation().x, e.getLocation().y, null);
+			carrot.setLocation(c);
+			c = new Coordinate(32*20, 32*12);
+			corn.setLocation(c);
+
+			g.drawImage(carrot.getSprite(), carrot.getLocation().x, carrot.getLocation().y, null);
+			g.drawImage(corn.getSprite(), corn.getLocation().x, corn.getLocation().y, null);
 		}
 		else if (currentMapNum == 1) {
 			EnemyCharacter e = enemyList.get(1); // broccoli
@@ -444,11 +449,11 @@ public class FieldState extends JPanel implements State, KeyListener {
 		t.set(5*32, 5*32);
 		
 		EnemyCharacter carrot = enemyList.get(0);  //new EnemyCharacter(1, player.getEnemyLevel());
-		//EnemyCharacter boss = enemyList.get(1);
-		
-		//map.get(new Coordinate(460, 255)).setEnemy(boss);
-		
 		map.get(t).setEnemy(carrot);
+		
+		t.set(32*20, 32*12);
+		EnemyCharacter corn = enemyList.get(2);
+		map.get(t).setEnemy(corn);
 		
 		return map;
 	}
