@@ -7,15 +7,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-/*
- * 	things to add/change: *saving*
- * 						  next level exp
- * 						  character names
- */
+
 public class InventoryMenuState extends JPanel implements State {
 
 	Player player;
@@ -42,8 +43,8 @@ public class InventoryMenuState extends JPanel implements State {
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	String currentMenu;
 	String[] menus = {"Items", "Equip", "Status", "Save", "Settings"};
-	Color textColor = Color.WHITE;
-	Color backgroundColor = Color.BLACK;
+	Color textColor;
+	Color backgroundColor;
 	int settingOption;
 	int colorOption;
 
@@ -55,6 +56,27 @@ public class InventoryMenuState extends JPanel implements State {
 		party = new Character[] {player, null, null, null};
 		partySize = 1;
 		inv = i;
+
+		FileReader inFile;
+		try {
+			inFile = new FileReader("InventoryFiles/Settings");
+			BufferedReader buffReader = new BufferedReader(inFile);
+			ArrayList<String> temp = new ArrayList<String>();
+			String line;
+			try {
+				while((line = buffReader.readLine()) != null){
+					temp.add(line);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			textColor = new Color(Integer.parseInt(temp.get(0)));
+			backgroundColor = new Color(Integer.parseInt(temp.get(1)));
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -216,7 +238,7 @@ public class InventoryMenuState extends JPanel implements State {
 				g.fillRect(415, 200, 450, 250);
 				g.setColor(textColor);
 				g.drawRect(415, 200, 450, 250);
-				
+
 				Consumable c = (Consumable)inv.getItem(invIndex);
 				g.drawString(c.getName() + ":", 640 - g.getFontMetrics().stringWidth(c.getName() + ":")/2, 300);
 				if(c.restoresHP())
@@ -394,7 +416,7 @@ public class InventoryMenuState extends JPanel implements State {
 		else if(currentMenu.equals("Status")) {
 			g.drawImage(arrow, 25, 228, null);
 			g.drawImage(biggerArrow, (280 + cursorX), (120 + cursorY), null);
-		
+
 			if(characterSelected) {
 				g.setColor(backgroundColor);
 				g.fillRect(260, 75, 758, 495);
@@ -455,21 +477,21 @@ public class InventoryMenuState extends JPanel implements State {
 
 			g.drawImage(arrow, 25, 328, null);
 			g.drawImage(arrow, 280, (110 + cursorY), null);
-			
+
 			g.drawString("Text color:", 325, 133);
-				g.drawString("Red", 400, 183);
-				g.drawString("Blue", 500, 183);
-				g.drawString("Green", 600, 183);
-				g.drawString("Yellow", 700, 183);
-				g.drawString("Black", 800, 183);
-				g.drawString("White", 900, 183);
+			g.drawString("Red", 400, 183);
+			g.drawString("Blue", 500, 183);
+			g.drawString("Green", 600, 183);
+			g.drawString("Yellow", 700, 183);
+			g.drawString("Black", 800, 183);
+			g.drawString("White", 900, 183);
 			g.drawString("Background color:", 325, 233);
-				g.drawString("Red", 400, 283);
-				g.drawString("Blue", 500, 283);
-				g.drawString("Green", 600, 283);
-				g.drawString("Yellow", 700, 283);
-				g.drawString("Black", 800, 283);
-				g.drawString("White", 900, 283);
+			g.drawString("Red", 400, 283);
+			g.drawString("Blue", 500, 283);
+			g.drawString("Green", 600, 283);
+			g.drawString("Yellow", 700, 283);
+			g.drawString("Black", 800, 283);
+			g.drawString("White", 900, 283);
 			if(settingOption != 0) 
 				g.drawImage(smallArrow, (378 + cursorX), (168 + cursorY), null);
 		}
@@ -485,6 +507,74 @@ public class InventoryMenuState extends JPanel implements State {
 	@Override
 	public void onExit() {
 
+	}
+
+	private void save() {
+		saveCharacter();
+		saveItems();
+		saveEquipment();
+		saveSettings();
+	}
+	private void saveCharacter() {
+		//saves character
+		try{
+			PrintWriter wr = new PrintWriter("PlayerFiles/Player0", "UTF-8");
+			wr.println(String.valueOf(player.getStr()));
+			wr.println(String.valueOf(player.getDef()));
+			wr.println(String.valueOf(player.getMagicStr()));
+			wr.println(String.valueOf(player.getMagicDef()));
+			wr.println(String.valueOf(player.getHealth()));
+			wr.println(String.valueOf(player.getTotalHealth()));
+			wr.println(String.valueOf(player.getMagic()));
+			wr.println(String.valueOf(player.getTotalMagic()));
+			wr.println(String.valueOf(player.getLevel()));
+			wr.println(String.valueOf(player.getExp()));
+			wr.println(String.valueOf(player.getMoney()));
+			wr.println(String.valueOf(player.getEnemyLevel()));
+			wr.println(String.valueOf(player.getIsDead()));
+			wr.println(player.getWeapName());
+			wr.println(player.getArmName());
+			wr.println(player.getspaddress());
+			wr.println(String.valueOf(player.getLocation().x));
+			wr.println(String.valueOf(player.getLocation().y));
+			wr.println(String.valueOf(player.getMap()));
+			wr.close();
+		} catch (IOException e){}
+	}
+	//saves items
+	private void saveItems() {
+		try{
+			PrintWriter wr = new PrintWriter("InventoryFiles/Items", "UTF-8");
+			for(int j = 0; j < 18; j++) {
+				if(inv.getItem(j) != null) 
+					wr.println(inv.getItem(j).getName());
+				else 
+					wr.println("empty");
+			}
+			wr.close();
+		} catch (IOException e){}
+	}
+	//saves equipment
+	private void saveEquipment() {
+		try{
+			PrintWriter wr = new PrintWriter("InventoryFiles/Equipment", "UTF-8");
+			for(int j = 0; j < 18; j++) {
+				if(inv.getEquip(j) != null) 
+					wr.println(inv.getEquip(j).getName());
+				else 
+					wr.println("empty");
+			}
+			wr.close();
+		} catch (IOException e){}
+	}
+	//saves settings
+	private void saveSettings() {
+		try{
+			PrintWriter wr = new PrintWriter("InventoryFiles/Settings", "UTF-8");
+			wr.println(textColor.getRGB());
+			wr.println(backgroundColor.getRGB());
+			wr.close();
+		} catch (IOException e){}
 	}
 
 	private void info() {
@@ -586,50 +676,57 @@ public class InventoryMenuState extends JPanel implements State {
 				cursorY = 150;
 				yesSelected = true;
 			}
+			else {
+				save();
+				currentMenu = "Main";
+				cursorX = 0;
+				cursorY = 150;
+				yesSelected = true;
+			}
 		}
 		else if(currentMenu.equals("Settings")) {
 			if(settingOption == 1) {
 				switch(colorOption) {
 				case 1: if(backgroundColor != Color.RED)
-							textColor = Color.RED;
-						break;
+					textColor = Color.RED;
+				break;
 				case 2: if(backgroundColor != Color.BLUE)
-							textColor = Color.BLUE;
-						break;
+					textColor = Color.BLUE;
+				break;
 				case 3: if(backgroundColor != Color.GREEN)
-							textColor = Color.GREEN;
-						break;
+					textColor = Color.GREEN;
+				break;
 				case 4: if(backgroundColor != Color.YELLOW)
-							textColor = Color.YELLOW;
-						break;
+					textColor = Color.YELLOW;
+				break;
 				case 5: if(backgroundColor != Color.BLACK)
-							textColor = Color.BLACK;
-						break;
+					textColor = Color.BLACK;
+				break;
 				case 6: if(backgroundColor != Color.WHITE)
-							textColor = Color.WHITE;
-						break;
+					textColor = Color.WHITE;
+				break;
 				}
 			}
 			else if(settingOption == 2) {
 				switch(colorOption) {
 				case 1: if(textColor != Color.RED)
-							backgroundColor = Color.RED;
-						break;
+					backgroundColor = Color.RED;
+				break;
 				case 2: if(textColor != Color.BLUE)
-							backgroundColor = Color.BLUE;
-						break;
+					backgroundColor = Color.BLUE;
+				break;
 				case 3: if(textColor != Color.GREEN)
-							backgroundColor = Color.GREEN;
-						break;
+					backgroundColor = Color.GREEN;
+				break;
 				case 4: if(textColor != Color.YELLOW)
-							backgroundColor = Color.YELLOW;
-						break;
+					backgroundColor = Color.YELLOW;
+				break;
 				case 5: if(textColor != Color.BLACK)
-							backgroundColor = Color.BLACK;
-						break;
+					backgroundColor = Color.BLACK;
+				break;
 				case 6: if(textColor != Color.WHITE)
-							backgroundColor = Color.WHITE;
-						break;
+					backgroundColor = Color.WHITE;
+				break;
 				}
 			}
 			else {
@@ -998,7 +1095,7 @@ public class InventoryMenuState extends JPanel implements State {
 			}
 		}
 	}
-	
+
 	private void leftPressed() {
 		if(currentMenu.equals("Main")) {}
 		else if(currentMenu.equals("Items")) {

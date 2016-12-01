@@ -132,6 +132,8 @@ public class Player extends Character {
 	public int getEnemyLevel() { return _enemyLevel; }
 	public void setEnemyLevel(int i) { _enemyLevel = i; }
 	
+	public String getspaddress() { return spaddress; }
+	
 	public void savePlayer(){
 		try{
 			PrintWriter wr = new PrintWriter("PlayerFiles/Player0", "UTF-8");
@@ -337,6 +339,4 @@ public class Player extends Character {
 	public void interact() {
 		
 	}
-	
-	
 }
