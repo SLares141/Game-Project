@@ -183,6 +183,9 @@ public class FieldState extends JPanel implements State, KeyListener {
 		/*
 		 * 	when FieldState is entered, the whole field needs to be painted.
 		 */
+		
+		_sp = player.getLocation();
+		
 		loadall = true;
 		repaint();
 		//this.requestFocusInWindow(); may be called later, DO NOT DELETE
