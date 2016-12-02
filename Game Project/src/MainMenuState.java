@@ -31,7 +31,7 @@ public class MainMenuState
 	int _windowHeight = 576;
 	int _cursor;
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
-	
+	Inventory inv;
 	String _currentMenu;
 	
 	//load the singleton classes
@@ -39,11 +39,12 @@ public class MainMenuState
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();	
 		
 	
-	public MainMenuState()
+	public MainMenuState(Inventory i)
 	{
 		System.out.println("in constructor");
 		_cursor = 0;
 		_currentMenu = new String("Start");
+		inv = i;
 		Graphics g = _frame.getGraphics();
 		addKeyListener(this);
 		
@@ -224,11 +225,11 @@ public class MainMenuState
 			if ((_cursor/50) == 0){
 				System.out.println("NewGame Pressed");
 				stateStack.incrementCount();
-				stateMap.put("field" + stateStack.getCount(), new FieldState(new Player()));
+				stateMap.put("field" + stateStack.getCount(), new FieldState(new Player(), inv));
 				((FieldState) stateMap.get("field" + stateStack.getCount())).getPlayer().resetPlayer();
 				stateStack.push("field" + stateStack.getCount());
 				stateStack.incrementCount();
-				stateMap.put("field" + stateStack.getCount(), new FieldState(new Player()));
+				stateMap.put("field" + stateStack.getCount(), new FieldState(new Player(), inv));
 				stateStack.popAndPush();
 				
 				
