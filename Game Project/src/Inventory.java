@@ -190,6 +190,21 @@ public class Inventory  {
 			return a;	
 		}
 	}
+	public void equip(Weapon w, Character c) {
+		if(w.getName().equals("no weapon")) {
+			if(c.getWeapon() != null && !c.getWeapon().getName().equals("no weapon")) 
+				add(c.getWeapon());
+			c.equip(w);
+		}
+	}
+	public void equip(Armor a, Character c) {
+		if(a.getName().equals("no armor")) {
+			if(c.getArmor() != null && !c.getArmor().getName().equals("no armor")) 
+				add(c.getArmor());
+			c.equip(a);
+		}
+	}
+
 	public void clear() {
 		for(int j = 0; j < SIZE; j++) {
 			inv[j] = null;

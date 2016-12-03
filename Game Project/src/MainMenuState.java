@@ -111,12 +111,13 @@ public class MainMenuState
 			g.drawImage(background, 0,0, null);
 			Font fnt0 = new Font("Comic sans MS", Font.BOLD, 50);
 			g.setFont(fnt0);
-			g.setColor(Color.BLACK);
-			g.drawString("FRUIT VS VEGETABLES:", _windowWidth/2 - 300, 100);
+			g.setColor(Color.RED);
+			g.drawString("FRUIT VS VEGETABLES:", _windowWidth/2 - 300, 125);
 			Font fnt2 = new Font("comic sans MS", Font.PLAIN, 30);
 			g.setFont(fnt2);
-			g.drawString(" The Adventures of Straw the Berry", _windowWidth/2 - 275, _windowHeight/2 -125);
-			g.drawString("Press Enter", _windowWidth/2 - 80, 300);
+			g.drawString(" The Adventures of Straw the Berry", _windowWidth/2 - 275, _windowHeight/2 - 100);
+			g.setColor(Color.BLACK);
+			g.drawString("Press Enter", _windowWidth/2 - 80, 290);
 			
 			
 		}else if (_currentMenu.equals("Main")) {
@@ -148,7 +149,6 @@ public class MainMenuState
 		
 		}else if (_currentMenu.equals("Controls"))
 			g.drawImage(controls, 0, 0, null);
-       
     }
 	
 
@@ -447,14 +447,7 @@ public class MainMenuState
 
 				_frame.quit();
 			}
-		}else if(_currentMenu.equals("Controls")){
-			/*
-			 * settings code tbd
-			 * 
-			 * 
-			 * 
-			 */
-		}
+		}else if(_currentMenu.equals("Controls")){}
 	}
 
 	@Override

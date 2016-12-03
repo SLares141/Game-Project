@@ -105,6 +105,10 @@ public class InventoryMenuState extends JPanel implements State {
 					System.out.println("'i' pressed");
 					info();
 				}
+				if (e.getKeyCode() == KeyEvent.VK_R) {
+					System.out.println("'r' pressed");
+					remove();
+				}
 				render();
 			}
 		});
@@ -590,6 +594,14 @@ public class InventoryMenuState extends JPanel implements State {
 				infoSelected = false;
 			else if(inv.getEquip(invIndex) != null)
 				infoSelected = true;
+		}
+	}
+	private void remove() {
+		if(currentMenu.equals("Equip") && characterSelected && !itemSelected) {
+				Weapon w = (Weapon)Inventory.itemMap.get("no weapon");
+				inv.equip(w, party[characterIndex]);
+				Armor a = (Armor)Inventory.itemMap.get("no armor");
+				inv.equip(a, party[characterIndex]);
 		}
 	}
 	private void select() {

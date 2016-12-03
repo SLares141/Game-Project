@@ -368,7 +368,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 		} else if (_currentScreen.equals("RunSuccess")) {
 			g.setFont(font0);
-			g.setColor(Color.WHITE);
+			g.setColor(Color.BLUE);
 			g.drawImage(background, 0,0, null);
 			g.drawString("RUN SUCCESSFUL", (_frame.getWidth() - g.getFontMetrics().stringWidth("RUN SUCCESSFUL"))/2, 300);
 		}
@@ -387,7 +387,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			if (_cursorIndexX == 0) { // cursorIndex at 0 indicates left buttons
 				_cursorX += 250;
 				_cursorIndexX = 1;
@@ -404,7 +404,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			if (_cursorIndexX == 1) { // right buttons
 				_cursorX -= 250;
 				_cursorIndexX = 0;
@@ -421,7 +421,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			if(_currentScreen.equals("PlayerTurnItem")) {
 				if (_cursorIndexY == 1) { 
 					_cursorY -= 50;
@@ -444,7 +444,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			if(_currentScreen.equals("PlayerTurnItem")) {
 				if (_cursorIndexY == 0) {
 					_cursorY += 50;
@@ -469,7 +469,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 			}
 		}
 
-		if	(e.getKeyCode() == KeyEvent.VK_ENTER){
+		if	(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE){
 			if (_currentScreen.equals("PlayerTurn")){
 				if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left (fight) button selected
 					resetCursor();
@@ -671,7 +671,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 			}
 
 		}
-		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
 			resetCursor();
 			backtransition();
 		}
