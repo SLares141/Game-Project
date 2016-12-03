@@ -8,8 +8,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -31,20 +36,24 @@ public class MainMenuState
 	int _windowHeight = 576;
 	int _cursor;
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
-	Inventory inv;
 	String _currentMenu;
+	
+	Player player;
+	Inventory inv;
 	
 	//load the singleton classes
 	StateMapSingleton stateMap = StateMapSingleton.getInstance();
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();	
 		
 	
-	public MainMenuState(Inventory i)
+	public MainMenuState(Player player, Inventory inv)
 	{
 		System.out.println("in constructor");
 		_cursor = 0;
 		_currentMenu = new String("Start");
-		inv = i;
+		this.player = player;
+		this.inv = inv;
+
 		Graphics g = _frame.getGraphics();
 		addKeyListener(this);
 		
@@ -112,10 +121,10 @@ public class MainMenuState
 		}else if (_currentMenu.equals("Main")){
 			
 			g.drawImage(background, 0,0, null);
-			Font fnt0 = new Font("arial", Font.BOLD, 50);
+			Font fnt0 = new Font("Comic sans MS", Font.BOLD, 50);
 			g.setFont(fnt0);
 			g.setColor(Color.RED);
-			g.drawString("Menu", _windowWidth/2 -64, 100);
+			g.drawString("Main Menu", (_windowWidth-g.getFontMetrics().stringWidth("Main Menu"))/2, 100);
 			
 			g.drawImage(_arrow, _windowWidth/2 -160, (_windowHeight/2 - 116)+ _cursor, null);
 			
@@ -124,7 +133,7 @@ public class MainMenuState
 			Rectangle settingsButton	= new Rectangle(_windowWidth/2 -100, 275, 200, 40);
 			Rectangle quitButton		= new Rectangle(_windowWidth/2 -100, 325, 200, 40);
 			
-			Font font1 = new Font("arial", Font.BOLD, 30);
+			Font font1 = new Font("Comic sans MS", Font.BOLD, 30);
 			g2d.setFont(font1);
 			g2d.setColor(Color.MAGENTA);
 			g.drawString("New Game", newGameButton.x + 30, newGameButton.y + 30);
@@ -192,22 +201,22 @@ public class MainMenuState
             _cursor-= 50;
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN
-				|| e.getKeyCode() == KeyEvent.VK_S) {
-            System.out.println("Down key pressed");
-            _cursor+= 50;
+        		|| e.getKeyCode() == KeyEvent.VK_S) {
+        	System.out.println("Down key pressed");
+        	_cursor+= 50;
         }
         if	(e.getKeyCode() == KeyEvent.VK_ENTER
-				|| e.getKeyCode() == KeyEvent.VK_SPACE){
+        		|| e.getKeyCode() == KeyEvent.VK_SPACE){
         	System.out.println("Enter key pressed");
         	transition();
         }
         if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
-				|| e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
+        		|| e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
         	System.out.println("Backspace key pressed");
         	backtransition();
         }
         update();
-		render();
+        render();
 	}
 	private void backtransition() {
 		if(_currentMenu.equals("Main")){
@@ -215,7 +224,7 @@ public class MainMenuState
 		}else if(_currentMenu.equals("Settings")){
 			_currentMenu = "Main";
 		}
-		
+
 	}
 
 	private void transition() {
@@ -224,30 +233,233 @@ public class MainMenuState
 		}else if(_currentMenu.equals("Main")){
 			if ((_cursor/50) == 0){
 				System.out.println("NewGame Pressed");
+				FileReader inFile;				
+				try {
+					try {
+						player._sprite = ImageIO.read(new File("images/strawberry.png"));
+						player._menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
+						player._smallMenuSprite = ImageIO.read(new File("images/smallMenuStrawberry.png"));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					inFile = new FileReader("PlayerFiles/DefaultStats");
+					BufferedReader buffReader = new BufferedReader(inFile);
+					ArrayList<String> temp = new ArrayList<String>();
+					String line;
+					try {
+						while((line = buffReader.readLine()) != null)
+							temp.add(line);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					player.setStr(Integer.valueOf(temp.get(0)));
+					player.setDef(Integer.valueOf(temp.get(1)));
+					player.setStrMag(Integer.valueOf(temp.get(2)));
+					player.setDefMag(Integer.valueOf(temp.get(3)));
+					player.setHealth(Integer.valueOf(temp.get(4)));
+					player.setTotalHealth(Integer.valueOf(temp.get(5)));
+					player.setMagic(Integer.valueOf(temp.get(6)));
+					player.setTotalMagic(Integer.valueOf(temp.get(7)));
+					player.setLevel(Integer.valueOf(temp.get(8)));
+					player.setExp(Integer.valueOf(temp.get(9)));
+					player.setMoney(Integer.valueOf(temp.get(10)));
+					player.setEnemyLevel(Integer.valueOf(temp.get(11)));
+					player.setIsDead(Boolean.valueOf(temp.get(12)));
+					Weapon w = (Weapon)Inventory.itemMap.get(temp.get(13));
+					player.setWeapon(w);
+					Armor a = (Armor)Inventory.itemMap.get(temp.get(14));
+					player.setArmor(a);
+					player.setspaddress(temp.get(15));
+					int x = Integer.valueOf(temp.get(16));
+					int y = Integer.valueOf(temp.get(17));
+					player.setLocation(new Coordinate(x,y));
+					player.setMap(Integer.valueOf(temp.get(18)));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// LOADS SPRITE FROM FILES
+				try {
+					player.sprite = ImageIO.read(new File(player.getspaddress()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				player.updateExp4NextLvl();
+				
+				
+				try {
+					inFile = new FileReader("InventoryFiles/DefaultValues");
+					BufferedReader buffReader = new BufferedReader(inFile);
+					ArrayList<String> temp = new ArrayList<String>();
+					String line;
+					try {
+						while((line = buffReader.readLine()) != null)
+							temp.add(line);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					inv.clear();
+					//loads default items
+					for(int j = 0; j < 72; j++) {
+						inv.add(Inventory.itemMap.get(temp.get(j)), Integer.valueOf(temp.get(j+1)));
+						j++;
+					}
+					
+					//loads default menu settings
+					InventoryMenuState.textColor = new Color(Integer.parseInt(temp.get(72)));
+					InventoryMenuState.backgroundColor = new Color(Integer.parseInt(temp.get(73)));
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				stateStack.incrementCount();
-				stateMap.put("field" + stateStack.getCount(), new FieldState(new Player(), inv));
+				stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
 				((FieldState) stateMap.get("field" + stateStack.getCount())).getPlayer().resetPlayer();
 				stateStack.push("field" + stateStack.getCount());
 				stateStack.incrementCount();
-				stateMap.put("field" + stateStack.getCount(), new FieldState(new Player(), inv));
+				stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
 				stateStack.popAndPush();
-				
-				
+
 			}else if((_cursor/50)== 1){
 				System.out.println("Continue Pressed");
-				
+				FileReader inFile;
+				try {
+					try {
+						player._sprite = ImageIO.read(new File("images/strawberry.png"));
+						player._menuSprite = ImageIO.read(new File("images/menuStrawberry.png"));
+						player._smallMenuSprite = ImageIO.read(new File("images/smallMenuStrawberry.png"));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					inFile = new FileReader("PlayerFiles/Player0");
+
+					BufferedReader buffReader = new BufferedReader(inFile);
+					ArrayList<String> temp = new ArrayList<String>();
+					String line;
+					try {
+						while((line = buffReader.readLine()) != null)
+							temp.add(line);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					player.setStr(Integer.valueOf(temp.get(0)));
+					player.setDef(Integer.valueOf(temp.get(1)));
+					player.setStrMag(Integer.valueOf(temp.get(2)));
+					player.setDefMag(Integer.valueOf(temp.get(3)));
+					player.setHealth(Integer.valueOf(temp.get(4)));
+					player.setTotalHealth(Integer.valueOf(temp.get(5)));
+					player.setMagic(Integer.valueOf(temp.get(6)));
+					player.setTotalMagic(Integer.valueOf(temp.get(7)));
+					player.setLevel(Integer.valueOf(temp.get(8)));
+					player.setExp(Integer.valueOf(temp.get(9)));
+					player.setMoney(Integer.valueOf(temp.get(10)));
+					player.setEnemyLevel(Integer.valueOf(temp.get(11)));
+					player.setIsDead(Boolean.valueOf(temp.get(12)));
+					Weapon w = (Weapon)Inventory.itemMap.get(temp.get(13));
+					player.setWeapon(w);
+					Armor a = (Armor)Inventory.itemMap.get(temp.get(14));
+					player.setArmor(a);
+					player.setspaddress(temp.get(15));
+					int x = Integer.valueOf(temp.get(16));
+					int y = Integer.valueOf(temp.get(17));
+					player.setLocation(new Coordinate(x,y));
+					player.setMap(Integer.valueOf(temp.get(18)));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// LOADS SPRITE FROM FILES
+				try {
+					player.sprite = ImageIO.read(new File(player.getspaddress()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				player.updateExp4NextLvl();
+
+				//loading inventory stuff
+				inv.clear();
+				try {
+					inFile = new FileReader("InventoryFiles/Items");
+					BufferedReader buffReader = new BufferedReader(inFile);
+					ArrayList<String> temp = new ArrayList<String>();
+					String line;
+					try {
+						while((line = buffReader.readLine()) != null)
+							temp.add(line);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+					for(int j = 0; j < 36; j++) {
+						inv.add(Inventory.itemMap.get(temp.get(j)), Integer.valueOf(temp.get(j+1)));
+						j++;
+					}
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					inFile = new FileReader("InventoryFiles/Equipment");
+					BufferedReader buffReader = new BufferedReader(inFile);
+					ArrayList<String> temp = new ArrayList<String>();
+					String line;
+					try {
+						while((line = buffReader.readLine()) != null){
+							temp.add(line);
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					for(int j = 0; j < 36; j++) {
+						inv.add(Inventory.itemMap.get(temp.get(j)), Integer.valueOf(temp.get(j+1)));
+						j++;
+					}
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					inFile = new FileReader("InventoryFiles/Settings");
+					BufferedReader buffReader = new BufferedReader(inFile);
+					ArrayList<String> temp = new ArrayList<String>();
+					String line;
+					try {
+						while((line = buffReader.readLine()) != null){
+							temp.add(line);
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					InventoryMenuState.textColor = new Color(Integer.parseInt(temp.get(0)));
+					InventoryMenuState.backgroundColor = new Color(Integer.parseInt(temp.get(1)));
+				}
+				catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				stateMap.put("field", new FieldState(player));
 				if (stateStack.getCount() <= 0)
 					stateStack.push("field"); //exits this state, goes to field state.
 				else
 					stateStack.push("field" + stateStack.getCount()); //exits this state, goes to field state.
-				
-				
+
+
 			}else if((_cursor/50)== 2){
 				System.out.println("Settings Pressed");
 				_currentMenu = "Settings";
 			}else if ((_cursor/50)== 3){
 				System.out.println("Quit Pressed");
-				
+
 				_frame.quit();
 			}
 		}else if(_currentMenu.equals("Settings")){
@@ -263,7 +475,7 @@ public class MainMenuState
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -271,5 +483,4 @@ public class MainMenuState
 		// TODO Auto-generated method stub
 		
 	}
-
 }
