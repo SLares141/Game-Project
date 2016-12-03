@@ -155,7 +155,12 @@ public class InventoryMenuState extends JPanel implements State {
 
 		//draws current location
 		g.setFont(large);
-		g.drawString("Strawberry Fields", 504 - g.getFontMetrics().stringWidth("Strawberry Fields")/2, 50);
+		if(player.getMap() == 2)
+			g.drawString("Straw's House", 504 - g.getFontMetrics().stringWidth("Straw's House")/2, 50);
+		else if(player.getMap() == 0)
+			g.drawString("Strawberry Fields", 504 - g.getFontMetrics().stringWidth("Strawberry Fields")/2, 50);
+		else if(player.getMap() == 1)
+			g.drawString("Strawberry Creek", 504 - g.getFontMetrics().stringWidth("Strawberry Creek")/2, 50);
 
 		//draws submenu selections
 		g.setFont(small);
