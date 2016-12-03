@@ -14,9 +14,9 @@ import javax.swing.JPanel;
  * This might be a good place to start, since it seems like the simplest state.
  */
 public class FieldState extends JPanel implements State, KeyListener {
-
-
+	
     private Player player;
+    private Inventory inv;
     private BufferedImage _playersprite;//, enemySprite;
     private Coordinate _sp;
     private Coordinate _oldsp;
@@ -47,16 +47,19 @@ public class FieldState extends JPanel implements State, KeyListener {
 	// in the case of field state, this will be either main menu, inventory, or battle states.
 	String _stateDestination; 	
 	
-	public FieldState(Player p)
+	public FieldState(Player p, Inventory i)
 	{
 		System.out.println("in constructor");
 		
+		inv = i;
 		this.player = p;
 		_sp = p.getLocation();
 		_oldsp = new Coordinate(_sp.x, _sp.y);
 		_playersprite = p.getSprite();
 		
-		enemyList.add(new EnemyCharacter(1, player.getEnemyLevel())); // sample enemy added
+		enemyList.add(new EnemyCharacter(1, player.getEnemyLevel())); // sample carrot
+		enemyList.add(new EnemyCharacter(0, player.getEnemyLevel())); // sample boss
+		enemyList.add(new EnemyCharacter(2, player.getEnemyLevel())); // sample corn
 		
 		mapList = null;
 	    map0 = makeMap0();
@@ -67,8 +70,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 		addKeyListener(this);
 		this.setFocusable(true);
 		
-		
-		if (p.isDead() || p.isBossBeat()) {  /////////////////////////////////////////////////
+		if (p.isBossBeat()) {  
 			p.setLocation(new Coordinate(512, 288));
 			p.setMap(2);
 		}
@@ -138,9 +140,21 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	private void drawEnemies(Graphics g) {
 		if(currentMapNum == 0){
-			EnemyCharacter e = enemyList.get(0);
+			EnemyCharacter carrot = enemyList.get(0); // carrot
+			EnemyCharacter corn = enemyList.get(2);
 			
 			Coordinate c = new Coordinate(32*5, 5*32);
+			carrot.setLocation(c);
+			c = new Coordinate(32*20, 32*12);
+			corn.setLocation(c);
+
+			g.drawImage(carrot.getSprite(), carrot.getLocation().x, carrot.getLocation().y, null);
+			g.drawImage(corn.getSprite(), corn.getLocation().x, corn.getLocation().y, null);
+		}
+		else if (currentMapNum == 1) {
+			EnemyCharacter e = enemyList.get(1); // broccoli
+			
+			Coordinate c = new Coordinate(460, 250);
 			e.setLocation(c);
 			
 			g.drawImage(e.getSprite(), e.getLocation().x, e.getLocation().y, null);
@@ -157,12 +171,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 			 */
 			player.resetPlayer();
 			stateStack.incrementCount();
-			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
+			stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
 			stateStack.pop();
 		} else if (player.isBossBeat()) {
 			stateStack.incrementCount();
-			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
-			stateStack.popAndPush(); /////////////////////////////////////////////////////////
+			stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
+			stateStack.popAndPush();
 		}
 		/*
 		 * 	when FieldState is entered, the whole field needs to be painted.
@@ -264,6 +278,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 			BattleState bs = new BattleState();
 			bs.setEnemy(e);
 			bs.setPlayer(player);
+			bs.setInv(inv);
 			stateStack.push(bs);
 		}else if (nextTile.isBorder()){
 			_sp = check;
@@ -410,8 +425,12 @@ public class FieldState extends JPanel implements State, KeyListener {
 		map.get(t).setReturnCord(new Coordinate(512,512));
 		t.set(5*32, 5*32);
 		
-		EnemyCharacter em = enemyList.get(0);  //new EnemyCharacter(0, player.getEnemyLevel());
-		map.get(t).setEnemy(em);
+		EnemyCharacter carrot = enemyList.get(0);  //new EnemyCharacter(1, player.getEnemyLevel());
+		map.get(t).setEnemy(carrot);
+		
+		t.set(32*20, 32*12);
+		EnemyCharacter corn = enemyList.get(2);
+		map.get(t).setEnemy(corn);
 		
 		return map;
 	}
@@ -465,6 +484,16 @@ public class FieldState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
+		
+		Coordinate t = new Coordinate(26*32, 3*32);
+		map.get(t).setDestination(2);
+		map.get(t).setReturnCord(new Coordinate(512,512));
+		t.set(15*32, 9*32);
+		EnemyCharacter boss = enemyList.get(1);
+		
+		map.get(t).setEnemy(boss);
+		
+		
 		return map;
 	}
 	public Map<Coordinate, Tile> makeMap2(){

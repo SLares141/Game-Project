@@ -36,7 +36,6 @@ public class MainMenuState
 	int _windowHeight = 576;
 	int _cursor;
 	WindowFrame _frame = WindowFrame.getInstance(); // should this be static??
-	
 	String _currentMenu;
 	
 	Player player;
@@ -54,6 +53,7 @@ public class MainMenuState
 		_currentMenu = new String("Start");
 		this.player = player;
 		this.inv = inv;
+
 		Graphics g = _frame.getGraphics();
 		addKeyListener(this);
 		
@@ -317,11 +317,11 @@ public class MainMenuState
 					e.printStackTrace();
 				}
 				stateStack.incrementCount();
-				stateMap.put("field" + stateStack.getCount(), new FieldState(player));
+				stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
 				((FieldState) stateMap.get("field" + stateStack.getCount())).getPlayer().resetPlayer();
 				stateStack.push("field" + stateStack.getCount());
 				stateStack.incrementCount();
-				stateMap.put("field" + stateStack.getCount(), new FieldState(player));
+				stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
 				stateStack.popAndPush();
 
 			}else if((_cursor/50)== 1){
