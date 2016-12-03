@@ -154,7 +154,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 		else if (currentMapNum == 1) {
 			EnemyCharacter e = enemyList.get(1); // broccoli
 			
-			Coordinate c = new Coordinate(460, 250);
+			Coordinate c = new Coordinate(470, 150);
 			e.setLocation(c);
 			
 			g.drawImage(e.getSprite(), e.getLocation().x, e.getLocation().y, null);
@@ -488,11 +488,15 @@ public class FieldState extends JPanel implements State, KeyListener {
 		Coordinate t = new Coordinate(26*32, 3*32);
 		map.get(t).setDestination(2);
 		map.get(t).setReturnCord(new Coordinate(512,512));
-		t.set(15*32, 9*32);
+		t.set(16*32, 6*32);
+		Coordinate s = new Coordinate(26*32, 3*32);
+		map.get(s).setDestination(2);
+		map.get(s).setReturnCord(new Coordinate(512,512));
+		s.set(15*32, 6*32);
 		EnemyCharacter boss = enemyList.get(1);
 		
 		map.get(t).setEnemy(boss);
-		
+		map.get(s).setEnemy(boss);
 		
 		return map;
 	}
