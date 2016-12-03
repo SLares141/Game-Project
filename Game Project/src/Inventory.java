@@ -44,17 +44,16 @@ public class Inventory  {
 					invFull = true;
 					break;
 				}
-
 				if(inv[j] == null) {
 					inv[j] = new ItemNode(i, 1);
 					numItems++;
 					break;
 				}
-				else if(inv[j].getItem().equals(i) && inv[j].getAmount() < 99) {
+				else if(inv[j].getItem().getName().equals(i.getName()) && inv[j].getAmount() < 99) {
 					inv[j].increment();
 					break;
 				}
-				else if(inv[j].getItem().equals(i) && inv[j].getAmount() == 99) {
+				else if(inv[j].getItem().getName().equals(i.getName()) && inv[j].getAmount() == 99) {
 					break;
 				}
 			}
@@ -69,11 +68,11 @@ public class Inventory  {
 					numEquip++;
 					break;
 				}
-				else if(equipment[j].getItem().equals(i) && equipment[j].getAmount() < 99) {
+				else if(equipment[j].getItem().getName().equals(i.getName()) && equipment[j].getAmount() < 99) {
 					equipment[j].increment();
 					break;
 				}
-				else if(equipment[j].getItem().equals(i) && equipment[j].getAmount() == 99) {
+				else if(equipment[j].getItem().getName().equals(i.getName()) && equipment[j].getAmount() == 99) {
 					break;
 				}
 			}
@@ -92,11 +91,11 @@ public class Inventory  {
 						numItems++;
 						break;
 					}
-					else if(inv[j].getItem().equals(i) && inv[j].getAmount() < 99) {
+					else if(inv[j].getItem().getName().equals(i.getName()) && inv[j].getAmount() < 99) {
 						inv[j].increment();
 						break;
 					}
-					else if(inv[j].getItem().equals(i) && inv[j].getAmount() == 99) {
+					else if(inv[j].getItem().getName().equals(i.getName()) && inv[j].getAmount() == 99) {
 						break;
 					}
 				}
@@ -112,11 +111,11 @@ public class Inventory  {
 						numEquip++;
 						break;
 					}
-					else if(equipment[j].getItem().equals(i) && equipment[j].getAmount() < 99) {
+					else if(equipment[j].getItem().getName().equals(i.getName()) && equipment[j].getAmount() < 99) {
 						equipment[j].increment();
 						break;
 					}
-					else if(equipment[j].getItem().equals(i) && equipment[j].getAmount() == 99) {
+					else if(equipment[j].getItem().getName().equals(i.getName()) && equipment[j].getAmount() == 99) {
 						break;
 					}
 				}

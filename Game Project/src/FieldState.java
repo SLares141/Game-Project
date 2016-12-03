@@ -28,9 +28,9 @@ import javax.swing.JTextField;
  * This might be a good place to start, since it seems like the simplest state.
  */
 public class FieldState extends JPanel implements State, KeyListener {
-
-
+	
     private Player player;
+    private Inventory inv;
     private BufferedImage _playersprite;//, enemySprite;
     private Coordinate _sp;
     private Coordinate _oldsp;
@@ -67,10 +67,11 @@ public class FieldState extends JPanel implements State, KeyListener {
 	String _stateDestination; 	
 		
 	
-	public FieldState(Player p)
+	public FieldState(Player p, Inventory i)
 	{
 		System.out.println("in constructor");
 		
+		inv = i;
 		this.player = p;
 		_sp = p.getLocation();
 		_oldsp = new Coordinate(_sp.x, _sp.y);
@@ -192,11 +193,11 @@ public class FieldState extends JPanel implements State, KeyListener {
 			player.resetPlayer();
 			player = new Player();
 			stateStack.incrementCount();
-			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
+			stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
 			stateStack.pop();
 		} else if (player.isBossBeat()) {
 			stateStack.incrementCount();
-			stateMap.put("field" + stateStack.getCount(), new FieldState(player));
+			stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
 			stateStack.popAndPush();
 			
 			
@@ -302,6 +303,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 			BattleState bs = new BattleState();
 			bs.setEnemy(e);
 			bs.setPlayer(player);
+			bs.setInv(inv);
 			stateStack.push(bs);
 		}else if (nextTile.isBorder()){
 			_sp = check;
