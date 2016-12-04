@@ -200,7 +200,9 @@ public class FieldState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
+		
+		boolean mapChange = false;
+		
 		loadall = false;
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE ) { //press escape to go to menu. WILL BE CHANGED!
 	            System.out.println("Back to main menu!");
@@ -225,40 +227,48 @@ public class FieldState extends JPanel implements State, KeyListener {
 					|| e.getKeyCode() == KeyEvent.VK_D) {
 				System.out.println("Right key pressed");
 				//_sp.setX(_sp.x += 32);
-				movePlayer(32, 0);
+				mapChange = movePlayer(32, 0);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_LEFT
 					|| e.getKeyCode() == KeyEvent.VK_A) {
 				System.out.println("Left key pressed");
 			    //_sp.setX(_sp.x -= 32);
-			    movePlayer(-32,0);
+			    mapChange = movePlayer(-32,0);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_UP
 					|| e.getKeyCode() == KeyEvent.VK_W) {
 				System.out.println("Up key pressed");
 				//_sp.setY(_sp.y -= 32);
-				movePlayer(0,-32);
+				mapChange = movePlayer(0,-32);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_DOWN
 					|| e.getKeyCode() == KeyEvent.VK_S) {
 				System.out.println("Down key pressed");
 				//_sp.setY(_sp.y += 32);
-				movePlayer(0,32);
+				mapChange = movePlayer(0,32);
 			}
 			//movePlayer takes care of checking bounds/setting
 			//new player coordinate
-			repaint();
+			
+			
+			if (mapChange)
+				repaint();
+
 		}
 	}
 
-	public void movePlayer(int a, int b){
+	public boolean movePlayer(int a, int b){
+		boolean mapChange = false;
+		
 		System.out.println("in moveplayer");
 		Coordinate check = new Coordinate(_sp.x + a, _sp.y + b);
 		Tile oldTile = mapList.get(currentMapNum).get(_sp);
+		int oldX = _sp.x;
+		int oldY = _sp.y;
 		Tile nextTile = mapList.get(currentMapNum).get(check);
 		
 		if((nextTile == null) && (oldTile.isPortal())){
-			shiftMap(oldTile.getDestination(), check);
+			mapChange = shiftMap(oldTile.getDestination(), check);
 		}else if(nextTile == null){
 			//do nothing, on boundary
 		}else if (!nextTile.canMoveTo()){
@@ -276,15 +286,23 @@ public class FieldState extends JPanel implements State, KeyListener {
 			_sp = check;
 			player.setLocation(_sp);
 		}else if (nextTile.isPortal()){
-			shiftMap(nextTile.getDestination(),check);
+			mapChange = shiftMap(nextTile.getDestination(),check);
 		}else {
 			_sp = check;
 			player.setLocation(_sp);
+			
 		}
-		repaint();
+		paintPlayer(this.getGraphics());
+		getGraphics().drawImage(oldTile.im, oldX, oldY, null);
+		return mapChange;
 	}
 	
-	public void shiftMap(int n, Coordinate check){
+	 public void paintPlayer(Graphics g) {
+		 g.drawImage(player.getSprite(), player.getLocation().x, player.getLocation().y, 32, 32, null);
+		 }
+	
+	
+	public boolean shiftMap(int n, Coordinate check){
 		System.out.println("in shiftmap");
 		//gets the tile that the sprite is trying to move from
 		//checks if that tile is a portal, if it is, then it 
@@ -309,6 +327,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 			player.setLocation(_sp);
 			player.setMap(currentMapNum);
 		}
+		return true;
 		
 		
 		/*
