@@ -487,10 +487,20 @@ public class FieldState extends JPanel implements State, KeyListener {
 		map.get(s).setDestination(2);
 		map.get(s).setReturnCord(new Coordinate(512,512));
 		s.set(15*32, 6*32);
+		Coordinate u = new Coordinate(26*32, 3*32);
+		map.get(u).setDestination(2);
+		map.get(u).setReturnCord(new Coordinate(512,512));
+		u.set(16*32, 5*32);
+		Coordinate v = new Coordinate(26*32, 3*32);
+		map.get(v).setDestination(2);
+		map.get(v).setReturnCord(new Coordinate(512,512));
+		v.set(15*32, 5*32);
 		EnemyCharacter boss = enemyList.get(1);
 		
 		map.get(t).setEnemy(boss);
 		map.get(s).setEnemy(boss);
+		map.get(u).setEnemy(boss);
+		map.get(v).setEnemy(boss);
 		
 		return map;
 	}
