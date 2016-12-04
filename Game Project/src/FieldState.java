@@ -287,6 +287,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 			player.setLocation(_sp);
 			getGraphics().drawImage(oldTile.im, oldX, oldY, null);
 			paintPlayer(this.getGraphics());
+			this.drawEnemies(this.getGraphics());
 		}else if (nextTile.isPortal()){
 			mapChange = shiftMap(nextTile.getDestination(),check);
 		}else {
@@ -294,6 +295,7 @@ public class FieldState extends JPanel implements State, KeyListener {
 			player.setLocation(_sp);
 			getGraphics().drawImage(oldTile.im, oldX, oldY, null);
 			paintPlayer(this.getGraphics());
+			this.drawEnemies(this.getGraphics());
 		}
 		return mapChange;
 	}
