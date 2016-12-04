@@ -1,13 +1,22 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
 public class Inventory  {
 	private class ItemNode {
 		private Item i;
 		private int amount;
-		
+
 		public ItemNode(Item i, int amount) {
 			this.i = i;
 			this.amount = amount;
 		}
-		
+
 		public Item getItem() {
 			return i;
 		}
@@ -25,16 +34,16 @@ public class Inventory  {
 		}
 	}
 	private final int SIZE = 18;
-	private int money = 420;
 	private int numItems = 0;
 	private int numEquip = 0;
 	private boolean invFull;
 	private boolean equipFull;
-	
+
 	ItemNode[] inv = new ItemNode[SIZE];
 	ItemNode[] equipment = new ItemNode[SIZE];
-
 	
+	public static ItemMap itemMap = new ItemMap();
+
 	//adds one of a specific item
 	public void add(Item i) {
 		for(int j = 0; j < SIZE; j++) {
@@ -58,7 +67,7 @@ public class Inventory  {
 				}
 			}
 			//for equipment
-			else {
+			else if(i instanceof Weapon || i instanceof Armor){
 				if(numEquip == SIZE) {
 					equipFull = true;
 					break;
@@ -103,7 +112,7 @@ public class Inventory  {
 			}
 		}
 		//for equipment
-		else {
+		else if(i instanceof Weapon || i instanceof Armor) {
 			while(count <= x && numEquip < SIZE) {
 				for(int j = 0; j < SIZE; j++) {
 					if(equipment[j] == null) {
@@ -123,7 +132,7 @@ public class Inventory  {
 			}
 		}
 	}
-	
+
 	//uses a consumable on a character
 	public Consumable use(int index, Character c) {
 		Consumable cons = (Consumable)inv[index].getItem();
@@ -146,7 +155,7 @@ public class Inventory  {
 	public Item equip(int index, Character c) {
 		if(equipment[index].getItem() instanceof Weapon) {
 			Weapon w = (Weapon)equipment[index].getItem();
-			if(c.getWeapon() != null) 
+			if(c.getWeapon() != null && !c.getWeapon().getName().equals("no weapon")) 
 				add(c.getWeapon());
 			c.equip(w);
 			if(equipment[index].getAmount() == 1) {
@@ -164,7 +173,7 @@ public class Inventory  {
 		}
 		else {
 			Armor a = (Armor)equipment[index].getItem();
-			if(c.getArmor() != null) 
+			if(c.getArmor() != null && !c.getArmor().getName().equals("no armor")) 
 				add(c.getArmor());
 			c.equip(a);
 			if(equipment[index].getAmount() == 1) {
@@ -179,6 +188,29 @@ public class Inventory  {
 			}
 			equipment[index].decrement();
 			return a;	
+		}
+	}
+	public void equip(Weapon w, Character c) {
+		if(w.getName().equals("no weapon")) {
+			if(c.getWeapon() != null && !c.getWeapon().getName().equals("no weapon")) 
+				add(c.getWeapon());
+			c.equip(w);
+		}
+	}
+	public void equip(Armor a, Character c) {
+		if(a.getName().equals("no armor")) {
+			if(c.getArmor() != null && !c.getArmor().getName().equals("no armor")) 
+				add(c.getArmor());
+			c.equip(a);
+		}
+	}
+
+	public void clear() {
+		for(int j = 0; j < SIZE; j++) {
+			inv[j] = null;
+			numItems = 0;
+			equipment[j] = null;
+			numEquip = 0;
 		}
 	}
 
@@ -198,10 +230,7 @@ public class Inventory  {
 			return equipment[index].getItem();
 		return null;
 	}
-	
-	public int getMoney() {
-		return money;
-	}
+
 	public int getNumItems() {
 		return numItems;
 	}

@@ -10,8 +10,6 @@ import javax.swing.JPanel;
 
 public class WindowFrame extends JFrame {
 
-	
-
     private static double _windowWidth = 1040;
     private static double _windowHeight = 614;
 
@@ -32,10 +30,6 @@ public class WindowFrame extends JFrame {
 		frame.setSize((int)_windowWidth,(int)_windowHeight);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-		
-		
-
 		frame.setVisible(true);
    }
 

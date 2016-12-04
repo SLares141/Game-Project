@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -116,7 +117,10 @@ public class BattleState extends JPanel implements State, KeyListener {
 		if (_currentScreen.equals("PlayerTurn")){
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 125, 300, null);
-			g.drawImage(_enemy, 700, 75, null);
+			if(_charEnemy.isBoss()) 
+				g.drawImage(_enemy, 630, 0, null);
+			else
+				g.drawImage(_enemy, 730, 75, null);
 			g.drawImage(_cursor, _cursorX, _cursorY, null);
 			g.setFont(font0);
 			g.setColor(Color.BLACK);
@@ -137,19 +141,22 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 			g2d.setFont(font2);
 			g2d.setColor(Color.BLACK);
-			g.drawString("FIGHT", topLeftButton.x + 70, topLeftButton.y + 30);
+			g.drawString("FIGHT", topLeftButton.x + 100 - g.getFontMetrics().stringWidth("FIGHT")/2, topLeftButton.y + 30);
 			g2d.draw(topLeftButton);
-			g.drawString("DEFEND", topRightButton.x + 70, topRightButton.y + 30);
+			g.drawString("DEFEND", topRightButton.x + 100 - g.getFontMetrics().stringWidth("DEFEND")/2, topRightButton.y + 30);
 			g2d.draw(topRightButton);
-			g.drawString("ITEM", bottomLeftButton.x + 70, bottomLeftButton.y + 30);
+			g.drawString("ITEM", bottomLeftButton.x + 100 - g.getFontMetrics().stringWidth("ITEM")/2, bottomLeftButton.y + 30);
 			g2d.draw(bottomLeftButton);
-			g.drawString("RUN", bottomRightButton.x + 70, bottomRightButton.y + 30);
+			g.drawString("RUN", bottomRightButton.x + 100 - g.getFontMetrics().stringWidth("RUN")/2, bottomRightButton.y + 30);
 			g2d.draw(bottomRightButton);
 
 		} else if (_currentScreen.equals("PlayerTurnFight")){	
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 125, 300, null);
-			g.drawImage(_enemy, 700, 75, null);
+			if(_charEnemy.isBoss()) 
+				g.drawImage(_enemy, 630, 0, null);
+			else
+				g.drawImage(_enemy, 730, 75, null);
 			g.drawImage(_cursor, _cursorX, _cursorY, null);
 
 			g.setFont(font0);
@@ -171,20 +178,23 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 			g2d.setFont(font2);
 			g2d.setColor(Color.BLACK);
-			g.drawString("MELEE", topLeftButton.x + 70, topLeftButton.y + 30);
+			g.drawString("MELEE", topLeftButton.x + 100 - g.getFontMetrics().stringWidth("MELEE")/2, topLeftButton.y + 30);
 			g2d.draw(topLeftButton);
-			g.drawString("MAGIC", topRightButton.x + 70, topRightButton.y + 30);
+			g.drawString("MAGIC", topRightButton.x + 100 - g.getFontMetrics().stringWidth("MAGIC")/2, topRightButton.y + 30);
 			g2d.draw(topRightButton);
-			g.drawString("SPECIAL", bottomLeftButton.x + 70, bottomLeftButton.y + 30);
+			g.drawString("SPECIAL", bottomLeftButton.x + 100 - g.getFontMetrics().stringWidth("SPECIAL")/2, bottomLeftButton.y + 30);
 			g2d.draw(bottomLeftButton);
-			g.drawString("BACK", bottomRightButton.x + 70, bottomRightButton.y + 30);
+			g.drawString("BACK", bottomRightButton.x + 100 - g.getFontMetrics().stringWidth("BACK")/2, bottomRightButton.y + 30);
 			g2d.draw(bottomRightButton);
 
 
 		} else if (_currentScreen.equals("PlayerTurnItem")){
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 125, 300, null);
-			g.drawImage(_enemy, 700, 75, null);
+			if(_charEnemy.isBoss()) 
+				g.drawImage(_enemy, 630, 0, null);
+			else
+				g.drawImage(_enemy, 730, 75, null);
 			g.drawImage(_smallCursor, _cursorX + 47  + _xOffset, _cursorY + 5, null);
 
 			g.setFont(font0);
@@ -227,7 +237,10 @@ public class BattleState extends JPanel implements State, KeyListener {
 			
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 125, 300, null);
-			g.drawImage(_enemy, 700, 75, null);
+			if(_charEnemy.isBoss()) 
+				g.drawImage(_enemy, 630, 0, null);
+			else
+				g.drawImage(_enemy, 730, 75, null);
 
 			g.setFont(font0);
 			g.setColor(Color.BLACK);
@@ -313,13 +326,13 @@ public class BattleState extends JPanel implements State, KeyListener {
 			g.setFont(font0);
 			g.setColor(Color.GREEN);
 			g.drawImage(background, 0,0, null);
-			g.drawString("VICTORY", 350, 200);
+			g.drawString("VICTORY", (_frame.getWidth() - g.getFontMetrics().stringWidth("VICTORY"))/2, 200);
 
 		} else if (_currentScreen.equals("VictoryInfo")) {
 			g.setFont(font0);
 			g.setColor(Color.GREEN);
 			g.drawImage(background, 0,0, null);
-			g.drawString("VICTORY", 350, 200);
+			g.drawString("VICTORY", (_frame.getWidth() - g.getFontMetrics().stringWidth("VICTORY"))/2, 200);
 
 			boolean tempBool = false;
 			if (_charPlayer.getExp() >= tempExpVal) { // check if a level-up has occurred
@@ -330,19 +343,19 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 			g.setColor(Color.WHITE);
 			g.setFont(font2);
-			g.drawString("REWARDS", 250, 250);
+			g.drawString("REWARDS", 150, 280);
 			g.drawString("Money: +$" + _charEnemy.getMoney() 
-			+ "..........TOTAL: $" + _charPlayer.getMoney(), 250, 290);
-			g.drawString("EXP:     +  " + _charEnemy.getExp() 
-			+ "..........EXP UNTIL NEXT LEVEL:  "
-			+ (_charPlayer.getExp4NextLvl() - _charPlayer.getExp()), 250, 330);
+			+ "..........TOTAL: $" + _charPlayer.getMoney(), 150, 320);
+			g.drawString("EXP:    + " + _charEnemy.getExp() 
+			+ "..........EXP UNTIL NEXT LEVEL: "
+			+ (_charPlayer.getExp4NextLvl() - _charPlayer.getExp()), 150, 360);
 
 			// DISPLAY HOW MUCH EXP UNTIL NEXT LEVEL
 
 			if (tempBool) { // display that level up occured
 				g.setFont(font0);
 				g.setColor(Color.GREEN);
-				g.drawString("LEVEL UP! Current Level: " + _charPlayer.getLevel(), 250, 400);
+				g.drawString("LEVEL UP! Current Level: " + _charPlayer.getLevel(), (_frame.getWidth() - g.getFontMetrics().stringWidth("LEVEL UP! Current Level: " + _charPlayer.getLevel()))/2, 430);
 				tempBool = false;
 			}
 
@@ -351,13 +364,13 @@ public class BattleState extends JPanel implements State, KeyListener {
 			g.setFont(font0);
 			g.setColor(Color.RED);
 			g.drawImage(background, 0,0, null);
-			g.drawString("GAME OVER", 350, 300);
+			g.drawString("GAME OVER", (_frame.getWidth() - g.getFontMetrics().stringWidth("GAME OVER"))/2, 300);
 
 		} else if (_currentScreen.equals("RunSuccess")) {
 			g.setFont(font0);
-			g.setColor(Color.WHITE);
+			g.setColor(Color.BLUE);
 			g.drawImage(background, 0,0, null);
-			g.drawString("RUN SUCCESSFUL", 300, 300);
+			g.drawString("RUN SUCCESSFUL", (_frame.getWidth() - g.getFontMetrics().stringWidth("RUN SUCCESSFUL"))/2, 300);
 		}
 	}
 
@@ -374,7 +387,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			if (_cursorIndexX == 0) { // cursorIndex at 0 indicates left buttons
 				_cursorX += 250;
 				_cursorIndexX = 1;
@@ -391,7 +404,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			if (_cursorIndexX == 1) { // right buttons
 				_cursorX -= 250;
 				_cursorIndexX = 0;
@@ -408,7 +421,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			if(_currentScreen.equals("PlayerTurnItem")) {
 				if (_cursorIndexY == 1) { 
 					_cursorY -= 50;
@@ -431,7 +444,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			if(_currentScreen.equals("PlayerTurnItem")) {
 				if (_cursorIndexY == 0) {
 					_cursorY += 50;
@@ -456,7 +469,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 			}
 		}
 
-		if	(e.getKeyCode() == KeyEvent.VK_ENTER){
+		if	(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE){
 			if (_currentScreen.equals("PlayerTurn")){
 				if ((_cursorIndexX == 0) && (_cursorIndexY == 0)){ // top left (fight) button selected
 					resetCursor();
@@ -507,7 +520,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 						} else {
 							System.out.println("RunFailed");
-							this.getGraphics().drawImage(runFailed, 460, 500, null);
+							this.getGraphics().drawImage(runFailed, 520, 500, null);
 							//this.getGraphics().fillRect(460, 400, 450, 90);
 							try {
 								Thread.sleep(500);
@@ -658,7 +671,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 			}
 
 		}
-		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_CAPS_LOCK){
 			resetCursor();
 			backtransition();
 		}

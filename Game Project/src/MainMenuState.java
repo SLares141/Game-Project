@@ -31,7 +31,7 @@ public class MainMenuState
 	extends JPanel 
 		implements State, KeyListener {
 	
-	BufferedImage background, _arrow;
+	BufferedImage background, _arrow, controls;
 	int _windowWidth = 1024;
 	int _windowHeight = 576;
 	int _cursor;
@@ -62,6 +62,7 @@ public class MainMenuState
 		try {
 			background = ImageIO.read(new File("images/menuback2.jpg"));
 			_arrow = ImageIO.read(new File("images/arrow.png"));
+			controls = ImageIO.read(new File("images/controls.png"));
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -92,7 +93,7 @@ public class MainMenuState
 				_cursor -=50;
 			}
 		}
-		if(_currentMenu.equals("Settings")){
+		if(_currentMenu.equals("Controls")){
 			
 		}
 		
@@ -110,15 +111,16 @@ public class MainMenuState
 			g.drawImage(background, 0,0, null);
 			Font fnt0 = new Font("Comic sans MS", Font.BOLD, 50);
 			g.setFont(fnt0);
-			g.setColor(Color.BLACK);
-			g.drawString("FRUIT VS VEGETABLES:", _windowWidth/2 - 300, 100);
+			g.setColor(Color.RED);
+			g.drawString("FRUIT VS VEGETABLES:", _windowWidth/2 - 300, 125);
 			Font fnt2 = new Font("comic sans MS", Font.PLAIN, 30);
 			g.setFont(fnt2);
-			g.drawString(" The Adventures of Straw the Berry", _windowWidth/2 - 275, _windowHeight/2 -125);
-			g.drawString("Press Enter", _windowWidth/2 - 80, 300);
+			g.drawString(" The Adventures of Straw the Berry", _windowWidth/2 - 275, _windowHeight/2 - 100);
+			g.setColor(Color.BLACK);
+			g.drawString("Press Enter", _windowWidth/2 - 80, 290);
 			
 			
-		}else if (_currentMenu.equals("Main")){
+		}else if (_currentMenu.equals("Main")) {
 			
 			g.drawImage(background, 0,0, null);
 			Font fnt0 = new Font("Comic sans MS", Font.BOLD, 50);
@@ -126,12 +128,12 @@ public class MainMenuState
 			g.setColor(Color.RED);
 			g.drawString("Main Menu", (_windowWidth-g.getFontMetrics().stringWidth("Main Menu"))/2, 100);
 			
-			g.drawImage(_arrow, _windowWidth/2 -160, (_windowHeight/2 - 116)+ _cursor, null);
+			g.drawImage(_arrow, _windowWidth/2 -160, (_windowHeight/2 - 141)+ _cursor, null);
 			
-			Rectangle newGameButton		= new Rectangle(_windowWidth/2 -100, 175, 200, 40);
-			Rectangle continueButton	= new Rectangle(_windowWidth/2 -100, 225, 200, 40);
-			Rectangle settingsButton	= new Rectangle(_windowWidth/2 -100, 275, 200, 40);
-			Rectangle quitButton		= new Rectangle(_windowWidth/2 -100, 325, 200, 40);
+			Rectangle newGameButton		= new Rectangle(_windowWidth/2 -100, 150, 200, 40);
+			Rectangle continueButton	= new Rectangle(_windowWidth/2 -100, 200, 200, 40);
+			Rectangle controlsButton	= new Rectangle(_windowWidth/2 -100, 250, 200, 40);
+			Rectangle quitButton		= new Rectangle(_windowWidth/2 -100, 300, 200, 40);
 			
 			Font font1 = new Font("Comic sans MS", Font.BOLD, 30);
 			g2d.setFont(font1);
@@ -140,30 +142,13 @@ public class MainMenuState
 			g2d.draw(newGameButton);
 			g.drawString("Continue", continueButton.x + 45, continueButton.y + 30);
 			g2d.draw(continueButton);
-			g.drawString("Settings", settingsButton.x + 45, settingsButton.y + 30);
-			g2d.draw(settingsButton);
+			g.drawString("Controls", controlsButton.x + 45, controlsButton.y + 30);
+			g2d.draw(controlsButton);
 			g.drawString("Quit", quitButton.x + 70, quitButton.y + 30);
 			g2d.draw(quitButton);
 		
-		}else if (_currentMenu.equals("Settings")){
-			g.setColor(Color.GRAY);
-			g.fillRect(0, 0, _windowWidth, _windowHeight);
-			
-			Font fnt3 = new Font("Comic Sans MS", Font.PLAIN, 50);
-			g.setFont(fnt3);
-			g.setColor(Color.WHITE);
-			g.drawString("Settings", _windowWidth/2 - 70, 100);
-			
-			/*
-			 * things to add:
-			 * 		settings buttons
-			 * 		controls
-			 * 		etc.
-			 * 
-			 */
-			
-		}
-       
+		}else if (_currentMenu.equals("Controls"))
+			g.drawImage(controls, 0, 0, null);
     }
 	
 
@@ -221,7 +206,7 @@ public class MainMenuState
 	private void backtransition() {
 		if(_currentMenu.equals("Main")){
 			_currentMenu = "Start";
-		}else if(_currentMenu.equals("Settings")){
+		}else if(_currentMenu.equals("Controls")){
 			_currentMenu = "Main";
 		}
 
@@ -447,7 +432,7 @@ public class MainMenuState
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				stateMap.put("field", new FieldState(player));
+				stateMap.put("field", new FieldState(player, inv));
 				if (stateStack.getCount() <= 0)
 					stateStack.push("field"); //exits this state, goes to field state.
 				else
@@ -455,21 +440,14 @@ public class MainMenuState
 
 
 			}else if((_cursor/50)== 2){
-				System.out.println("Settings Pressed");
-				_currentMenu = "Settings";
+				System.out.println("Controls Pressed");
+				_currentMenu = "Controls";
 			}else if ((_cursor/50)== 3){
 				System.out.println("Quit Pressed");
 
 				_frame.quit();
 			}
-		}else if(_currentMenu.equals("Settings")){
-			/*
-			 * settings code tbd
-			 * 
-			 * 
-			 * 
-			 */
-		}
+		}else if(_currentMenu.equals("Controls")){}
 	}
 
 	@Override
