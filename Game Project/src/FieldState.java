@@ -75,7 +75,6 @@ public class FieldState extends JPanel implements State, KeyListener {
 			p.setMap(2);
 		}
 		
-		
 		mapList = makeMapList();
 		currentMapNum = p.getMap();
 		this.addNotify();
@@ -88,7 +87,6 @@ public class FieldState extends JPanel implements State, KeyListener {
     }
     
     
-
 	@Override
 	public void update() {
 		
@@ -97,16 +95,15 @@ public class FieldState extends JPanel implements State, KeyListener {
 	public void render() {
 		
 	}
+	
 	public void paintComponent(Graphics g) {
 		//grid of tile values
-		
 		
 		int x = 0, y;
 		//loads map to be the map where a given coordinate is the key, and the value is a tile given by above grid
 		
 		//checks if it needs to load the whole grid
 		if (loadall){
-			
 			//prints the entire grid
 			System.out.println("PRINTING ENTIRE GRID");
 			for(Map.Entry<Coordinate, Tile> entry: mapList.get(currentMapNum).entrySet()){
@@ -121,8 +118,6 @@ public class FieldState extends JPanel implements State, KeyListener {
 				g.setColor(Color.RED);
 				
 				g.drawString("ENEMIES AT LEVEL " + player.getEnemyLevel(), 10, 50);
-				
-				//enemyList.get(0).setLevel(player.getEnemyLevel());
 				
 			}
 			
@@ -189,7 +184,6 @@ public class FieldState extends JPanel implements State, KeyListener {
 		repaint();
 		//this.requestFocusInWindow(); may be called later, DO NOT DELETE
 		this.addNotify(); //may be called later, DO NOT DELETE
-
 	}
 
 	@Override
@@ -200,9 +194,8 @@ public class FieldState extends JPanel implements State, KeyListener {
 		if (player.isDead()) {
 			player.resetPlayer();
 			
-		} else if (player.isBossBeat()) { ////////////////////////////////////////////////////////////////	
+		} else if (player.isBossBeat())
 			player.prepareNextLevel();
-		}
 	}
 
 	@Override
@@ -272,7 +265,6 @@ public class FieldState extends JPanel implements State, KeyListener {
 			//DO NOTHING 
 		}else if (nextTile.hasEnemy()){
 			EnemyCharacter e = nextTile.getEnemy();
-			
 			e.setLevel(player.getEnemyLevel()); // must reset enemy level, sometimes level is off from constructor
 			
 			BattleState bs = new BattleState();
@@ -289,27 +281,9 @@ public class FieldState extends JPanel implements State, KeyListener {
 			_sp = check;
 			player.setLocation(_sp);
 		}
-		//Checks the boundaries to make sure it doesnt go off screen
-		//in the event it goes off screen, go to shiftMap.
-		/*
-		if(_sp.x > 992){
-			_sp.x = 992;
-			//shiftMap();
-		}else if(_sp.y > 544){
-			_sp.y = 544;
-			//shiftMap();
-		}else if(_sp.x < 0){
-			_sp.x = 0;
-			//shiftMap();
-		}else if(_sp.y < 0){
-			_sp.y = 0;
-			//shiftMap();
-		}else{
-			//if not on the edge of the screen, 
-			player.setLocation(_sp);
-		}
-		*/
+		repaint();
 	}
+	
 	public void shiftMap(int n, Coordinate check){
 		System.out.println("in shiftmap");
 		//gets the tile that the sprite is trying to move from
@@ -436,9 +410,9 @@ public class FieldState extends JPanel implements State, KeyListener {
 	}
 	public Map<Coordinate, Tile> makeMap1(){
 		int[][] ia = new int[][]{//			10 				  16		  20	
-				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-				{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-				{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+				{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+				{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+				{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 				{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 				{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 				{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
