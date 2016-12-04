@@ -285,15 +285,16 @@ public class FieldState extends JPanel implements State, KeyListener {
 		}else if (nextTile.isBorder()){
 			_sp = check;
 			player.setLocation(_sp);
+			getGraphics().drawImage(oldTile.im, oldX, oldY, null);
+			paintPlayer(this.getGraphics());
 		}else if (nextTile.isPortal()){
 			mapChange = shiftMap(nextTile.getDestination(),check);
 		}else {
 			_sp = check;
 			player.setLocation(_sp);
-			
+			getGraphics().drawImage(oldTile.im, oldX, oldY, null);
+			paintPlayer(this.getGraphics());
 		}
-		paintPlayer(this.getGraphics());
-		getGraphics().drawImage(oldTile.im, oldX, oldY, null);
 		return mapChange;
 	}
 	
