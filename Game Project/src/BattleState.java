@@ -234,7 +234,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 				y += 50;
 			}
 		} else if (_currentScreen.equals("EnemyTurn")) {
-			
+
 			g.drawImage(background, 0,0, null);
 			g.drawImage(_player, 125, 300, null);
 			if(_charEnemy.isBoss()) 
@@ -387,6 +387,19 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+
+	}
+
+	private void backtransition() {
+		if(_currentScreen.equals("PlayerTurnFight"))
+			_currentScreen = "PlayerTurn";
+		else if(_currentScreen.equals("PlayerTurnItem"))
+			_currentScreen = "PlayerTurn";
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			if (_cursorIndexX == 0) { // cursorIndex at 0 indicates left buttons
 				_cursorX += 250;
@@ -677,19 +690,6 @@ public class BattleState extends JPanel implements State, KeyListener {
 		}
 		update();
 		render();
-	}
-
-	private void backtransition() {
-		if(_currentScreen.equals("PlayerTurnFight"))
-			_currentScreen = "PlayerTurn";
-		else if(_currentScreen.equals("PlayerTurnItem"))
-			_currentScreen = "PlayerTurn";
-	}
-
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-
 	}
 
 	@Override
