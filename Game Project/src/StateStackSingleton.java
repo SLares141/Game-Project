@@ -59,7 +59,6 @@ public class StateStackSingleton {
 		mStack.push(bs); //actually pushes it to the stack
 	}
 	protected void push(String name) {
-		
 		if(!mStack.isEmpty()) //means that the old state can be removed from the windowFrame.	 
 		{
 			State oldState = peek();

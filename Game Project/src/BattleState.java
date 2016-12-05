@@ -220,7 +220,7 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 			int x = 500;
 			int y = 428;
-			System.out.println(_inv.getNumItems());
+			
 			for(int j = _invStart; j < _inv.getNumItems() && j < _invStart + 4; j++) {
 				if(j%2 == 0) {
 					g.drawString(_inv.getItem(j).getName(), x, y);
@@ -387,19 +387,6 @@ public class BattleState extends JPanel implements State, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
-	}
-
-	private void backtransition() {
-		if(_currentScreen.equals("PlayerTurnFight"))
-			_currentScreen = "PlayerTurn";
-		else if(_currentScreen.equals("PlayerTurnItem"))
-			_currentScreen = "PlayerTurn";
-	}
-
-
-	@Override
-	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			if (_cursorIndexX == 0) { // cursorIndex at 0 indicates left buttons
 				_cursorX += 250;
@@ -481,6 +468,18 @@ public class BattleState extends JPanel implements State, KeyListener {
 				}
 			}
 		}
+	}
+
+	private void backtransition() {
+		if(_currentScreen.equals("PlayerTurnFight"))
+			_currentScreen = "PlayerTurn";
+		else if(_currentScreen.equals("PlayerTurnItem"))
+			_currentScreen = "PlayerTurn";
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 
 		if	(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE){
 			if (_currentScreen.equals("PlayerTurn")){

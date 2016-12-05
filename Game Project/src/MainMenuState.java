@@ -270,13 +270,11 @@ public class MainMenuState
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				stateStack.incrementCount();
-				stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
-				((FieldState) stateMap.get("field" + stateStack.getCount())).getPlayer().resetPlayer();
-				stateStack.push("field" + stateStack.getCount());
-				stateStack.incrementCount();
-				stateMap.put("field" + stateStack.getCount(), new FieldState(player, inv));
-				stateStack.popAndPush();
+				stateMap.put("field", new FieldState(player, inv));
+				if (stateStack.getCount() <= 0)
+					stateStack.push("field"); //exits this state, goes to field state.
+				else
+					stateStack.push("field" + stateStack.getCount()); //exits this state, goes to field state.
 
 			}else if((_cursor/50)== 1){
 				System.out.println("Continue Pressed");

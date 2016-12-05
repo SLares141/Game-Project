@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 
 public class WindowFrame extends JFrame {
 
-    private static double _windowWidth = 1040;
-    private static double _windowHeight = 614;
+    private static double _windowWidth = 1030;
+    private static double _windowHeight = 605;
 
     private static JFrame frame = new JFrame("RPG");
 	
@@ -31,6 +31,7 @@ public class WindowFrame extends JFrame {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		frame.setResizable(false);
    }
 
    
