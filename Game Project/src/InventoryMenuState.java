@@ -25,13 +25,9 @@ public class InventoryMenuState extends JPanel implements State {
 	int invIndex = 0;
 
 	BufferedImage arrow, smallArrow, biggerArrow;
-	int cursorX;
-	int cursorY;
+	int cursorX, cursorY;
 	boolean yesSelected = true;
-	boolean infoSelected;
-	boolean itemSelected;
-	boolean itemUsed;
-	boolean characterSelected;
+	boolean infoSelected, itemSelected, itemUsed, characterSelected;
 	WindowFrame frame = WindowFrame.getInstance();
 	int windowWidth = frame.getWidth();
 	int windowHeight = frame.getHeight();
@@ -39,10 +35,8 @@ public class InventoryMenuState extends JPanel implements State {
 	StateStackSingleton stateStack = StateStackSingleton.getInstance();
 	String currentMenu;
 	String[] menus = {"Items", "Equip", "Status", "Save", "Settings"};
-	static Color textColor;
-	static Color backgroundColor;
-	int settingOption;
-	int colorOption;
+	static Color textColor, backgroundColor;
+	int settingOption, colorOption;
 
 	public InventoryMenuState(Player p, PartyMember pm1, PartyMember pm2, PartyMember pm3, Inventory i) {
 		player = p;
@@ -160,7 +154,7 @@ public class InventoryMenuState extends JPanel implements State {
 		else if(player.getMap() == 0)
 			g.drawString("Strawberry Fields", 504 - g.getFontMetrics().stringWidth("Strawberry Fields")/2, 50);
 		else if(player.getMap() == 1)
-			g.drawString("Strawberry Creek", 504 - g.getFontMetrics().stringWidth("Strawberry Creek")/2, 50);
+			g.drawString("Strawberry Pond", 504 - g.getFontMetrics().stringWidth("Strawberry Pond")/2, 50);
 
 		//draws submenu selections
 		g.setFont(small);
