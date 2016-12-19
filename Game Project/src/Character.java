@@ -213,10 +213,18 @@ public class Character {
 	}
 	
 	public void use(Consumable cons) {
-		if((_totalHealth - _currentHealth) > cons.getRestoreAmt()) 
-			_currentHealth += cons.getRestoreAmt();
-		else
-			_currentHealth = _totalHealth;
+		if(cons.restoresHP()) {
+			if((_totalHealth - _currentHealth) > cons.getRestoreAmt()) 
+				_currentHealth += cons.getRestoreAmt();
+			else
+				_currentHealth = _totalHealth;
+		}
+		else {
+			if((_totalMagic - _currentMagic) > cons.getRestoreAmt()) 
+				_currentMagic += cons.getRestoreAmt();
+			else
+				_currentMagic = _totalMagic;
+		}
 	}
 	public void defend() { _usedDef = true; }
 	public void restoreDef() { _usedDef = false; }
